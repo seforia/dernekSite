@@ -1,0 +1,944 @@
+/* GÜNCELLEMELER - Ana styles.css'e eklenecek */
+
+/* Announcement Bar Güncellemeleri */
+.announcement-bar { 
+  width: 100%; 
+  background: #7EB6E2; /* Logo mavi tonu (uyumlu) */
+  color: #ffffff; 
+  font-weight: 700; 
+  letter-spacing: 0.6px; 
+  padding: 12px 0; 
+  z-index: 40;
+  position: relative;
+}
+
+.announcement-inner { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 24px; 
+}
+
+.announcement-spacer { 
+  width: 220px; 
+}
+
+.announcement-text { 
+  margin: 0; 
+  font-size: 14px; 
+  text-align: center; 
+  flex: 1; 
+}
+
+.announcement-text-short {
+  display: none;
+}
+
+.announcement-actions { 
+  display: flex; 
+  align-items: center; 
+  width: 220px; 
+  justify-content: flex-end; 
+}
+
+.announcement-link { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  color: #ffffff; 
+  font-weight: 600; 
+  font-size: 13px; 
+  text-decoration: none; 
+  padding: 9px 20px; 
+  border-radius: 12px; 
+  background: rgba(255,255,255,0.24); 
+  transition: all 300ms ease; 
+  border: 1px solid rgba(255,255,255,0.45); 
+}
+
+.announcement-link:hover { 
+  background: rgba(255,255,255,0.3); 
+  transform: translateY(-2px); 
+  border-color: rgba(255,255,255,0.6); 
+  box-shadow: 0 6px 16px rgba(0,0,0,0.16); 
+}
+
+.login-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+}
+
+.login-text {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* Header Güncellemeleri - Logo Taşma Sistemi */
+.site-header { 
+  position: sticky !important;
+  top: 0; 
+  z-index: 50; 
+  backdrop-filter: saturate(140%) blur(10px); 
+  background: rgba(255,255,255,0.98); 
+  border-bottom: 1px solid rgba(212,175,55,0.15); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+  animation: fadeInDown 600ms ease-out; 
+  transition: all 0.4s ease; 
+  padding: 12px 0;
+  overflow: visible;
+  will-change: padding;
+  margin: 0 auto;
+  max-width: 100%;
+  position: relative;
+}
+
+.site-header.is-top { 
+  background: rgba(255,255,255,0.95); 
+  border-bottom-color: transparent;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.02); 
+  padding: 40px 0 20px 0;
+}
+
+.site-header.is-scrolled { 
+  background: rgba(255,255,255,0.98); 
+  border-bottom-color: rgba(212,175,55,0.2); 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+  padding: 14px 0;
+}
+
+.nav-wrap { 
+  /* Dropdown konumlanabilsin diye relative - logo merkez column'da */
+  position: relative; 
+  display: grid;
+  grid-template-columns: minmax(auto, 1fr) 280px minmax(auto, 1fr);
+  align-items: center; 
+  gap: 32px; 
+  min-height: 56px;
+  padding: 0 32px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  justify-items: start;
+}
+
+.mobile-menu-toggle {
+  display: none;
+}
+
+.nav-left { 
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  justify-self: start;
+  justify-content: flex-start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  position: relative;
+  z-index: 50;
+  grid-column: 1;
+}
+
+.nav-right { 
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  justify-self: end;
+  justify-content: flex-end;
+  min-width: 0;
+  max-width: 100%;
+  padding-right: 0;
+  margin-left: 0;
+  position: relative;
+  z-index: 50;
+  grid-column: 3;
+}
+
+.left-nav { flex-shrink: 0; }
+.right-nav { flex-shrink: 0; }
+
+.left-nav ul { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: nowrap; align-items: center; }
+.right-nav ul { display: flex; gap: 16px; justify-content: flex-end; flex-wrap: nowrap; align-items: center; }
+
+.nav-home { 
+  color: var(--color-primary); 
+  font-weight: 700; 
+  font-size: 14px; 
+  text-decoration: none; 
+  transition: all 300ms ease; 
+  white-space: nowrap; 
+  padding: 8px 12px; 
+  border-radius: 6px; 
+  border-bottom: 2px solid transparent; 
+}
+
+.nav-home:hover { 
+  color: var(--color-primary); 
+  border-bottom-color: #7EB6E2;
+  background: rgba(126, 182, 226, 0.08); 
+}
+
+/* Logo Güncellemeleri - Profesyonel Taşma Sistemi - TAM ORTADA */
+.floating-brand { 
+  position: fixed; 
+  left: 50%;
+  top: 46px; /* biraz daha yukarı alındı */
+  transform: translateX(-50%);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 0; 
+  color: var(--color-primary); 
+  font-weight: 700; 
+  transition: all 0.4s ease; 
+  z-index: 40;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.floating-brand a {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.floating-brand:hover { 
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.site-header.is-top .floating-brand {
+  top: 56px;
+}
+
+.site-header.is-top .brand-logo { 
+  width: 120px; 
+  height: 120px; 
+  border-radius: 14px; 
+  transition: all 0.4s ease; 
+  filter: drop-shadow(0 10px 28px rgba(30,64,175,0.28)); 
+  transform: translateY(25%);
+}
+
+
+.site-header.is-scrolled .floating-brand {
+  top: 12px;
+}
+
+.site-header.is-scrolled .brand-logo { 
+  width: 50px; 
+  height: 50px; 
+  border-radius: 8px; 
+  transition: all 0.4s ease; 
+  filter: drop-shadow(0 3px 10px rgba(30,64,175,0.18)); 
+  transform: translateY(0);
+}
+
+.brand-logo { 
+  width: 80px; 
+  height: 80px; 
+  border-radius: 8px; 
+  transition: all 0.4s ease; 
+  filter: drop-shadow(0 3px 10px rgba(30,64,175,0.18)); 
+}
+
+.floating-brand:hover .brand-logo { 
+  filter: drop-shadow(0 10px 28px rgba(30,64,175,0.3)); 
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 10001;
+  position: relative;
+  pointer-events: auto !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  flex-shrink: 0;
+  margin: 0;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.hamburger-line {
+  width: 28px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 98;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1;
+}
+
+/* Basit responsive düzenlemeler */
+@media (max-width: 1024px) {
+  .nav-wrap {
+    grid-template-columns: minmax(240px, 1fr) 180px minmax(300px, 1fr);
+    gap: 20px;
+    padding: 0 16px;
+  }
+  .nav-left { gap: 14px; }
+  .right-nav ul, .left-nav ul { gap: 22px; }
+  .nav-right { padding-right: clamp(40px, 9vw, 140px); }
+  
+  .announcement-text { font-size: 12px; }
+}
+
+@media (max-width: 768px) {
+  /* Announcement bar mobil düzeni */
+  .announcement-bar {
+    padding: 10px 0;
+  }
+  
+  .announcement-spacer {
+    display: none;
+  }
+  
+  .announcement-text {
+    display: none;
+  }
+  
+  .announcement-text-short {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+  
+  .announcement-inner {
+    gap: 12px;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  
+  .announcement-actions {
+    width: auto;
+  }
+  
+  .login-text {
+    display: none;
+  }
+  
+  .announcement-link {
+    padding: 8px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  
+  .login-image {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Hamburger menüyü göster */
+  .mobile-menu-toggle {
+    display: flex !important;
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    left: auto;
+    z-index: 10001;
+    width: 56px;
+    height: 56px;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto !important;
+    flex-shrink: 0;
+    flex-grow: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 0 8px;
+    justify-content: flex-start;
+    align-items: center;
+    grid-template-columns: none;
+    position: relative;
+  }
+
+  /* Desktop menüleri gizle */
+  .nav-left,
+  .nav-right {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(85vw, 320px);
+    height: 100vh;
+    height: 100dvh;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 80px 20px 24px 20px;
+    gap: 8px;
+    z-index: 100;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+    margin-left: 0;
+    padding-right: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-left.mobile-active,
+  .nav-right.mobile-active {
+    right: 0;
+  }
+
+  .mobile-nav-overlay {
+    display: block;
+  }
+
+  .left-nav,
+  .right-nav {
+    width: 100%;
+  }
+
+  .left-nav ul,
+  .right-nav ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .left-nav ul li,
+  .right-nav ul li {
+    width: 100%;
+    border-bottom: 1px solid rgba(126, 182, 226, 0.15);
+  }
+
+  .site-nav a {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    padding: 16px 20px;
+    border-radius: 0;
+    border-bottom: none;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .site-nav a:active {
+    background: rgba(126, 182, 226, 0.15);
+  }
+
+  .nav-dropdown > a::after {
+    float: right;
+  }
+
+  .nav-submenu {
+    position: static;
+    transform: none;
+    margin-top: 0;
+    box-shadow: none;
+    border: none;
+    background: rgba(126, 182, 226, 0.05);
+    border-radius: 0;
+    padding: 8px 0;
+    min-width: 100%;
+  }
+
+  .nav-submenu a {
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+
+  .nav-donation {
+    width: calc(100% - 40px);
+    min-width: auto;
+    padding: 14px 20px;
+    justify-content: center;
+    margin: 16px 20px 8px 20px;
+    min-height: 52px;
+    pointer-events: auto !important;
+  }
+
+  .bank-info-btn {
+    width: calc(100% - 40px);
+    height: 52px;
+    border-radius: 10px;
+    justify-content: center;
+    gap: 12px;
+    margin: 8px 20px;
+    min-height: 52px;
+    pointer-events: auto !important;
+  }
+
+  .bank-info-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .bank-info-btn::after {
+    content: 'Banka Bilgileri';
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  /* Logo mobilde merkez */
+  .floating-brand {
+    position: static;
+    transform: none;
+    order: 2;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  .site-header.is-top .floating-brand,
+  .site-header.is-scrolled .floating-brand {
+    top: auto;
+  }
+
+  .brand-logo,
+  .site-header.is-top .brand-logo,
+  .site-header.is-scrolled .brand-logo {
+    width: 56px;
+    height: 56px;
+    transform: none;
+  }
+}
+
+
+/* Site Nav Güncellemeleri */
+.site-nav a { 
+  display: inline-block; 
+  padding: 10px 14px; 
+  border-radius: 5px; 
+  color: var(--color-text); 
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); 
+  border-bottom: 2px solid transparent; 
+  white-space: nowrap; 
+  font-size: 17px; 
+  font-weight: 600;
+}
+
+.site-nav a:hover {
+  color: var(--color-primary);
+  border-bottom-color: #7EB6E2;
+  background: rgba(126, 182, 226, 0.06);
+}
+
+/* Dropdown Menü - Yatay Modern Grid Layout */
+.nav-dropdown { position: static; }
+
+.nav-submenu { 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0;
+  width: 100%;
+  min-width: unset; 
+  max-width: none; 
+  background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%); 
+  border: 1px solid rgba(126, 182, 226, 0.25); 
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 12px 40px rgba(30, 64, 175, 0.18); 
+  padding: 16px; 
+  opacity: 0; 
+  visibility: hidden; 
+  transform: translateY(0); 
+  transition: all 280ms cubic-bezier(0.4, 0, 0.2, 1); 
+  z-index: 120; 
+  pointer-events: none; 
+  margin-top: 8px;
+  backdrop-filter: blur(4px);
+  border-top: none;
+}
+
+.nav-dropdown.open .nav-submenu { 
+  opacity: 1; 
+  visibility: visible; 
+  transform: translate(-50%, 0); 
+  pointer-events: auto; 
+}
+
+.nav-submenu.mega-menu { 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.nav-submenu a { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  text-align: left; 
+  padding: 12px 14px; 
+  border-radius: 8px; 
+  border: 1px solid rgba(126, 182, 226, 0.15);
+  background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(126, 182, 226, 0.03) 100%);
+  font-weight: 600; 
+  font-size: 14px;
+  color: var(--color-text); 
+  transition: all 250ms ease;
+}
+
+.nav-submenu a:hover { 
+  background: linear-gradient(135deg, rgba(126, 182, 226, 0.15) 0%, rgba(126, 182, 226, 0.08) 100%);
+  color: var(--color-primary); 
+  transform: translateX(4px);
+  border-color: rgba(126, 182, 226, 0.35);
+  box-shadow: 0 4px 12px rgba(126, 182, 226, 0.12);
+}
+
+.submenu-icon {
+  color: #7EB6E2;
+  font-size: 16px;
+  transition: all 250ms ease;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.nav-submenu a:hover .submenu-icon {
+  transform: scale(1.15);
+  color: var(--color-primary);
+}
+
+/* Dropdown Arrow Düzeltme */
+.nav-dropdown > a::after { 
+  content: ''; 
+  width: 6px; 
+  height: 6px; 
+  border-right: 2px solid currentColor; 
+  border-bottom: 2px solid currentColor; 
+  transform: rotate(45deg); 
+  display: inline-block; 
+  transition: transform 200ms ease; 
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.nav-dropdown.open > a::after { 
+  transform: rotate(225deg); 
+}
+
+
+/* Scroll to Top Button - Ok Düzeltilmiş */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #1e40af 0%, #1a2f7f 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.96);
+  padding: 0;
+}
+
+.scroll-to-top-btn::before {
+  content: '↑';
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.scroll-to-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-to-top-btn:hover {
+  background: linear-gradient(135deg, #d4af37 0%, #e5c158 100%);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+  color: #1e40af;
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+
+/* Bank Modal Logo Küçültme */
+.bank-modal-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  padding: 6px;
+}
+
+/* Nav Donation Button Yenileme - Yanına Geniş Layout */
+.nav-donation {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #7EB6E2;
+  color: #0a223b;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #6da6d6;
+  box-shadow: 0 4px 12px rgba(110, 166, 214, 0.35);
+  text-shadow: none;
+  transition: all 300ms ease;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-size: 13px;
+  min-width: 120px;
+}
+
+.nav-donation:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: #6da6d6;
+  box-shadow: 0 8px 20px rgba(110, 166, 214, 0.5);
+  color: #08233f;
+  text-decoration: none;
+}
+
+.nav-donation:active {
+  transform: translateY(-1px) scale(1);
+}
+
+.nav-donation-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  flex-shrink: 0;
+  order: -1;
+  align-self: center;
+}
+
+.nav-donation-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 1.15;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.donation-line {
+  display: inline;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.donation-ampersand {
+  display: inline;
+  font-size: 9px;
+  font-weight: 600;
+  opacity: 0.95;
+  margin: 0 2px;
+  line-height: 1;
+}
+
+/* Bank Info Button */
+.bank-info-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(126, 182, 226, 0.35);
+  background: linear-gradient(135deg, rgba(126, 182, 226, 0.1) 0%, rgba(126, 182, 226, 0.05) 100%);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 300ms ease;
+  z-index: 50;
+  flex-shrink: 0;
+  margin-left: 8px; /* sağda mesafe */
+}
+
+.bank-info-btn:hover {
+  background: linear-gradient(135deg, rgba(126, 182, 226, 0.18) 0%, rgba(126, 182, 226, 0.12) 100%);
+  border-color: #7EB6E2;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(126, 182, 226, 0.3);
+}
+
+.bank-info-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Cookie Consent Banner */
+.cookie-consent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(30, 64, 175, 0.97) 0%, rgba(30, 64, 175, 0.95) 100%);
+  color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.cookie-consent.show {
+  transform: translateY(0);
+}
+
+.cookie-consent-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cookie-consent-text {
+  flex: 1;
+  min-width: 280px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cookie-consent-text strong {
+  font-weight: 700;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cookie-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cookie-btn-accept {
+  background: #d4af37;
+  color: #0a223b;
+  border-color: #d4af37;
+}
+
+.cookie-btn-accept:hover {
+  background: #e5c158;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+.cookie-btn-reject {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.cookie-btn-reject:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .cookie-consent {
+    padding: 16px;
+  }
+  
+  .cookie-consent-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .cookie-consent-text {
+    text-align: center;
+    min-width: 0;
+  }
+  
+  .cookie-consent-actions {
+    justify-content: center;
+  }
+  
+  .cookie-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}

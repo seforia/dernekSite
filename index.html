@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1f5fbf" />
+  <title>Tevfik Sırrı Gür Lisesi Derneği</title>
+  <meta name="description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen" />
+  <meta property="og:title" content="Tevfik Sırrı Gür Lisesi Derneği" />
+  <meta property="og:description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/img/tsglLogo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/styles-updates.css" />
+</head>
+<body>
+  <!-- Modern Page Loader -->
+  <div class="page-loader" id="page-loader">
+    <div class="spinner-container">
+      <div class="modern-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <div class="spinner-text">Yükleniyor...</div>
+    </div>
+  </div>
+
+  <!-- Confetti Container -->
+  <div class="confetti-container" id="confetti-container"></div>
+
+  <a class="skip-link" href="#main">İçeriğe geç</a>
+
+  <div class="announcement-bar" role="region" aria-label="Üst duyuru">
+    <div class="container announcement-inner">
+      <div class="announcement-spacer"></div>
+      <p class="announcement-text">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
+      <p class="announcement-text-short">TSGL DERNEĞİ</p>
+      <div class="announcement-actions">
+        <a href="/giris" data-link class="announcement-link">
+          <img src="assets/img/login_4043192.png" alt="" class="login-image" aria-hidden="true" />
+          <span class="login-text">Giriş Yap/Üye Ol</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header" role="banner">
+    <div class="container nav-wrap">
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menü" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-left">
+        <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
+          <ul>
+            <li><a href="/" data-link class="nav-home">Ana Sayfa</a></li>
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">Derneğimiz</a>
+              <div class="nav-submenu mega-menu">
+                <a href="/hakkimizda" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Hakkımızda</span>
+                </a>
+                <a href="/tuzuk" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Dernek Tüzüğü</span>
+                </a>
+                <a href="/yonetim-kurulu" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Yönetim Kurulu</span>
+                </a>
+                <a href="/okulumuz" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Okulumuz</span>
+                </a>
+                <a href="/faaliyetler" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Faaliyetlerimiz</span>
+                </a>
+                <a href="/basari-oykuleri" data-link>
+                  <span class="submenu-icon">•</span>
+                  <span>Başarı Öykülerimiz</span>
+                </a>
+                <a href="#footer" class="scroll-to-footer">
+                  <span class="submenu-icon">•</span>
+                  <span>İletişim</span>
+                </a>
+              </div>
+            </li>
+            <li><a href="/galeri" data-link class="nav-gallery">Galeri</a></li>
+          </ul>
+        </nav>
+      </div>
+      <a class="brand floating-brand" href="/" data-link aria-label="Ana sayfa">
+        <img src="assets/img/tsglLogo.png" alt="TSGL Derneği Logosu" class="brand-logo" />
+      </a>
+      <div class="nav-right">
+        <nav class="site-nav right-nav" role="navigation" aria-label="Sağ menü">
+          <ul>
+            <li><a href="/burs" data-link>Burs Başvurusu</a></li>
+            <li><a href="/duyurular" data-link>Duyurular</a></li>
+          </ul>
+        </nav>
+        <a href="/bagis" data-link class="nav-donation">
+          <img src="assets/img/heart.png" alt="" class="nav-donation-icon" aria-hidden="true" />
+          <span class="nav-donation-text">
+            <span class="donation-line">Bağış</span>
+            <span class="donation-ampersand">&</span>
+            <span class="donation-line">Aidat</span>
+          </span>
+        </a>
+        <button class="bank-info-btn" id="bank-info-btn" aria-label="Banka Bilgileri" title="Banka Bilgileri">
+          <img src="assets/img/bank-building.png" alt="" class="bank-info-icon" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bank Info Sidebar Modal -->
+  <div class="bank-modal" id="bank-modal" role="dialog" aria-labelledby="bank-modal-title" aria-hidden="true">
+    <div class="bank-modal-overlay" id="bank-modal-overlay"></div>
+    <div class="bank-modal-container">
+      <button class="bank-modal-close" id="bank-modal-close" aria-label="Kapat">✕</button>
+      
+      <div class="bank-modal-header">
+        <img src="assets/img/tsglLogo.png" alt="TSGL Derneği" class="bank-modal-logo" />
+        <h2 id="bank-modal-title" class="bank-modal-title">Tevfik Sırrı Gür Lisesi Derneği</h2>
+        <p class="bank-modal-subtitle">Banka Hesaplarımız</p>
+      </div>
+      
+      <div class="bank-section">
+        <h3 class="bank-section-title">AİDAT & DİĞER BAĞIŞ HESAPLARI</h3>
+        <div class="bank-info">
+          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
+          <div class="bank-details">
+            <p><span class="bank-label">Şube Kodu:</span> 088</p>
+            <p><span class="bank-label">Hesap No:</span> 6294560</p>
+          </div>
+          <div class="bank-iban-box">
+            <span class="bank-label">IBAN:</span>
+            <span class="bank-iban">TR19 0006 2000 0880 0006 2945 60</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bank-section">
+        <h3 class="bank-section-title">BURS HESABI</h3>
+        <div class="bank-info">
+          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
+          <div class="bank-details">
+            <p><span class="bank-label">Şube Kodu:</span> 088</p>
+            <p><span class="bank-label">Hesap No:</span> 6294561</p>
+          </div>
+          <div class="bank-iban-box">
+            <span class="bank-label">IBAN:</span>
+            <span class="bank-iban">TR89 0006 2000 0880 0006 2945 61</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bank-section">
+        <h3 class="bank-section-title">ETKİNLİK HESABI</h3>
+        <div class="bank-info">
+          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
+          <div class="bank-details">
+            <p><span class="bank-label">Şube Kodu:</span> 088</p>
+            <p><span class="bank-label">Hesap No:</span> 6294562</p>
+          </div>
+          <div class="bank-iban-box">
+            <span class="bank-label">IBAN:</span>
+            <span class="bank-iban">TR62 0006 2000 0880 0006 2945 62</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bank-actions">
+        <button class="bank-btn donate-btn" id="goto-bagis">Bağış Yap</button>
+        <button class="bank-btn membership-btn" id="goto-membership">Aidat Öde</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="main" data-main-content>
+    <div id="home-content">
+    <section class="hero reveal" id="top" aria-labelledby="hero-title">
+      <div class="hero-slider" aria-label="Öne çıkan görseller">
+        <div class="hero-slide active" data-slide="0">
+          <img src="assets/img/tsglFoto.png" alt="Dernekten kare" />
+        </div>
+        <div class="hero-slide" data-slide="1">
+          <img src="assets/img/tsglFoto2.png" alt="Dernek etkinliği" />
+        </div>
+        <div class="hero-slide" data-slide="2">
+          <img src="assets/img/tsglFoto3.png" alt="Dernek çalışması" />
+        </div>
+        <div class="hero-slide" data-slide="3">
+          <img src="assets/img/anılar.jpg" alt="Dernek anıları" />
+        </div>
+        <div class="hero-controls" aria-hidden="true">
+          <button class="hero-btn prev" type="button" aria-label="Önceki görsel">‹</button>
+          <button class="hero-btn next" type="button" aria-label="Sonraki görsel">›</button>
+        </div>
+        <div class="hero-dots" role="tablist" aria-label="Slider noktaları">
+          <button type="button" class="hero-dot active" data-target="0" role="tab" aria-label="1. görsel"></button>
+          <button type="button" class="hero-dot" data-target="1" role="tab" aria-label="2. görsel"></button>
+          <button type="button" class="hero-dot" data-target="2" role="tab" aria-label="3. görsel"></button>
+          <button type="button" class="hero-dot" data-target="3" role="tab" aria-label="4. görsel"></button>
+        </div>
+      </div>
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1 id="hero-title">Eğitimle Yetişen, Dayanışmayla Güçlenen</h1>
+          <p class="lead">Toplumsal sorumluluk, dayanışma ve kalıcı değerler için bir aradayız.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="/hakkimizda" data-link>Hakkımızda</a>
+            <a class="btn ghost" href="/duyurular" data-link>Duyurular</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="kabatas-lisesi" aria-labelledby="kabatas-title">
+      <div class="container">
+        <div class="content-with-image">
+          <div class="image-side reveal" data-reveal-order="1">
+            <img src="assets/img/tsglFoto2.png" alt="Kabataş Erkek Lisesi" />
+          </div>
+          <div class="content-side reveal" data-reveal-order="2">
+            <h2 id="kabatas-title">Tevfki Sırrı Gür Lisesi</h2>
+            <p>Köklü bir tarihi geçmişi ve gelenekleri olan, kendini sürekli yenileyen, bütün öğrencilerin akla ve bilime dayalı eğitim ortamında hayata hazırlandığı, yerelde ve ülkede etkin ve nitelikli bir model okul olmaktır.</p>
+            <a class="btn primary" href="#devam">Devamını Oku</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="hakkimizda" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="about-title">Hakkımızda</h2>
+          <p>Derneğimizin amacı, vizyonu ve ilkeleri.</p>
+        </div>
+        <div class="grid two">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>Amaç</h3>
+            <p>Topluma fayda sağlamak ve üyeler arasında dayanışmayı güçlendirmek.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>Vizyon</h3>
+            <p>Sürdürülebilir projelerle kalıcı değerler üretmek.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt reveal" id="yonetim" aria-labelledby="board-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="board-title">Yönetim</h2>
+          <p>Yönetim kurulu ve görev dağılımı.</p>
+        </div>
+        <div class="grid three">
+          <article class="card person reveal" data-reveal-order="1">
+            <h3>Başkan</h3>
+            <p>İsim Soyisim</p>
+          </article>
+          <article class="card person reveal" data-reveal-order="2">
+            <h3>Başkan Yardımcısı</h3>
+            <p>İsim Soyisim</p>
+          </article>
+          <article class="card person reveal" data-reveal-order="3">
+            <h3>Genel Sekreter</h3>
+            <p>İsim Soyisim</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="faaliyetler" aria-labelledby="activities-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="activities-title">Faaliyetler</h2>
+          <p>Etkinlikler, projeler ve iş birlikleri.</p>
+        </div>
+        <div class="grid three">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>Seminerler</h3>
+            <p>Toplumsal konularda düzenli seminerler.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>Gönüllülük</h3>
+            <p>Yerel projelerde gönüllü çalışmalar.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="3">
+            <h3>Bağış Kampanyaları</h3>
+            <p>Şeffaf ve hedef odaklı bağış süreçleri.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt reveal" id="duyurular" aria-labelledby="news-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="news-title">Duyurular</h2>
+          <p>Güncel haberler ve açıklamalar.</p>
+        </div>
+        <div class="list">
+          <article class="list-item reveal" data-reveal-order="1">
+            <h3>Yeni Etkinlik</h3>
+            <p>Tarih ve yer bilgisi ile duyuru metni.</p>
+          </article>
+          <article class="list-item reveal" data-reveal-order="2">
+            <h3>Basın Açıklaması</h3>
+            <p>Resmi açıklama metni.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="uyelik" aria-labelledby="membership-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="membership-title">Üyelik</h2>
+          <p>Üyelik koşulları ve başvuru süreci.</p>
+        </div>
+        <div class="grid two">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>Koşullar</h3>
+            <p>Dernek tüzüğüne uygunluk ve gerekli belgeler.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>Başvuru</h3>
+            <p><a class="btn secondary" href="#">Formu indir</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt reveal" id="iletisim" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="contact-title">İletişim</h2>
+          <p>Adres ve iletişim kanalları.</p>
+        </div>
+        <div class="grid two">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>Adres</h3>
+            <p>Mahalle, Cadde, No, İl/İlçe</p>
+          </article>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>İletişim</h3>
+            <p>E-posta: info@dernek.org<br />Telefon: (000) 000 00 00</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    </div>
+    <div id="dynamic-content" style="display: none;"></div>
+  </main>
+
+  <!-- Cookie Consent Banner -->
+  <div class="cookie-consent" id="cookie-consent">
+    <div class="cookie-consent-container">
+      <div class="cookie-consent-text">
+        <strong>🍪 Çerez Kullanımı</strong>
+        <p>Web sitemizde deneyiminizi geliştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımını kabul etmiş olursunuz.</p>
+      </div>
+      <div class="cookie-consent-actions">
+        <button class="cookie-btn cookie-btn-accept" id="cookie-accept">Kabul Et</button>
+        <button class="cookie-btn cookie-btn-reject" id="cookie-reject">Reddet</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Sol Kolon - Banka Hesapları -->
+        <div class="footer-column">
+          <h3 class="footer-title">Banka Hesap Numaralarımız</h3>
+          
+          <div class="footer-bank-account">
+            <h4>Aidat & Diğer Bağış Hesapları</h4>
+            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
+            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294560</p>
+            <p class="bank-iban"><strong>IBAN:</strong> TR19 0006 2000 0880 0006 2945 60</p>
+          </div>
+
+          <div class="footer-bank-account">
+            <h4>Burs Hesabı</h4>
+            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
+            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294561</p>
+            <p class="bank-iban"><strong>IBAN:</strong> TR89 0006 2000 0880 0006 2945 61</p>
+          </div>
+
+          <div class="footer-bank-account">
+            <h4>Etkinlik Hesabı</h4>
+            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
+            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294562</p>
+            <p class="bank-iban"><strong>IBAN:</strong> TR62 0006 2000 0880 0006 2945 62</p>
+          </div>
+        </div>
+
+        <!-- Orta Kolon - Site Haritası -->
+        <div class="footer-column">
+          <h3 class="footer-title">Site Haritası</h3>
+          <ul class="footer-menu">
+            <li><a href="/" data-link>Ana Sayfa</a></li>
+            <li><a href="/duyurular" data-link>Duyurular</a></li>
+            <li><a href="/hakkimizda" data-link>Hakkımızda</a></li>
+            <li><a href="/tuzuk" data-link>Dernek Tüzüğü</a></li>
+            <li><a href="/yonetim-kurulu" data-link>Yönetim Kurulu</a></li>
+            <li><a href="/okulumuz" data-link>Okulumuz</a></li>
+            <li><a href="/burs" data-link>Burslar</a></li>
+            <li><a href="/iletisim" data-link>İletişim</a></li>
+            <li><a href="/kayit" data-link>Üyelik</a></li>
+            <li><a href="/bagis" data-link>Bağış & Aidat</a></li>
+          </ul>
+        </div>
+
+        <!-- Sağ Kolon - İletişim -->
+        <div class="footer-column">
+          <h3 class="footer-title">İletişim Bilgileri</h3>
+          
+          <div class="footer-contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div>
+              <p><strong>Bahariye Cad. Adliye Palas Apt.</strong></p>
+              <p>No:72 Da:8 Bahariye Kadıköy/</p>
+              <p>İSTANBUL</p>
+            </div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div>
+              <p><strong>(0216) 347 88 43</strong></p>
+            </div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p><a href="mailto:info@tsgldernek.org">info@tsgldernek.org</a></p>
+            </div>
+          </div>
+
+          <div class="footer-contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p><strong>H.içi:</strong> 08:30 - 17:00</p>
+              <p><strong>H.sonu:</strong> Kapalı</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alt Kısım - Copyright ve Sosyal Medya -->
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <p>©<span id="y"></span> Tevfik Sırrı Gür Lisesi Derneği. Her Hakkı Saklıdır.</p>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Facebook" title="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter" title="Twitter">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Instagram" title="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="#1e40af" stroke-width="2"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#1e40af" stroke-width="2"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Sayfanın başına git" title="Başa Dön"></button>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-label="Görüntü Galerisi" aria-hidden="true">
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-container">
+      <img id="lightbox-image" src="" alt="" class="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <button class="lightbox-btn prev" aria-label="Önceki görüntü" title="Önceki (Sol ok tuşu)">❮</button>
+      <button class="lightbox-btn next" aria-label="Sonraki görüntü" title="Sonraki (Sağ ok tuşu)">❯</button>
+      <button class="lightbox-close" aria-label="Kapat" title="Kapat (Esc tuşu)">✕</button>
+      <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (Compat for script tag usage) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Project Firebase config (fill in credentials) -->
+  <script src="assets/js/firebase-config.js"></script>
+  <!-- Auth module -->
+  <script src="assets/js/auth.js"></script>
+  <!-- Main app -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

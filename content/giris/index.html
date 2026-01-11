@@ -1,0 +1,33 @@
+<section class="page-hero">
+  <div class="container">
+    <h1>Giriş Yap</h1>
+    <p>Onaylı hesabınızla giriş yapın.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="login-title">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="login-title">Üyelik Girişi</h2>
+      <p>Giriş için e-posta ve şifrenizi giriniz.</p>
+    </div>
+
+    <form id="login-form" class="form-wrapper card reveal" data-reveal-order="0">
+      <div class="form-row two-cols">
+        <div class="form-field">
+          <label for="email">E-posta</label>
+          <input type="email" id="email" name="email" required placeholder="ornek@domain.com" />
+        </div>
+        <div class="form-field">
+          <label for="password">Şifre</label>
+          <input type="password" id="password" name="password" required placeholder="••••••••" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Giriş Yap</button>
+        <a href="/kayit" data-link class="btn ghost">Hesabım yok</a>
+      </div>
+      <div id="login-msg" class="form-info" aria-live="polite" style="margin-top:12px;"></div>
+    </form>
+  </div>
+</section>

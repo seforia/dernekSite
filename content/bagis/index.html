@@ -1,0 +1,241 @@
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="container">
+      <h1>Bağış ve Aidat Ödeme</h1>
+      <p>Online ödeme akışına benzer şekilde bilgilerinizi girin, IBAN ile güvenli EFT/Havale yapın.</p>
+    </div>
+  </div>
+
+  <section class="page-content" id="bagis-aidat">
+    <div class="container">
+      <div class="grid two" style="gap: 32px; align-items: flex-start;">
+        <!-- Sol Taraf - Ödeme Formu ve IBAN çıktısı -->
+        <div class="card payment-form-container reveal" data-reveal-order="1" style="padding: 32px;">
+          <div class="section-header" style="margin-bottom: 16px;">
+            <h2>Ödeme Adımları</h2>
+            <p>Kısa formu doldurun, özet ve IBAN otomatik gösterilsin. Kart bilgisi alınmaz.</p>
+          </div>
+
+          <div class="payment-steps" aria-hidden="true">
+            <div class="payment-step current payment-step-1" data-step="1">
+              <div class="step-number">1</div>
+              <div>
+                <div class="step-label">Bilgiler</div>
+                <div class="step-desc">İletişim ve ödeme türü</div>
+              </div>
+            </div>
+            <div class="payment-step payment-step-2" data-step="2">
+              <div class="step-number">2</div>
+              <div>
+                <div class="step-label">Tutar</div>
+                <div class="step-desc">Hazır veya özel tutar</div>
+              </div>
+            </div>
+            <div class="payment-step payment-step-3" data-step="3">
+              <div class="step-number">3</div>
+              <div>
+                <div class="step-label">IBAN</div>
+                <div class="step-desc">Teşekkür & EFT/Havale</div>
+              </div>
+            </div>
+          </div>
+
+          <form id="payment-form" class="payment-form" aria-label="Bağış ve Aidat Ödeme Formu" action="javascript:void(0);" method="post">
+            <div class="form-group" id="payment-type-group">
+              <label for="payment-type">Ödeme Türü *</label>
+              <select id="payment-type" name="payment-type" required>
+                <option value="">-- Seçiniz --</option>
+                <option value="donation">Bağış</option>
+                <option value="membership">Üyelik Aidatı</option>
+                <option value="both">Bağış + Aidat</option>
+              </select>
+            </div>
+
+            <div class="form-row dual">
+              <div class="form-group" id="donor-name-group" style="display: none;">
+                <label for="donor-name">Ad Soyad *</label>
+                <input type="text" id="donor-name" name="donor-name" placeholder="Adınız Soyadınız" />
+              </div>
+
+              <div class="form-group" id="phone-group" style="display: none;">
+                <label for="donor-phone">Telefon *</label>
+                <input type="tel" id="donor-phone" name="donor-phone" placeholder="0XXX XXX XX XX" inputmode="tel" />
+              </div>
+            </div>
+
+            <div class="form-group" id="email-group" style="display: none;">
+              <label for="donor-email">E-posta *</label>
+              <input type="email" id="donor-email" name="donor-email" placeholder="ornek@email.com" />
+            </div>
+
+            <div class="form-group" id="amount-group" style="display: none;">
+              <label for="donation-amount">Bağış Tutarı (₺) *</label>
+              <div class="amount-options wide">
+                <button type="button" class="amount-btn" data-amount="250">250 ₺</button>
+                <button type="button" class="amount-btn" data-amount="500">500 ₺</button>
+                <button type="button" class="amount-btn" data-amount="1000">1.000 ₺</button>
+                <button type="button" class="amount-btn" data-amount="2500">2.500 ₺</button>
+                <button type="button" class="amount-btn" data-amount="5000">5.000 ₺</button>
+                <button type="button" class="amount-btn" data-amount="10000">10.000 ₺</button>
+              </div>
+              <input type="number" id="donation-amount" name="donation-amount" min="1" step="0.01" placeholder="Özel tutar giriniz (₺)" />
+              <div class="form-note">Hazır tutarlardan birini seçebilir veya özel tutar girebilirsiniz.</div>
+            </div>
+
+            <div class="form-group" id="membership-amount-group" style="display: none;">
+              <label for="membership-fee">Aidat Tutarı (₺) *</label>
+              <div class="pill-row" aria-hidden="true">
+                <button type="button" class="pill" data-membership-amount="300">Aylık 300 ₺</button>
+                <button type="button" class="pill" data-membership-amount="600">2 Aylık 600 ₺</button>
+                <button type="button" class="pill" data-membership-amount="900">3 Aylık 900 ₺</button>
+                <button type="button" class="pill" data-membership-amount="1200">4 Aylık 1.200 ₺</button>
+              </div>
+              <input type="number" id="membership-fee" name="membership-fee" value="300" min="50" step="50" />
+              <p style="margin: 8px 0 0; color: var(--color-muted); font-size: 13px;">Aidat tutarını yukarıdaki kısa yollardan seçebilir veya istediğiniz tutarı yazabilirsiniz.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Mesajınız / Notunuz (Opsiyonel)</label>
+              <textarea id="message" name="message" rows="3" placeholder="Ödeme ile ilgili bir notunuz varsa buraya yazabilirsiniz"></textarea>
+              <div class="form-note">Notunuz derneğimize iletilir ve dekont takibinde kullanılır.</div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+              <label class="checkbox-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+                <input type="checkbox" id="kvkk-consent" name="kvkk-consent" required style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" />
+                <span style="font-size: 14px; line-height: 1.5;">
+                  <strong style="color: var(--color-primary);">Kişisel Verilerin Korunması</strong> hakkında bilgilendirmeyi okudum, 
+                  <a href="javascript:void(0);" id="kvkk-details-link" style="color: var(--color-secondary); text-decoration: underline; font-weight: 600;">aydınlatma metnini</a> 
+                  inceledim ve bağış/aidat işlemi için gerekli bilgilerimin işlenmesini onaylıyorum. *
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn primary" style="width: 100%; padding: 16px; font-size: 18px;">
+              💠 IBAN'ı Göster ve Özeti Oluştur
+            </button>
+
+            <p style="text-align: center; font-size: 13px; color: var(--color-muted); margin-top: 12px;">
+              Kart bilgisi toplanmaz. EFT/Havale ile tamamlayın, dekontu paylaşın.
+            </p>
+          </form>
+
+          <div id="payment-summary" class="payment-summary" style="display: none;">
+            <h3>Ödeme Özeti</h3>
+            <div class="summary-item"><span>Ödeme Türü</span><strong id="summary-type">-</strong></div>
+            <div class="summary-item"><span>Toplam Tutar</span><strong id="summary-amount">-</strong></div>
+            <div class="summary-item" id="summary-name-item"><span>Ad Soyad</span><strong id="summary-name">-</strong></div>
+            <div class="summary-item" id="summary-email-item"><span>E-posta</span><strong id="summary-email">-</strong></div>
+            <div class="summary-item" id="summary-phone-item"><span>Telefon</span><strong id="summary-phone">-</strong></div>
+            <div class="summary-item" id="summary-note-item" style="display: none;"><span>Not</span><strong id="summary-note">-</strong></div>
+          </div>
+
+          <div id="iban-section" class="iban-section" style="display: none;">
+            <h3>✅ Ödeme Bilgileriniz Hazır!</h3>
+            <p class="iban-label" style="font-size: 15px; font-weight: 600; color: var(--color-primary);">
+              Bağışınız için çok teşekkür ederiz! Lütfen aşağıdaki IBAN'ı kullanarak ödemenizi tamamlayın.
+            </p>
+            <div class="iban-display">
+              <input type="text" id="iban-input" class="iban-input" value="TR12 3456 7890 1234 5678 9012 34" readonly aria-label="IBAN" />
+              <button type="button" class="btn secondary" id="copy-iban-btn">📋 IBAN'ı Kopyala</button>
+            </div>
+            <div class="iban-details">
+              <p><strong>Hesap Sahibi:</strong> TSGL Derneği</p>
+              <p><strong>Banka:</strong> Örnek Banka A.Ş.</p>
+              <p><strong>Şube:</strong> Merkez</p>
+              <p><strong>Açıklama:</strong> Ad Soyad + Ödeme Türü</p>
+            </div>
+            <div class="subtle-card" style="margin-bottom: 16px;">
+              <strong>📧 Dekont Gönderimi:</strong><br>
+              Ödeme yaptıktan sonra lütfen dekontunuzu <a href="mailto:tsgldernegi@gmail.com" style="color: var(--color-primary); font-weight: 700;">tsgldernegi@gmail.com</a> adresine gönderin. 
+              Ödemeniz doğrulandıktan sonra size bilgilendirme yapılacaktır.
+            </div>
+            <p class="iban-note" style="background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.2); padding: 14px;">
+              <strong>ℹ️ Bilgilendirme:</strong> Derneğimize bildirim maili otomatik gönderilmiştir. EFT/Havale sonrası dekontunuzu paylaştığınızda kaydınız hızla işlenecektir.
+            </p>
+            <button type="button" class="btn ghost" id="back-to-form-btn" style="width: 100%;">⬅️ Bilgileri Düzenle</button>
+          </div>
+        </div>
+
+        <!-- Sağ Taraf - Akış ve kullanım bilgisi -->
+        <div>
+          <div class="card reveal" data-reveal-order="2" style="padding: 32px; margin-bottom: 24px;">
+            <h3 style="margin-top: 0;">🔄 İşlem Akışı</h3>
+            <ul class="list" style="list-style: none; padding: 0; margin: 0; display: grid; gap: 12px;">
+              <li class="list-item" style="margin: 0; display: flex; gap: 12px; align-items: center;">
+                <span style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: white; display: grid; place-items: center; font-weight: 700;">1</span>
+                <div>
+                  <strong>Bilgileri girin</strong>
+                  <p style="margin: 4px 0 0; color: var(--color-muted);">Ödeme türünü, iletişim ve tutar bilgilerini doldurun.</p>
+                </div>
+              </li>
+              <li class="list-item" style="margin: 0; display: flex; gap: 12px; align-items: center;">
+                <span style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-secondary); color: #000; display: grid; place-items: center; font-weight: 700;">2</span>
+                <div>
+                  <strong>IBAN'ı alın</strong>
+                  <p style="margin: 4px 0 0; color: var(--color-muted);">Formu onaylayınca IBAN ve özet otomatik görüntülenir.</p>
+                </div>
+              </li>
+              <li class="list-item" style="margin: 0; display: flex; gap: 12px; align-items: center;">
+                <span style="width: 32px; height: 32px; border-radius: 50%; background: #0ea5e9; color: white; display: grid; place-items: center; font-weight: 700;">3</span>
+                <div>
+                  <strong>EFT/Havale yapın</strong>
+                  <p style="margin: 4px 0 0; color: var(--color-muted);">Dekontu iletin, işleminiz "Ödeme için teşekkürler" mesajıyla tamamlanır.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card reveal" data-reveal-order="3" style="padding: 32px;">
+            <h3 style="margin-top: 0;">📊 Bağışınızın Kullanımı</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                <strong style="color: var(--color-primary);">%40</strong> - Burs Programları
+              </li>
+              <li style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                <strong style="color: var(--color-primary);">%30</strong> - Eğitim Projeleri
+              </li>
+              <li style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+                <strong style="color: var(--color-primary);">%20</strong> - Sosyal Etkinlikler
+              </li>
+              <li style="padding: 12px 0;">
+                <strong style="color: var(--color-primary);">%10</strong> - Operasyonel Giderler
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" style="padding-top: 40px;">
+    <div class="container">
+      <div class="section-header">
+        <h2>Neden Bağış Yapmalısınız?</h2>
+        <p>Bağışlarınız sayesinde geleceğe değer katıyoruz</p>
+      </div>
+      <div class="grid two">
+        <article class="card reveal" data-reveal-order="4">
+          <div style="font-size: 48px; margin-bottom: 16px;">🎓</div>
+          <h3>Eğitime Destek</h3>
+          <p>Bağışlarınız sayesinde öğrencilerimize burs imkanı sunuyor ve eğitim kalitesini artırıyoruz.</p>
+        </article>
+        <article class="card reveal" data-reveal-order="5">
+          <div style="font-size: 48px; margin-bottom: 16px;">🤝</div>
+          <h3>Toplumsal Fayda</h3>
+          <p>Derneğimizin sosyal sorumluluk projelerine katkıda bulunarak topluma değer katıyoruz.</p>
+        </article>
+        <article class="card reveal" data-reveal-order="6">
+          <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+          <h3>Şeffaf Yönetim</h3>
+          <p>Tüm bağışlar şeffaf bir şekilde raporlanır ve doğrudan projelere aktarılır.</p>
+        </article>
+        <article class="card reveal" data-reveal-order="7">
+          <div style="font-size: 48px; margin-bottom: 16px;">♻️</div>
+          <h3>Sürdürülebilirlik</h3>
+          <p>Aidatlarınız sayesinde derneğimizin sürdürülebilir faaliyetlerini desteklemiş olursunuz.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>

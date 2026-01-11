@@ -1,0 +1,242 @@
+<section class="page-hero">
+  <div class="container">
+    <h1>Üyelik Formu</h1>
+    <p>Derneğimize üye olmak için formu doldurarak başvurunuzu yapabilirsiniz.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="form-title">
+  <div class="container">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h2 id="form-title">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN MEZUNLARI ve YETİŞENLERİ DERNEĞİ</h2>
+        <h3>ÜYELİK FORMU</h3>
+      </div>
+
+      <form class="membership-form" method="POST" action="#" id="membershipForm">
+        <div class="form-layout">
+          <!-- Sol Kolon -->
+          <div class="form-left">
+            <!-- Üye Bilgileri -->
+            <fieldset class="form-section">
+              <legend>Üye Bilgileri</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="uyeNo">Üye No:</label>
+                  <input type="text" id="uyeNo" name="uyeNo" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row two-cols">
+                <div class="form-group">
+                  <label for="ad">Ad:</label>
+                  <input type="text" id="ad" name="ad" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="soyad">Soyadı:</label>
+                  <input type="text" id="soyad" name="soyad" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="form-row two-cols">
+                <div class="form-group">
+                  <label for="babaAdi">Baba Adı:</label>
+                  <input type="text" id="babaAdi" name="babaAdi" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="anaAdi">Ana Adı:</label>
+                  <input type="text" id="anaAdi" name="anaAdi" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row two-cols">
+                <div class="form-group">
+                  <label for="dogumTar">Doğum Tarihi:</label>
+                  <input type="date" id="dogumTar" name="dogumTar" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="dogumYeri">Doğum Yeri:</label>
+                  <input type="text" id="dogumYeri" name="dogumYeri" class="form-control">
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Nüfus Kayıdı -->
+            <fieldset class="form-section">
+              <legend>Nüfus Kayıdı</legend>
+              
+              <div class="form-row four-cols">
+                <div class="form-group">
+                  <label for="il">İl:</label>
+                  <input type="text" id="il" name="il" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="ilce">İlçe:</label>
+                  <input type="text" id="ilce" name="ilce" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="sayfa">Sayfa:</label>
+                  <input type="text" id="sayfa" name="sayfa" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="mahalle">Mahalle:</label>
+                  <input type="text" id="mahalle" name="mahalle" class="form-control">
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- İş Adresi -->
+            <fieldset class="form-section">
+              <legend>İş Adresi</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="isAdres">İş Adresi:</label>
+                  <textarea id="isAdres" name="isAdres" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+
+              <div class="form-row two-cols">
+                <div class="form-group">
+                  <label for="isTel">Telefon:</label>
+                  <input type="tel" id="isTel" name="isTel" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="isEmail">E-Mail:</label>
+                  <input type="email" id="isEmail" name="isEmail" class="form-control">
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Ev Adresi -->
+            <fieldset class="form-section">
+              <legend>Ev Adresi</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="evAdres">Ev Adresi:</label>
+                  <textarea id="evAdres" name="evAdres" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+
+              <div class="form-row two-cols">
+                <div class="form-group">
+                  <label for="evTel">Telefon:</label>
+                  <input type="tel" id="evTel" name="evTel" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="evEmail">E-Mail:</label>
+                  <input type="email" id="evEmail" name="evEmail" class="form-control">
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Özel Bilgiler -->
+            <fieldset class="form-section">
+              <legend>Özel Bilgiler</legend>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="oduluBildiri">Ödülü Bilgisi:</label>
+                  <textarea id="oduluBildiri" name="oduluBildiri" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="dernek">Dernek Yönetiminin Açıklaması:</label>
+                  <textarea id="dernek" name="dernek" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Sağ Kolon - Fotoğraf -->
+          <div class="form-right">
+            <div class="photo-section">
+              <div class="photo-placeholder">
+                <span>Fotoğraf</span>
+              </div>
+              <input type="file" id="fotograf" name="fotograf" accept="image/*" class="form-control" style="margin-top: 12px;">
+            </div>
+
+            <!-- İmza Alanı -->
+            <div class="signature-section">
+              <label for="imza">İmza:</label>
+              <div id="imza" class="signature-box"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Üyelik Önerileri Tablosu -->
+        <fieldset class="form-section table-section">
+          <legend>Üyelik İçin Önerenler</legend>
+          
+          <table class="form-table">
+            <thead>
+              <tr>
+                <th>Ad - Soyadı</th>
+                <th>İmzası</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" placeholder="Önerenin Adı"></td>
+                <td class="signature-cell"><div class="small-signature"></div></td>
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control" placeholder="Önerenin Adı"></td>
+                <td class="signature-cell"><div class="small-signature"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+
+        <!-- Tarihler ve Karar Tablosu -->
+        <fieldset class="form-section table-section">
+          <legend>İşlem Tarihleri ve Kararlar</legend>
+          
+          <table class="form-table">
+            <thead>
+              <tr>
+                <th>Başvuru Tarihi</th>
+                <th>Adı Tarihi</th>
+                <th>Kabul Tarihi</th>
+                <th>Karar No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="date" class="form-control"></td>
+                <td><input type="date" class="form-control"></td>
+                <td><input type="date" class="form-control"></td>
+                <td><input type="text" class="form-control" placeholder="Karar No"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-section">
+            <legend>Notlar</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="notlar">Rec. Gerekvenci ve Düzenlemeler:</label>
+                <textarea id="notlar" name="notlar" class="form-control" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Form Butonları -->
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Formu Gönder</button>
+          <button type="reset" class="btn secondary">Temizle</button>
+        </div>
+      </form>
+
+      <div class="form-info">
+        <p><strong>Not:</strong> Dernek Yönetimi'nin aklamı Derneğin yaşarının 16. maddesine göre ödütleringi halı için bakılır. Tamamlamayan idat ettikleri tüzük hükümlerine uyarında verdiğin döğü bilgiler yağşiş ödülüydüğü kabulünden arı edilmek.</p>
+      </div>
+    </div>
+  </div>
+</section>

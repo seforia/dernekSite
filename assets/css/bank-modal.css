@@ -1,0 +1,253 @@
+/* Bank Modal */
+.bank-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 300ms ease;
+}
+
+.bank-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bank-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  transition: all 300ms ease;
+}
+
+.bank-modal.open .bank-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.bank-modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 480px;
+  height: 100vh;
+  background: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);
+  box-shadow: -4px 0 32px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  padding: 0;
+  transform: translateX(100%);
+  transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2001;
+}
+
+.bank-modal.open .bank-modal-container {
+  transform: translateX(0);
+}
+
+.bank-modal-close {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--color-primary);
+  transition: all 300ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.bank-modal-close:hover {
+  background: #ffffff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bank-modal-header {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1a2f7f 100%);
+  padding: 48px 28px 32px;
+  text-align: center;
+  border-bottom: 4px solid var(--color-secondary);
+}
+
+.bank-modal-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  padding: 6px;
+}
+
+.bank-modal-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.bank-modal-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.bank-section {
+  margin: 0;
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.bank-section-title {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.bank-info {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border-left: none;
+}
+
+.bank-institution {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+  font-style: italic;
+  margin: 0 0 12px;
+}
+
+.bank-details {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.bank-details p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.bank-label {
+  font-weight: 600;
+  color: var(--color-text);
+  display: inline-block;
+  min-width: 90px;
+}
+
+.bank-iban-box {
+  background: var(--color-primary);
+  padding: 14px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bank-iban-box .bank-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  min-width: auto;
+  font-weight: 600;
+}
+
+.bank-iban {
+  font-family: 'Courier New', monospace;
+  color: #ffffff !important;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.bank-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 0;
+  padding: 28px;
+  background: rgba(30, 64, 175, 0.03);
+}
+
+.bank-btn {
+  padding: 16px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 300ms ease;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.donate-btn {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, #e5c158 100%);
+  color: #0a1420;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.donate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+  background: linear-gradient(135deg, #e5c158 0%, #f0cd6b 100%);
+}
+
+.membership-btn {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.membership-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+  background: #1a2f7f;
+}
+
+@media (max-width: 640px) {
+  .bank-modal-container {
+    max-width: 100%;
+  }
+
+  .bank-modal-header {
+    padding: 40px 20px 28px;
+  }
+
+  .bank-modal-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .bank-section {
+    padding: 20px;
+  }
+
+  .bank-actions {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+  }
+}

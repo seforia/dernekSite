@@ -1,0 +1,389 @@
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="container">
+      <h1>Burs Başvurusu</h1>
+      <p>Derneğimiz tarafından sunulan burs imkanlarından faydalanmak için lütfen formu doldurunuz.</p>
+    </div>
+  </div>
+
+  <section class="page-content">
+    <div class="container">
+      <div class="form-container">
+        <form id="scholarship-form" class="scholarship-form">
+          <fieldset>
+            <legend>Kişisel Bilgiler</legend>
+            
+            <div class="form-group">
+              <label for="name">Adı Soyadı *</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">E-posta *</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefon *</label>
+                <input type="tel" id="phone" name="phone" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="student-number">Öğrenci Numarası *</label>
+              <input type="text" id="student-number" name="student-number" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="class">Sınıf *</label>
+                <select id="class" name="class" required>
+                  <option value="">-- Seçiniz --</option>
+                  <option value="9">9. Sınıf</option>
+                  <option value="10">10. Sınıf</option>
+                  <option value="11">11. Sınıf</option>
+                  <option value="12">12. Sınıf</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="gpa">Not Ortalaması (GPA) *</label>
+                <input type="number" id="gpa" name="gpa" min="0" max="4" step="0.01" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Eğitim Durumu</legend>
+
+            <div class="form-group">
+              <label for="school">Okulunuz *</label>
+              <input type="text" id="school" name="school" required />
+            </div>
+
+            <div class="form-group">
+              <label for="achievements">Başarıları ve Ödülleri</label>
+              <textarea id="achievements" name="achievements" rows="4" placeholder="Yarışmalar, bilimsel çalışmalar, sosyal projeler vb."></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Mali Durum</legend>
+
+            <div class="form-group">
+              <label for="financial-status">Finansal Durum Açıklaması *</label>
+              <textarea id="financial-status" name="financial-status" rows="5" placeholder="Ailenizin finansal durumu, burs alma gerekçeleriniz..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="monthly-income">Aylık Aile Geliri (₺) *</label>
+              <input type="number" id="monthly-income" name="monthly-income" min="0" step="100" required />
+            </div>
+
+            <div class="form-group">
+              <label for="requested-amount">İstenen Burs Miktarı (₺) *</label>
+              <input type="number" id="requested-amount" name="requested-amount" min="0" step="100" required />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Ek Bilgiler</legend>
+
+            <div class="form-group">
+              <label for="referrer">Sizi Tavsiye Eden Kişi/Kuruluş</label>
+              <input type="text" id="referrer" name="referrer" placeholder="Opsiyonel" />
+            </div>
+
+            <div class="form-group checkbox">
+              <input type="checkbox" id="terms" name="terms" required />
+              <label for="terms">Verdiğim bilgilerin doğru olduğunu ve gizlilik politikasını kabul ediyorum. *</label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Başvuruyu Gönder</button>
+            <button type="reset" class="btn ghost">Formu Temizle</button>
+          </div>
+
+          <div id="scholarship-msg" class="form-message" role="alert"></div>
+        </form>
+
+        <div class="info-box">
+          <h3>Burs Hakkında Bilgi</h3>
+          <p><strong>Başvuru Şartları:</strong></p>
+          <ul>
+            <li>TSGL Derneğinin üyesi olmak</li>
+            <li>Akademik başarıyı gösteren belgelere sahip olmak</li>
+            <li>Mali ihtiyacı belgelemek</li>
+            <li>İyi ahlaklı olmak</li>
+          </ul>
+          <p><strong>Başvuru Takvimi:</strong></p>
+          <ul>
+            <li>Bahar Dönemi Başvuruları: Şubat - Mart</li>
+            <li>Sonuçlar: Nisan Ayı</li>
+            <li>Yaz Dönemi Başvuruları: Haziran - Temmuz</li>
+            <li>Sonuçlar: Ağustos Ayı</li>
+          </ul>
+          <p><strong>Sorularınız İçin:</strong><br>
+          <a href="mailto:burs@dernek.org">burs@dernek.org</a><br>
+          Tel: (000) 000 00 00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .page-hero {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, #faf8f5 100%);
+    padding: 96px 0 64px;
+    border-bottom: 1px solid rgba(30,64,175,0.12);
+  }
+
+  .page-hero h1 {
+    font-size: 36px;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+  }
+
+  .page-hero p {
+    font-size: 18px;
+    color: var(--color-muted);
+  }
+
+  .page-content {
+    padding: 64px 0;
+    background: var(--color-bg);
+  }
+
+  .form-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 40px;
+    max-width: 1000px;
+  }
+
+  .scholarship-form {
+    background: var(--color-surface);
+    padding: 32px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 32px;
+  }
+
+  fieldset:last-of-type {
+    margin-bottom: 0;
+  }
+
+  legend {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-secondary);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .form-group.checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .form-group.checkbox input[type="checkbox"] {
+    width: auto;
+    margin-top: 4px;
+    cursor: pointer;
+  }
+
+  .form-group.checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .form-actions .btn {
+    flex: 1;
+  }
+
+  .form-message {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: var(--radius);
+    display: none;
+  }
+
+  .form-message.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+    display: block;
+  }
+
+  .form-message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    display: block;
+  }
+
+  .info-box {
+    background: #f0fdf4;
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 2px solid var(--color-secondary);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+  }
+
+  .info-box h3 {
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  .info-box p {
+    font-size: 13px;
+    color: var(--color-text);
+    margin: 12px 0;
+  }
+
+  .info-box ul {
+    font-size: 13px;
+    color: var(--color-text);
+    margin: 12px 0;
+    padding-left: 20px;
+  }
+
+  .info-box li {
+    margin-bottom: 8px;
+  }
+
+  .info-box a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .info-box a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .form-container {
+      grid-template-columns: 1fr;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .info-box {
+      position: static;
+      margin-top: 32px;
+    }
+  }
+</style>
+
+<script>
+  const scholarshipForm = document.getElementById('scholarship-form');
+  if (scholarshipForm) {
+    scholarshipForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('scholarship-msg');
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        studentNumber: document.getElementById('student-number').value,
+        class: document.getElementById('class').value,
+        gpa: document.getElementById('gpa').value,
+        school: document.getElementById('school').value,
+        achievements: document.getElementById('achievements').value,
+        financialStatus: document.getElementById('financial-status').value,
+        monthlyIncome: document.getElementById('monthly-income').value,
+        requestedAmount: document.getElementById('requested-amount').value,
+        referrer: document.getElementById('referrer').value,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        // Burada Firebase veya başka bir servise gönderilebilir
+        console.log('Burs Başvurusu:', formData);
+        
+        msg.className = 'form-message success';
+        msg.textContent = 'Başvurunuz başarıyla alındı. En kısa sürede size geri dönüş yapacağız.';
+        scholarshipForm.reset();
+        
+        setTimeout(() => {
+          msg.className = 'form-message';
+        }, 5000);
+      } catch (error) {
+        msg.className = 'form-message error';
+        msg.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+      }
+    });
+  }
+</script>
