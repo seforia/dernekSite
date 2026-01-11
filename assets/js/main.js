@@ -62,24 +62,48 @@
   }
 
   if (mobileMenuToggle) {
+    // Force styles for mobile interaction
     mobileMenuToggle.style.touchAction = 'manipulation';
+    mobileMenuToggle.style.webkitTouchCallout = 'none';
+    mobileMenuToggle.style.userSelect = 'none';
+    mobileMenuToggle.style.cursor = 'pointer';
+    mobileMenuToggle.style.pointerEvents = 'auto';
     
-    const handleToggle = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
+    let isProcessing = false;
+    
+    const handleToggle = () => {
+      if (isProcessing) return;
+      isProcessing = true;
+      
+      console.log('Menu toggle triggered'); // Debug
       
       if (mobileMenuToggle.classList.contains('active')) {
         closeMobileMenu();
       } else {
         openMobileMenu();
       }
-      return false;
+      
+      setTimeout(() => { isProcessing = false; }, 300);
     };
     
-    mobileMenuToggle.addEventListener('click', handleToggle, true);
-    mobileMenuToggle.addEventListener('touchend', handleToggle, { passive: false, capture: true });
-    mobileMenuToggle.addEventListener('pointerup', handleToggle, { capture: true });
+    // Touch handling
+    mobileMenuToggle.addEventListener('touchstart', (e) => {
+      e.currentTarget.style.opacity = '0.7';
+    }, { passive: true });
+    
+    mobileMenuToggle.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.style.opacity = '1';
+      handleToggle();
+    }, { passive: false });
+    
+    // Click for desktop
+    mobileMenuToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleToggle();
+    }, false);
   }
 
   if (mobileOverlay) {
@@ -88,11 +112,16 @@
 
   // Close mobile menu on link click
   document.querySelectorAll('.nav-left a, .nav-right a, .nav-donation').forEach(link => {
-    link.addEventListener('click', () => {
+    link.style.touchAction = 'manipulation';
+    
+    const handleLinkClick = (e) => {
       if (window.innerWidth <= 768) {
-        closeMobileMenu();
+        setTimeout(() => closeMobileMenu(), 100);
       }
-    });
+    };
+    
+    link.addEventListener('click', handleLinkClick);
+    link.addEventListener('touchend', handleLinkClick, { passive: true });
   });
 
   const infoBtn = document.getElementById('info-btn');
