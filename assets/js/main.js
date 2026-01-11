@@ -62,48 +62,23 @@
   }
 
   if (mobileMenuToggle) {
-    // Force styles for mobile interaction
-    mobileMenuToggle.style.touchAction = 'manipulation';
-    mobileMenuToggle.style.webkitTouchCallout = 'none';
-    mobileMenuToggle.style.userSelect = 'none';
-    mobileMenuToggle.style.cursor = 'pointer';
-    mobileMenuToggle.style.pointerEvents = 'auto';
-    
-    let isProcessing = false;
-    
-    const handleToggle = () => {
-      if (isProcessing) return;
-      isProcessing = true;
+    // Basit ve garantili event handler
+    const toggleMenu = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       
-      console.log('Menu toggle triggered'); // Debug
+      console.log('Hamburger toggle clicked');
       
       if (mobileMenuToggle.classList.contains('active')) {
         closeMobileMenu();
       } else {
         openMobileMenu();
       }
-      
-      setTimeout(() => { isProcessing = false; }, 300);
     };
     
-    // Touch handling
-    mobileMenuToggle.addEventListener('touchstart', (e) => {
-      e.currentTarget.style.opacity = '0.7';
-    }, { passive: true });
-    
-    mobileMenuToggle.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.currentTarget.style.opacity = '1';
-      handleToggle();
-    }, { passive: false });
-    
-    // Click for desktop
-    mobileMenuToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      handleToggle();
-    }, false);
+    // Hem click hem touchstart ekle
+    mobileMenuToggle.addEventListener('click', toggleMenu, false);
+    mobileMenuToggle.addEventListener('touchstart', toggleMenu, { passive: false });
   }
 
   if (mobileOverlay) {
@@ -112,20 +87,25 @@
 
   // Close mobile menu on link click
   document.querySelectorAll('.nav-left a, .nav-right a, .nav-donation').forEach(link => {
+    // Touch action ekle
     link.style.touchAction = 'manipulation';
+    link.style.cursor = 'pointer';
     
-    const handleLinkClick = (e) => {
+    const handleClick = (e) => {
+      console.log('Link clicked:', e.target.textContent);
       if (window.innerWidth <= 768) {
         setTimeout(() => closeMobileMenu(), 100);
       }
     };
     
-    link.addEventListener('click', handleLinkClick);
-    link.addEventListener('touchend', handleLinkClick, { passive: true });
+    // Hem click hem touchend
+    link.addEventListener('click', handleClick, false);
+    link.addEventListener('touchend', handleClick, { passive: true });
   });
 
   const infoBtn = document.getElementById('info-btn');
   const bankInfoBtn = document.getElementById('bank-info-btn');
+  const hamburgerBtn = document.getElementById('mobile-menu-toggle'); // Düzeltme: hamburger-btn yerine mobile-menu-toggle
   const bankModal = document.getElementById('bank-modal');
   const bankModalOverlay = document.getElementById('bank-modal-overlay');
   const bankModalClose = document.getElementById('bank-modal-close');
@@ -136,7 +116,7 @@
     bankModal.classList.add('open');
     bankModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    mobileMenuToggle?.classList.remove('active');
+    if (hamburgerBtn) hamburgerBtn.classList.remove('active');
   };
 
   const closeBankModal = () => {
@@ -150,20 +130,49 @@
   }
 
   if (bankInfoBtn) {
-    bankInfoBtn.addEventListener('click', openBankModal);
+    bankInfoBtn.addEventListener('click', (e) => {
+      // Mobilde menü açıksa tıklama engelle
+      if (window.innerWidth <= 768 && mobileMenuToggle?.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Bank button blocked - menu open');
+        return;
+      }
+      openBankModal();
+    });
+  }
+
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = bankModal.classList.contains('open');
+      if (isOpen) {
+        closeBankModal();
+        hamburgerBtn.classList.remove('active');
+      } else {
+        openBankModal();
+        hamburgerBtn.classList.add('active');
+      }
+    });
   }
 
   if (bankModalClose) {
-    bankModalClose.addEventListener('click', closeBankModal);
+    bankModalClose.addEventListener('click', () => {
+      closeBankModal();
+      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+    });
   }
 
   if (bankModalOverlay) {
-    bankModalOverlay.addEventListener('click', closeBankModal);
+    bankModalOverlay.addEventListener('click', () => {
+      closeBankModal();
+      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+    });
   }
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bankModal.classList.contains('open')) {
       closeBankModal();
+      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
     }
   });
 
@@ -196,15 +205,26 @@
   dropdownToggles.forEach((trigger) => {
     trigger.setAttribute('aria-expanded', 'false');
     trigger.setAttribute('aria-haspopup', 'true');
-    trigger.addEventListener('click', (e) => {
+    trigger.style.touchAction = 'manipulation';
+    trigger.style.cursor = 'pointer';
+    
+    const handleToggle = (e) => {
       e.preventDefault();
+      e.stopPropagation();
+      
+      console.log('Dropdown toggle clicked:', trigger.textContent);
+      
       const parent = trigger.closest('.nav-dropdown');
       if (!parent) return;
       const willOpen = !parent.classList.contains('open');
       closeDropdowns();
       parent.classList.toggle('open', willOpen);
       trigger.setAttribute('aria-expanded', String(willOpen));
-    });
+    };
+    
+    // Hem click hem touch
+    trigger.addEventListener('click', handleToggle, false);
+    trigger.addEventListener('touchstart', handleToggle, { passive: false });
   });
 
   document.addEventListener('click', (e) => {
