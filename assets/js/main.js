@@ -170,7 +170,7 @@
           const footer = document.querySelector('.site-footer');
           if (footer) footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else if (href) {
-          window.location.href = href;
+          navigateTo(href);
         }
         return;
       }
@@ -261,14 +261,14 @@
   if (gotoBagis) {
     gotoBagis.addEventListener('click', () => {
       closeBankModal();
-      window.location.href = 'content/bagis/index.html';
+      navigateTo('/bagis');
     });
   }
 
   if (gotoMembership) {
     gotoMembership.addEventListener('click', () => {
       closeBankModal();
-      window.location.href = 'content/bagis/index.html';
+      navigateTo('/bagis');
     });
   }
 
@@ -416,6 +416,15 @@
   const dynamicContent = document.getElementById('dynamic-content');
   const mainContent = document.querySelector('[data-main-content]');
 
+  function getCurrentPath() {
+    if (window.location.protocol === 'file:') {
+      const h = window.location.hash.replace(/^#/, '');
+      const cleaned = h ? `/${h.replace(/^\/+/, '')}` : '/';
+      return cleaned;
+    }
+    return window.location.pathname;
+  }
+
   async function loadContent(path) {
     const route = routes[path] || routes['/'];
     document.title = route.title;
@@ -460,8 +469,14 @@
   }
 
   function navigateTo(url, section = null) {
-    window.history.pushState({}, '', url);
-    loadContent(window.location.pathname).then(() => {
+    if (window.location.protocol === 'file:') {
+      const hashUrl = `#${url.replace(/^\//, '')}`;
+      window.history.pushState({}, '', hashUrl);
+    } else {
+      window.history.pushState({}, '', url);
+    }
+
+    loadContent(getCurrentPath()).then(() => {
       if (section) {
         setTimeout(() => {
           const el = document.getElementById(section);
@@ -496,11 +511,13 @@
 
   // Tarayıcı geri/ileri butonları
   window.addEventListener('popstate', () => {
-    loadContent(window.location.pathname);
+    loadContent(getCurrentPath());
   });
 
   // İlk yükleme
-  if (window.location.pathname !== '/') {
+  if (window.location.protocol === 'file:') {
+    loadContent(getCurrentPath());
+  } else if (window.location.pathname !== '/') {
     loadContent(window.location.pathname);
   }
 
