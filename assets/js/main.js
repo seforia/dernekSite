@@ -1,111 +1,189 @@
 (function () {
+  // === PERFORMANCE THROTTLE HELPER ===
+  function throttle(func, wait) {
+    let timeout = null;
+    return function executedFunction(...args) {
+      const later = () => {
+        timeout = null;
+        func(...args);
+      };
+      if (!timeout) {
+        func(...args);
+        timeout = setTimeout(later, wait);
+      }
+    };
+  }
+
   // === HEADER SCROLL BEHAVIOR ===
   const siteHeader = document.querySelector('.site-header');
+  const scrollUpBtn = document.getElementById('scroll-up-btn');
+  
+  // Sayfa başladığında is-top class'ını ekle
+  if (siteHeader) {
+    siteHeader.classList.add('is-top');
+  }
+  
   let lastScroll = 0;
+  let scrollDirection = 'down';
   const SCROLL_THRESHOLD = 50;
+  const HIDE_SCROLL_THRESHOLD = 60;
 
   function updateHeaderState() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Sayfanın en üstündeyse is-top state'i ekle
+    // Scroll direction detection + header hide/show
+    if (currentScroll > lastScroll) {
+      // Scrolling down
+      scrollDirection = 'down';
+      if (currentScroll > HIDE_SCROLL_THRESHOLD) {
+        siteHeader?.classList.add('hide-header');
+      }
+    } else {
+      // Scrolling up
+      scrollDirection = 'up';
+      siteHeader?.classList.remove('hide-header');
+    }
+    
+    // Header state based on scroll position
     if (currentScroll === 0) {
       siteHeader?.classList.add('is-top');
       siteHeader?.classList.remove('is-scrolled');
     } else if (currentScroll > SCROLL_THRESHOLD) {
-      // Scroll threshold'ü geçtiyse is-scrolled state'i ekle
       siteHeader?.classList.remove('is-top');
       siteHeader?.classList.add('is-scrolled');
     } else {
-      // İkisini de kaldır (0-50px arası)
       siteHeader?.classList.remove('is-top');
       siteHeader?.classList.remove('is-scrolled');
     }
     
+    // Scroll-to-top button visibility (always reflect threshold)
+    if (scrollUpBtn) {
+      if (currentScroll > HIDE_SCROLL_THRESHOLD) {
+        scrollUpBtn.classList.add('visible');
+      } else {
+        scrollUpBtn.classList.remove('visible');
+      }
+    }
+    
     lastScroll = currentScroll;
+    console.log('Scroll:', currentScroll, 'Direction:', scrollDirection, 'is-top:', siteHeader?.classList.contains('is-top'), 'is-scrolled:', siteHeader?.classList.contains('is-scrolled'), 'hidden:', siteHeader?.classList.contains('hide-header'));
   }
 
   // Sayfa yüklendiğinde kontrol et
   updateHeaderState();
 
-  // Scroll olayında kontrol et
-  window.addEventListener('scroll', updateHeaderState, { passive: true });
+  // Scroll olayında kontrol et - throttled
+  const throttledScroll = throttle(updateHeaderState, 100);
+  window.addEventListener('scroll', throttledScroll, { passive: true });
 
-  // === MOBILE MENU TOGGLE ===
+  // === MOBILE MENU (REWRITTEN SIMPLE VERSION) ===
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
   const navLeft = document.querySelector('.nav-left');
   const navRight = document.querySelector('.nav-right');
   let mobileOverlay = document.querySelector('.mobile-nav-overlay');
 
-  // Create overlay if it doesn't exist
+  // Ensure overlay exists
   if (!mobileOverlay && mobileMenuToggle) {
     mobileOverlay = document.createElement('div');
     mobileOverlay.className = 'mobile-nav-overlay';
     document.body.appendChild(mobileOverlay);
   }
 
-  function openMobileMenu() {
+  const openMobileMenu = () => {
     mobileMenuToggle?.classList.add('active');
     navLeft?.classList.add('mobile-active');
-    navRight?.classList.add('mobile-active');
     mobileOverlay?.classList.add('active');
     mobileMenuToggle?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-  }
+  };
 
-  function closeMobileMenu() {
+  const closeMobileMenu = () => {
     mobileMenuToggle?.classList.remove('active');
     navLeft?.classList.remove('mobile-active');
     navRight?.classList.remove('mobile-active');
     mobileOverlay?.classList.remove('active');
     mobileMenuToggle?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-  }
+  };
 
   if (mobileMenuToggle) {
-    // Basit ve garantili event handler
     const toggleMenu = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      console.log('Hamburger toggle clicked');
-      
       if (mobileMenuToggle.classList.contains('active')) {
         closeMobileMenu();
       } else {
         openMobileMenu();
       }
     };
-    
-    // Hem click hem touchstart ekle
     mobileMenuToggle.addEventListener('click', toggleMenu, false);
     mobileMenuToggle.addEventListener('touchstart', toggleMenu, { passive: false });
   }
 
   if (mobileOverlay) {
     mobileOverlay.addEventListener('click', closeMobileMenu);
+    mobileOverlay.addEventListener('touchstart', (e) => { e.preventDefault(); closeMobileMenu(); }, { passive: false });
   }
 
-  // Close mobile menu on link click
-  document.querySelectorAll('.nav-left a, .nav-right a, .nav-donation').forEach(link => {
-    // Touch action ekle
+  // === MOBILE DROPDOWN TOGGLE (SIMPLE) ===
+  const dropdownToggle = document.querySelector('.nav-left .nav-dropdown > a');
+  const navSubmenu = document.querySelector('.nav-left .nav-submenu');
+  const navDropdown = document.querySelector('.nav-left .nav-dropdown');
+
+  if (dropdownToggle && navDropdown && navSubmenu) {
+    const toggleDropdown = (e) => {
+      if (window.innerWidth > 768) return; // only mobile
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = navDropdown.classList.contains('open');
+      navDropdown.classList.toggle('open', !isOpen);
+      navSubmenu.style.display = !isOpen ? 'grid' : 'none';
+    };
+    dropdownToggle.addEventListener('click', toggleDropdown, false);
+    dropdownToggle.addEventListener('touchstart', toggleDropdown, { passive: false });
+  }
+
+  // === MOBILE NAV LINK CLICKS (SIMPLE NAVIGATE) ===
+  document.querySelectorAll('.nav-left a').forEach(link => {
     link.style.touchAction = 'manipulation';
     link.style.cursor = 'pointer';
-    
+    link.style.pointerEvents = 'auto';
+
     const handleClick = (e) => {
-      console.log('Link clicked:', e.target.textContent);
+      // Skip dropdown toggle itself; handled above
+      if (link === dropdownToggle && window.innerWidth <= 768) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+
       if (window.innerWidth <= 768) {
-        setTimeout(() => closeMobileMenu(), 100);
+        const href = link.getAttribute('href') || '';
+        const isFooterScroll = href.startsWith('#footer') || link.classList.contains('scroll-to-footer');
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        closeMobileMenu();
+
+        if (isFooterScroll) {
+          const footer = document.querySelector('.site-footer');
+          if (footer) footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (href) {
+          window.location.href = href;
+        }
+        return;
       }
     };
-    
-    // Hem click hem touchend
+
     link.addEventListener('click', handleClick, false);
-    link.addEventListener('touchend', handleClick, { passive: true });
+    link.addEventListener('touchstart', handleClick, { passive: false });
   });
 
+  // === BANK INFO MODAL ===
   const infoBtn = document.getElementById('info-btn');
   const bankInfoBtn = document.getElementById('bank-info-btn');
-  const hamburgerBtn = document.getElementById('mobile-menu-toggle'); // Düzeltme: hamburger-btn yerine mobile-menu-toggle
+  const hamburgerBtn = document.getElementById('mobile-menu-toggle');
   const bankModal = document.getElementById('bank-modal');
   const bankModalOverlay = document.getElementById('bank-modal-overlay');
   const bankModalClose = document.getElementById('bank-modal-close');
@@ -142,17 +220,21 @@
     });
   }
 
-  if (hamburgerBtn) {
-    hamburgerBtn.addEventListener('click', () => {
-      const isOpen = bankModal.classList.contains('open');
-      if (isOpen) {
-        closeBankModal();
-        hamburgerBtn.classList.remove('active');
-      } else {
-        openBankModal();
-        hamburgerBtn.classList.add('active');
-      }
+  // Mobil banka butonu için event listener
+  const bankInfoBtnMobile = document.getElementById('bank-info-btn-mobile');
+  if (bankInfoBtnMobile) {
+    bankInfoBtnMobile.addEventListener('click', () => {
+      closeMobileMenu(); // Önce menüyü kapat
+      setTimeout(() => {
+        openBankModal(); // Sonra modal aç
+      }, 300);
     });
+  }
+
+  if (hamburgerBtn) {
+    // Hamburger düğmesinin event'i zaten mobileMenuToggle'de tanımlı
+    // Burada bank modal açma kodu olmasın
+    // Hamburger butonuna event listener eklemeyin
   }
 
   if (bankModalClose) {
@@ -202,6 +284,9 @@
     });
   };
 
+  // Desktop-only dropdown handler (768px+ screens)
+  const isDesktop = () => window.innerWidth > 768;
+  
   dropdownToggles.forEach((trigger) => {
     trigger.setAttribute('aria-expanded', 'false');
     trigger.setAttribute('aria-haspopup', 'true');
@@ -209,6 +294,9 @@
     trigger.style.cursor = 'pointer';
     
     const handleToggle = (e) => {
+      // Only handle on desktop
+      if (!isDesktop()) return;
+      
       e.preventDefault();
       e.stopPropagation();
       
@@ -228,6 +316,7 @@
   });
 
   document.addEventListener('click', (e) => {
+    if (!isDesktop()) return;
     if (e.target.closest('.nav-dropdown')) return;
     closeDropdowns();
   });
@@ -1118,6 +1207,17 @@
       }
     }, 500);
   });
+
+  // === SCROLL TO TOP BUTTON ===
+  if (scrollUpBtn) {
+    scrollUpBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
 
 })();
 

@@ -87,7 +87,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
   animation: fadeInDown 600ms ease-out; 
   transition: all 0.4s ease; 
-  padding: 12px 0;
+  padding: 8px 0;
   overflow: visible;
   will-change: padding;
   margin: 0 auto;
@@ -100,30 +100,31 @@
   background: rgba(255,255,255,0.95); 
   border-bottom-color: transparent;
   box-shadow: 0 1px 4px rgba(0,0,0,0.02); 
-  padding: 40px 0 20px 0;
+  padding: 20px 0 12px 0;
 }
 
 .site-header.is-scrolled { 
   background: rgba(255,255,255,0.98); 
   border-bottom-color: rgba(212,175,55,0.2); 
   box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-  padding: 14px 0;
+  padding: 8px 0;
 }
 
 .nav-wrap { 
-  /* Dropdown konumlanabilsin diye relative - logo merkez column'da */
+  /* Grid layout: left menu | center logo | right menu */
   position: relative; 
   display: grid;
-  grid-template-columns: minmax(auto, 1fr) 280px minmax(auto, 1fr);
+  grid-template-columns: 1fr auto 1fr;
   align-items: center; 
-  gap: 32px; 
-  min-height: 56px;
-  padding: 0 32px;
+  gap: 8px; 
+  padding: 0 24px;
+  min-height: auto;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   box-sizing: border-box;
   overflow: visible;
-  justify-items: start;
+  margin: 0 auto;
+  justify-items: center;
 }
 
 .mobile-menu-toggle {
@@ -164,8 +165,13 @@
 .left-nav { flex-shrink: 0; }
 .right-nav { flex-shrink: 0; }
 
-.left-nav ul { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: nowrap; align-items: center; }
-.right-nav ul { display: flex; gap: 16px; justify-content: flex-end; flex-wrap: nowrap; align-items: center; }
+.left-nav ul { display: flex; gap: 32px; justify-content: flex-start; flex-wrap: nowrap; align-items: center; }
+.right-nav ul { display: flex; gap: 32px; justify-content: flex-end; flex-wrap: nowrap; align-items: center; }
+/* Subtle horizontal shifts for desktop navs */
+@media (min-width: 769px) {
+  .nav-left { transform: translateX(14px); }
+  .nav-right { transform: translateX(-14px); }
+}
 
 .nav-home { 
   color: var(--color-primary); 
@@ -185,22 +191,24 @@
   background: rgba(126, 182, 226, 0.08); 
 }
 
-/* Logo Güncellemeleri - Profesyonel Taşma Sistemi - TAM ORTADA */
+/* Logo Güncellemeleri - Scroll Animasyonlu */
 .floating-brand { 
-  position: fixed; 
-  left: 50%;
-  top: 46px; /* biraz daha yukarı alındı */
-  transform: translateX(-50%);
+  position: relative; 
+  left: auto;
+  top: auto;
+  transform: none;
   display: flex; 
   align-items: center; 
   justify-content: center;
   gap: 0; 
   color: var(--color-primary); 
   font-weight: 700; 
-  transition: all 0.4s ease; 
-  z-index: 40;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+  z-index: 100;
   flex-shrink: 0;
   pointer-events: auto;
+  grid-column: 2;
+  justify-self: center;
 }
 
 .floating-brand a {
@@ -209,41 +217,41 @@
 }
 
 .floating-brand:hover { 
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .site-header.is-top .floating-brand {
-  top: 56px;
+  top: auto;
+  margin-bottom: 4px;
 }
 
 .site-header.is-top .brand-logo { 
-  width: 120px; 
-  height: 120px; 
+  width: 120px !important; 
+  height: 120px !important; 
   border-radius: 14px; 
-  transition: all 0.4s ease; 
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
   filter: drop-shadow(0 10px 28px rgba(30,64,175,0.28)); 
-  transform: translateY(25%);
+  transform: none;
 }
 
-
 .site-header.is-scrolled .floating-brand {
-  top: 12px;
+  top: auto;
 }
 
 .site-header.is-scrolled .brand-logo { 
-  width: 50px; 
-  height: 50px; 
+  width: 50px !important; 
+  height: 50px !important; 
   border-radius: 8px; 
-  transition: all 0.4s ease; 
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
   filter: drop-shadow(0 3px 10px rgba(30,64,175,0.18)); 
   transform: translateY(0);
 }
 
 .brand-logo { 
-  width: 80px; 
-  height: 80px; 
+  width: 80px !important; 
+  height: 80px !important; 
   border-radius: 8px; 
-  transition: all 0.4s ease; 
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
   filter: drop-shadow(0 3px 10px rgba(30,64,175,0.18)); 
 }
 
@@ -295,7 +303,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.35);
   z-index: 9998;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -303,10 +311,7 @@
 }
 
 .mobile-nav-overlay.active {
-  pointer-events: auto;
-}
-
-.mobile-nav-overlay.active {
+  pointer-events: none !important;
   opacity: 1;
 }
 
@@ -325,6 +330,22 @@
 }
 
 @media (max-width: 768px) {
+  /* Ensure mobile menu sits above overlay and is fully clickable */
+  .nav-left { z-index: 100000 !important; pointer-events: auto !important; }
+  .mobile-nav-overlay { z-index: 9998 !important; }
+  /* Mobile header padding */
+  .site-header {
+    padding: 8px 0 !important;
+  }
+
+  .site-header.is-top {
+    padding: 12px 0 8px 0 !important;
+  }
+
+  .site-header.is-scrolled {
+    padding: 6px 0 !important;
+  }
+
   /* Announcement bar mobil düzeni */
   .announcement-bar {
     padding: 10px 0;
@@ -388,6 +409,9 @@
     pointer-events: auto !important;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
   .nav-wrap {
@@ -403,55 +427,317 @@
     overflow-x: hidden;
   }
 
-  /* Desktop menüleri gizle */
+  /* Mobile nav-left: tam ekran menu */
   .nav-left {
     position: fixed;
     top: 0;
     left: -100%;
-    width: min(85vw, 320px);
-    max-width: 320px;
+    width: 100% !important;
+    max-width: none !important;
     height: 100vh;
     height: 100dvh;
-    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: 80px 16px 24px 16px;
-    gap: 8px;
-    z-index: 10000 !important;
-    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 70px 0 30px 0;
+    gap: 0;
+    z-index: 100001 !important;
+    transition: left 0.3s ease;
+    box-shadow: none;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
-    margin-left: 0;
-    -webkit-overflow-scrolling: touch;
+    display: flex !important;
     pointer-events: auto !important;
+  }
+
+  .nav-left.mobile-active {
+    left: 0 !important;
+  }
+
+  /* Mobile nav-left linkler */
+  .nav-left ul {
+    width: 100%;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  .nav-left li {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+  }
+
+  .nav-left li a {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 1;
+    background: none;
+    border: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(255,255,255,0.2);
+  }
+
+  .nav-left li a:hover,
+  .nav-left li a:active,
+  .nav-left li a:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    outline: none;
+  }
+
+  /* Dropdown mobile */
+  .nav-left .nav-submenu {
+    position: static !important;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+    width: 100%;
+    margin: 0;
+    display: none;
+    padding: 0;
+    grid-template-columns: 1fr;
+    list-style: none;
+  }
+
+  .nav-left .nav-submenu a {
+    display: block;
+    width: 100%;
+    padding: 16px 24px 16px 40px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 1;
+    background: none;
+    border: none;
+    margin: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(255,255,255,0.2);
+  }
+
+  .nav-left .nav-submenu a:hover,
+  .nav-left .nav-submenu a:active,
+  .nav-left .nav-submenu a:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    outline: none;
+  }
+
+  .nav-left .nav-dropdown.open .nav-submenu {
+    display: grid !important;
+  }
+
+  .nav-left .nav-submenu li {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-left li.show-submenu .nav-submenu {
     display: flex !important;
   }
 
+  .nav-left .nav-submenu li a {
+    padding-left: 40px;
+    font-size: 15px;
+  }
+
+  /* Mobile bağış butonları */
+  .nav-donation-mobile,
+  .bank-info-btn-mobile {
+    width: calc(100% - 48px);
+    margin: 12px 24px;
+    padding: 14px 20px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    transition: all 0.3s ease;
+  }
+
+  .nav-donation-mobile {
+    background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+    color: white;
+    border: none;
+  }
+
+  .bank-info-btn-mobile {
+    background: white;
+    color: #1a237e;
+    border: 2px solid #1a237e;
+  }
+
   .nav-right {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: min(85vw, 320px);
-    max-width: 320px;
-    height: 100vh;
-    height: 100dvh;
-    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: 80px 16px 24px 16px;
-    gap: 8px;
-    z-index: 10000 !important;
-    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
-    margin-left: 0;
-    -webkit-overflow-scrolling: touch;
-    pointer-events: auto !important;
-    display: flex !important;
+    display: none !important;
+  }
+
+  @media (min-width: 769px) {
+    .nav-wrap {
+      display: grid !important;
+      grid-template-columns: 1fr auto 1fr !important;
+      align-items: center !important;
+      gap: 24px !important;
+      padding: 0 24px !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+    }
+
+    .nav-left {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      width: auto !important;
+      max-width: none !important;
+      height: auto !important;
+      background: transparent !important;
+      flex-direction: row !important;
+      padding: 0 !important;
+      gap: 16px !important;
+      z-index: 50 !important;
+      transition: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
+      grid-column: 1;
+    }
+
+    .nav-left ul {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 4px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+    }
+
+    .nav-left li {
+      position: relative !important;
+    }
+
+    .nav-left li a {
+      color: var(--color-text) !important;
+      padding: 10px 14px !important;
+      font-size: 15px !important;
+      font-weight: 500 !important;
+      background: transparent !important;
+    }
+
+    .nav-left li a:hover {
+      background: rgba(30, 64, 175, 0.08) !important;
+    }
+
+    .floating-brand {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      transform: none !important;
+      grid-column: 2 !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      z-index: 100 !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    /* Desktop logo scroll animasyonu - aktif */
+    .brand-logo {
+      width: 80px !important;
+      height: 80px !important;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .site-header.is-top .brand-logo {
+      width: 120px !important;
+      height: 120px !important;
+      transform: translateY(25%) !important;
+      filter: drop-shadow(0 10px 28px rgba(30,64,175,0.28)) !important;
+    }
+
+    .site-header.is-scrolled .brand-logo {
+      width: 50px !important;
+      height: 50px !important;
+      transform: translateY(0) !important;
+      filter: drop-shadow(0 3px 10px rgba(30,64,175,0.18)) !important;
+    }
+
+    .site-header.is-top .floating-brand {
+      top: auto !important;
+    }
+
+    .site-header.is-scrolled .floating-brand {
+      top: auto !important;
+    }
+
+    .nav-right {
+      display: flex !important;
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      width: auto !important;
+      max-width: none !important;
+      height: auto !important;
+      background: transparent !important;
+      flex-direction: row !important;
+      padding: 0 !important;
+      gap: 16px !important;
+      z-index: 50 !important;
+      transition: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      align-items: center;
+      justify-content: flex-end;
+      grid-column: 3;
+    }
+
+    .nav-right .site-nav ul {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 4px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+    }
+
+    .nav-right .site-nav li a {
+      padding: 10px 14px !important;
+      font-size: 15px !important;
+      font-weight: 500 !important;
+    }
+
+    /* Desktop'ta mobil butonları gizle */
+    .nav-donation-mobile,
+    .bank-info-btn-mobile {
+      display: none !important;
+    }
+
+    /* Hamburger menüyü desktop'ta gizle */
+    .mobile-menu-toggle {
+      display: none !important;
+    }
   }
 
   .nav-left.mobile-active {
@@ -463,7 +749,10 @@
   }
 
   .mobile-nav-overlay {
-    display: block;
+    display: none !important;
+  }
+  .mobile-nav-overlay.active {
+    display: block !important;
   }
 
   .left-nav,
@@ -550,23 +839,43 @@
     display: grid !important;
   }
 
-  .nav-donation {
+  .nav-donation-mobile {
     width: calc(100% - 40px);
     min-width: auto;
     padding: 14px 20px;
     justify-content: center;
     margin: 16px 20px 8px 20px;
     min-height: 52px;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 12px;
+    background: #1e40af;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+    pointer-events: auto;
   }
 
-  .bank-info-btn {
+  .bank-info-btn-mobile {
     width: calc(100% - 40px);
     height: 52px;
     border-radius: 10px;
+    border: none;
     justify-content: center;
     gap: 12px;
     margin: 8px 20px;
     min-height: 52px;
+    background: #1e40af;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+    pointer-events: auto;
+    display: flex !important;
+    align-items: center;
   }
 
   .bank-info-icon {
@@ -581,30 +890,42 @@
     color: var(--color-primary);
   }
 
-  /* Logo mobilde merkez */
+  /* Logo mobilde header içinde responsive */
   .floating-brand {
-    position: relative;
-    transform: none;
-    order: 0;
-    z-index: 101;
-    display: flex;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 100 !important;
+    display: flex !important;
     justify-content: center;
     align-items: center;
-    padding: 8px 0;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    height: auto;
+    grid-column: auto !important;
   }
 
-  .site-header.is-top .floating-brand,
-  .site-header.is-scrolled .floating-brand {
-    top: auto;
-  }
-
-  .brand-logo,
-  .site-header.is-top .brand-logo,
-  .site-header.is-scrolled .brand-logo {
-    width: 56px;
-    height: 56px;
-    margin-top: 0 !important;
+  /* Mobile logo sizing - no fixed positions, responsive to header state */
+  .brand-logo {
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 !important;
     transform: none !important;
+    border-radius: 12px !important;
+    filter: drop-shadow(0 4px 12px rgba(30,64,175,0.25)) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .site-header.is-top .brand-logo {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .site-header.is-scrolled .brand-logo {
+    width: 50px !important;
+    height: 50px !important;
   }
 }
 
@@ -628,37 +949,34 @@
   background: rgba(126, 182, 226, 0.06);
 }
 
-/* Dropdown Menü - Yatay Modern Grid Layout */
-.nav-dropdown { position: static; }
+/* Dropdown Menü - Desktop */
+.nav-dropdown { position: relative; }
 
 .nav-submenu { 
   position: absolute; 
-  top: 100%; 
-  left: 0; 
-  right: 0;
-  width: 100%;
-  min-width: unset; 
-  max-width: none; 
+  top: calc(100% + 8px); 
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: max-content;
+  min-width: 200px; 
+  max-width: 600px; 
   background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%); 
   border: 1px solid rgba(126, 182, 226, 0.25); 
-  border-radius: 0 0 12px 12px;
+  border-radius: 12px;
   box-shadow: 0 12px 40px rgba(30, 64, 175, 0.18); 
-  padding: 16px; 
+  padding: 12px; 
   opacity: 0; 
   visibility: hidden; 
-  transform: translateY(0); 
   transition: all 280ms cubic-bezier(0.4, 0, 0.2, 1); 
   z-index: 120; 
   pointer-events: none; 
-  margin-top: 8px;
   backdrop-filter: blur(4px);
-  border-top: none;
 }
 
 .nav-dropdown.open .nav-submenu { 
   opacity: 1; 
   visibility: visible; 
-  transform: translate(-50%, 0); 
+  transform: translateX(-50%) translateY(0); 
   pointer-events: auto; 
 }
 
@@ -858,6 +1176,10 @@
   line-height: 1;
 }
 
+.mobile-nav-overlay.active {
+  pointer-events: auto;
+}
+
 /* Bank Info Button */
 .bank-info-btn {
   width: 40px;
@@ -1003,3 +1325,75 @@
     min-width: 120px;
   }
 }
+
+/* === HIDE ON SCROLL === */
+.site-header.hide-header {
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+
+/* === SCROLL TO TOP BUTTON === */
+.scroll-up-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8) translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.scroll-up-btn:hover {
+  background: linear-gradient(135deg, #e6c547 0%, #d4af37 100%);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  transform: scale(1) translateY(0);
+}
+
+.scroll-up-btn:active {
+  transform: scale(0.95) translateY(0);
+}
+
+.scroll-up-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-up-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.5;
+}
+
+/* Mobile responsiveness for scroll-up button */
+@media (max-width: 768px) {
+  .scroll-up-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+  
+  .scroll-up-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+

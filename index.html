@@ -12,9 +12,12 @@
   <link rel="icon" href="assets/img/tsglLogo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/styles-updates.css" />
+  <style>
+    img { loading: lazy; }
+  </style>
 </head>
 <body>
   <!-- Modern Page Loader -->
@@ -529,6 +532,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <!-- Project Firebase config (fill in credentials) -->
+  <!-- Scroll to Top Button -->
+  <button id="scroll-up-btn" class="scroll-up-btn" aria-label="Yukarı Kaydır" title="Yukarı Kaydır">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <script src="assets/js/firebase-config.js"></script>
   <!-- Auth module -->
   <script src="assets/js/auth.js"></script>
