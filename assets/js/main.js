@@ -183,6 +183,7 @@
   // === BANK INFO MODAL ===
   const infoBtn = document.getElementById('info-btn');
   const bankInfoBtn = document.getElementById('bank-info-btn');
+  const bankInfoBtnMobile = document.getElementById('bank-info-btn-mobile');
   const hamburgerBtn = document.getElementById('mobile-menu-toggle');
   const bankModal = document.getElementById('bank-modal');
   const bankModalOverlay = document.getElementById('bank-modal-overlay');
@@ -207,29 +208,18 @@
     infoBtn.addEventListener('click', openBankModal);
   }
 
-  if (bankInfoBtn) {
-    bankInfoBtn.addEventListener('click', (e) => {
-      // Mobilde menü açıksa tıklama engelle
-      if (window.innerWidth <= 768 && mobileMenuToggle?.classList.contains('active')) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Bank button blocked - menu open');
-        return;
-      }
+  const attachBankBtn = (btn) => {
+    if (!btn) return;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (window.innerWidth <= 768) closeMobileMenu();
       openBankModal();
     });
-  }
+  };
 
-  // Mobil banka butonu için event listener
-  const bankInfoBtnMobile = document.getElementById('bank-info-btn-mobile');
-  if (bankInfoBtnMobile) {
-    bankInfoBtnMobile.addEventListener('click', () => {
-      closeMobileMenu(); // Önce menüyü kapat
-      setTimeout(() => {
-        openBankModal(); // Sonra modal aç
-      }, 300);
-    });
-  }
+  attachBankBtn(bankInfoBtn);
+  attachBankBtn(bankInfoBtnMobile);
 
   if (hamburgerBtn) {
     // Hamburger düğmesinin event'i zaten mobileMenuToggle'de tanımlı
@@ -436,7 +426,10 @@
       // Ana sayfayı göster
       if (homeContent) homeContent.style.display = 'block';
       if (dynamicContent) dynamicContent.style.display = 'none';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll to top immediately
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       hideLoader();
     } else {
       // Dinamik içerik yükle
@@ -455,7 +448,10 @@
         initRevealAnimations();
         // Sayfaya özel bağlayıcılar
         bindPageHandlers(path);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll to top immediately
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
         hideLoader();
       } catch (error) {
         console.error('Error loading content:', error);
@@ -1141,17 +1137,47 @@
 
   }
 
+  // === MOBILE BANK BUTTON HANDLER ===
+  const mobileBankBtn = document.getElementById('bank-info-btn-mobile');
+  if (mobileBankBtn) {
+    mobileBankBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const bankModal = document.getElementById('bank-modal');
+      if (bankModal) {
+        bankModal.classList.add('active');
+        bankModal.setAttribute('aria-hidden', 'false');
+        // Menüyü kapat
+        const navLeft = document.querySelector('.nav-left');
+        if (navLeft && navLeft.classList.contains('mobile-active')) {
+          navLeft.classList.remove('mobile-active');
+          hamburger.classList.remove('active');
+        }
+      }
+    });
+  }
+
   // === SCROLL TO TOP BUTTON ===
   const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
   
   if (scrollToTopBtn) {
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
+    // Scroll event listener for showing/hiding button
+    const handleScrollToTopVisibility = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > 300) {
         scrollToTopBtn.classList.add('show');
+        scrollToTopBtn.style.display = 'flex';
       } else {
         scrollToTopBtn.classList.remove('show');
+        scrollToTopBtn.style.display = 'none';
       }
-    });
+    };
+
+    // Initial check
+    handleScrollToTopVisibility();
+    
+    // Add scroll listener
+    window.addEventListener('scroll', handleScrollToTopVisibility, { passive: true });
 
     scrollToTopBtn.addEventListener('click', function() {
       window.scrollTo({

@@ -1,0 +1,74 @@
+/* Hero Slider Mobile Fixes */
+
+/* Mobile: Increase hero button z-index and ensure pointer-events */
+@media (max-width: 768px) {
+  .hero-controls {
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-btn {
+    width: 45px !important;
+    height: 45px !important;
+    pointer-events: auto !important;
+    z-index: 999999 !important;
+    position: absolute !important;
+    top: 45% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(255,255,255,0.95) !important;
+    border: 2px solid var(--color-secondary) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--color-primary) !important;
+  }
+
+  .hero-btn.prev {
+    left: 10px !important;
+  }
+
+  .hero-btn.next {
+    right: 10px !important;
+  }
+
+  .hero-slider {
+    z-index: 0 !important;
+  }
+
+  .hero-text {
+    z-index: 2 !important;
+  }
+
+  .hero-dots {
+    z-index: 100009 !important;
+    pointer-events: auto !important;
+  }
+
+  .hero-dot {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+  }
+}
+
+/* Desktop: Keep original layout */
+@media (min-width: 769px) {
+  .hero-btn {
+    z-index: 5;
+    pointer-events: auto;
+  }
+
+  .hero-controls {
+    z-index: 4;
+  }
+}

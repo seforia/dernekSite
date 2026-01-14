@@ -167,12 +167,6 @@
 
 .left-nav ul { display: flex; gap: 32px; justify-content: flex-start; flex-wrap: nowrap; align-items: center; }
 .right-nav ul { display: flex; gap: 32px; justify-content: flex-end; flex-wrap: nowrap; align-items: center; }
-/* Subtle horizontal shifts for desktop navs */
-@media (min-width: 769px) {
-  .nav-left { transform: translateX(14px); }
-  .nav-right { transform: translateX(-14px); }
-}
-
 .nav-home { 
   color: var(--color-primary); 
   font-weight: 700; 
@@ -284,7 +278,7 @@
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+  transform: translateY(11px) rotate(45deg);
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
@@ -292,7 +286,7 @@
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+  transform: translateY(-11px) rotate(-45deg);
 }
 
 /* Mobile Navigation Overlay */
@@ -390,14 +384,14 @@
     height: 24px;
   }
 
-  /* Hamburger menüyü göster */
+  /* Hamburger menüyü göster - UNIFIED WITH CLOSE */
   .mobile-menu-toggle {
     display: flex !important;
     position: fixed;
     top: 12px;
     right: 12px;
     left: auto;
-    z-index: 99999 !important;
+    z-index: 100005 !important;
     width: 52px;
     height: 52px;
     padding: 10px;
@@ -412,6 +406,60 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+  }
+
+  /* Mobile header whitespace - daha geniş */
+  .site-header {
+    padding: 12px 0 !important;
+    min-height: 80px;
+  }
+
+  .site-header.is-top {
+    padding: 20px 0 16px 0 !important;
+    min-height: 96px;
+  }
+
+  .site-header.is-scrolled {
+    padding: 10px 0 !important;
+    min-height: 70px;
+  }
+
+  /* Logo mobilde daha görünür */
+  .floating-brand {
+    position: fixed !important;
+    top: 14px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 100001 !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    height: auto;
+    grid-column: auto !important;
+  }
+
+  /* Mobile logo sizing - daha belirgin */
+  .brand-logo {
+    width: 64px !important;
+    height: 64px !important;
+    margin: 0 !important;
+    transform: none !important;
+    border-radius: 12px !important;
+    filter: drop-shadow(0 5px 15px rgba(30,64,175,0.3)) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .site-header.is-top .brand-logo {
+    width: 74px !important;
+    height: 74px !important;
+  }
+
+  .site-header.is-scrolled .brand-logo {
+    width: 52px !important;
+    height: 52px !important;
   }
 
   .nav-wrap {
@@ -433,12 +481,12 @@
     top: 0;
     left: -100%;
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100vw !important;
     height: 100vh;
     height: 100dvh;
     background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
     flex-direction: column;
-    padding: 70px 0 30px 0;
+    padding: 70px 20px 30px 20px;
     gap: 0;
     z-index: 100001 !important;
     transition: left 0.3s ease;
@@ -447,6 +495,7 @@
     overflow-x: hidden;
     display: flex !important;
     pointer-events: auto !important;
+    box-sizing: border-box;
   }
 
   .nav-left.mobile-active {
@@ -474,7 +523,7 @@
   .nav-left li a {
     display: block;
     width: 100%;
-    padding: 16px 24px;
+    padding: 16px 20px;
     color: #ffffff;
     text-decoration: none;
     font-size: 16px;
@@ -489,6 +538,7 @@
     border: none;
     user-select: none;
     -webkit-user-select: none;
+    box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(255,255,255,0.2);
   }
 
@@ -499,30 +549,45 @@
     outline: none;
   }
 
-  /* Dropdown mobile */
+  /* Dropdown mobile - modern minimal design - VERTICAL LAYOUT */
   .nav-left .nav-submenu {
     position: static !important;
-    background: rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
     box-shadow: none;
-    width: 100%;
-    margin: 0;
-    display: none;
-    padding: 0;
-    grid-template-columns: 1fr;
+    width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+    margin: 0 10px !important;
+    display: none !important;
+    padding: 12px 0;
+    grid-template-columns: 1fr !important;
     list-style: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .nav-dropdown.open .nav-submenu {
+    display: grid !important;
   }
 
   .nav-left .nav-submenu a {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 16px 24px 16px 40px;
+    padding: 12px 16px;
     color: #ffffff;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 400;
-    transition: background-color 0.2s ease;
+    transition: all 0.25s ease;
     cursor: pointer;
     pointer-events: auto !important;
+    margin: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     touch-action: manipulation;
     position: relative;
     z-index: 1;
@@ -534,11 +599,46 @@
     -webkit-tap-highlight-color: rgba(255,255,255,0.2);
   }
 
+  .nav-left .nav-submenu a::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 12px;
+    flex-shrink: 0;
+    width: 12px;
+    text-align: center;
+    opacity: 0.7;
+    transition: all 0.25s ease;
+  }
+
   .nav-left .nav-submenu a:hover,
   .nav-left .nav-submenu a:active,
   .nav-left .nav-submenu a:focus {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.12);
     outline: none;
+  }
+
+  .nav-left .nav-submenu a:hover::before {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+
+  .nav-left .nav-submenu a:hover::before {
+    color: var(--color-secondary);
+  }
+
+  .nav-left .nav-submenu span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-left .nav-submenu span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .nav-left .nav-dropdown.open .nav-submenu {
@@ -564,16 +664,20 @@
   /* Mobile bağış butonları */
   .nav-donation-mobile,
   .bank-info-btn-mobile {
-    width: calc(100% - 48px);
-    margin: 12px 24px;
-    padding: 14px 20px;
+    width: 90%;
+    max-width: 320px;
+    margin: 12px auto;
+    padding: 14px 16px;
     text-align: center;
     border-radius: 8px;
     font-weight: 600;
+    font-size: 15px;
     cursor: pointer;
     pointer-events: auto;
     touch-action: manipulation;
     transition: all 0.3s ease;
+    display: block;
+    box-sizing: border-box;
   }
 
   .nav-donation-mobile {
@@ -590,6 +694,48 @@
 
   .nav-right {
     display: none !important;
+  }
+
+  /* Mobile menu close button wrapper */
+  .mobile-menu-close-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0 30px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-close {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 28px;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .mobile-menu-close:active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(0.95);
+  }
+
+  .mobile-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 0 24px 0;
+    align-items: center;
+    justify-content: center;
   }
 
   @media (min-width: 769px) {
@@ -892,11 +1038,11 @@
 
   /* Logo mobilde header içinde responsive */
   .floating-brand {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    z-index: 100 !important;
+    position: fixed !important;
+    top: 12px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 100002 !important;
     display: flex !important;
     justify-content: center;
     align-items: center;
@@ -1041,57 +1187,87 @@
 }
 
 
-/* Scroll to Top Button - Ok Düzeltilmiş */
+/* Scroll to Top Button */
 .scroll-to-top-btn {
   position: fixed;
   bottom: 30px;
   right: 30px;
   width: 52px;
   height: 52px;
-  background: linear-gradient(135deg, #1e40af 0%, #1a2f7f 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   color: white;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-  z-index: 999;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(12px) scale(0.96);
+  z-index: 999999;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   padding: 0;
 }
 
-.scroll-to-top-btn::before {
-  content: '↑';
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
+.scroll-to-top-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
 }
 
 .scroll-to-top-btn.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
+  display: flex !important;
 }
 
 .scroll-to-top-btn:hover {
-  background: linear-gradient(135deg, #d4af37 0%, #e5c158 100%);
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
-  color: #1e40af;
+  background: linear-gradient(135deg, #e6c547 0%, #d4af37 100%);
+  transform: scale(1.1);
 }
 
-.scroll-to-top-btn:active {
-  transform: translateY(-2px) scale(1.02);
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* Mobilde göritünen ek butonlar */
+.mobile-only {
+  display: flex !important;
+}
+
+.mobile-only-divider {
+  display: flex !important;
+}
+
+.nav-mobile-action,
+.nav-mobile-bank {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+  transition: background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.nav-mobile-action:hover,
+.nav-mobile-bank:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 769px) {
+  .mobile-only,
+  .mobile-only-divider {
+    display: none !important;
+  }
 }
 
 
@@ -1330,6 +1506,13 @@
 .site-header.hide-header {
   transform: translateY(-100%);
   transition: transform 0.4s ease;
+}
+
+@media (max-width: 768px) {
+  /* Don't hide header on mobile */
+  .site-header.hide-header {
+    transform: none;
+  }
 }
 
 /* === SCROLL TO TOP BUTTON === */
