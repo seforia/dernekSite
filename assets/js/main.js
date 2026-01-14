@@ -420,12 +420,10 @@
   const mainContent = document.querySelector('[data-main-content]');
 
   function getCurrentPath() {
-    if (window.location.protocol === 'file:') {
-      const h = window.location.hash.replace(/^#/, '');
-      const cleaned = h ? `/${h.replace(/^\/+/, '')}` : '/';
-      return cleaned;
-    }
-    return window.location.pathname;
+    // GitHub Pages ve file: protokolü için hash-based routing kullan
+    const h = window.location.hash.replace(/^#/, '');
+    const cleaned = h ? `/${h.replace(/^\/+/, '').replace(/\.html$/, '')}` : '/';
+    return cleaned;
   }
 
   async function loadContent(path) {
@@ -478,12 +476,10 @@
   }
 
   function navigateTo(url, section = null) {
-    if (window.location.protocol === 'file:') {
-      const hashUrl = `#${url.replace(/^\//, '')}`;
-      window.history.pushState({}, '', hashUrl);
-    } else {
-      window.history.pushState({}, '', url);
-    }
+    // GitHub Pages için hash-based routing kullan
+    const cleanUrl = url.replace(/\.html$/, '');
+    const hashUrl = `#${cleanUrl.replace(/^\//, '')}`;
+    window.location.hash = hashUrl;
 
     loadContent(getCurrentPath()).then(() => {
       if (section) {
@@ -518,17 +514,17 @@
     }
   });
 
-  // Tarayıcı geri/ileri butonları
+  // Tarayıcı geri/ileri butonları ve hash değişiklikleri
   window.addEventListener('popstate', () => {
     loadContent(getCurrentPath());
   });
 
-  // İlk yükleme
-  if (window.location.protocol === 'file:') {
+  window.addEventListener('hashchange', () => {
     loadContent(getCurrentPath());
-  } else if (window.location.pathname !== '/') {
-    loadContent(window.location.pathname);
-  }
+  });
+
+  // İlk yükleme - hash-based routing kullan
+  loadContent(getCurrentPath());
 
   // add subtle shadow to header on scroll
   const header = document.querySelector('.site-header');
