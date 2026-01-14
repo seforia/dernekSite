@@ -388,18 +388,31 @@
   const routes = {
     '/': { title: 'TSGL Derneği', content: 'home' },
     '/hakkimizda': { title: 'Hakkımızda | TSGL Derneği', content: 'content/hakkimizda/index.html' },
+    '/hakkimizda.html': { title: 'Hakkımızda | TSGL Derneği', content: 'content/hakkimizda/index.html' },
     '/galeri': { title: 'Galeri | TSGL Derneği', content: 'content/galeri/index.html' },
+    '/galeri.html': { title: 'Galeri | TSGL Derneği', content: 'content/galeri/index.html' },
     '/duyurular': { title: 'Duyurular | TSGL Derneği', content: 'content/duyurular/index.html' },
+    '/duyurular.html': { title: 'Duyurular | TSGL Derneği', content: 'content/duyurular/index.html' },
     '/kayit': { title: 'Üye Kayıt | TSGL Derneği', content: 'content/kayit/index.html' },
+    '/kayit.html': { title: 'Üye Kayıt | TSGL Derneği', content: 'content/kayit/index.html' },
     '/giris': { title: 'Üye Girişi | TSGL Derneği', content: 'content/giris/index.html' },
+    '/giris.html': { title: 'Üye Girişi | TSGL Derneği', content: 'content/giris/index.html' },
     '/burs': { title: 'Burs Başvurusu | TSGL Derneği', content: 'content/burs/index.html' },
+    '/burs.html': { title: 'Burs Başvurusu | TSGL Derneği', content: 'content/burs/index.html' },
     '/tuzuk': { title: 'Dernek Tüzüğü | TSGL Derneği', content: 'content/tuzuk/index.html' },
+    '/tuzuk.html': { title: 'Dernek Tüzüğü | TSGL Derneği', content: 'content/tuzuk/index.html' },
     '/bagis': { title: 'Bağış & Aidat | TSGL Derneği', content: 'content/bagis/index.html' },
+    '/bagis.html': { title: 'Bağış & Aidat | TSGL Derneği', content: 'content/bagis/index.html' },
     '/yonetim-kurulu': { title: 'Yönetim Kurulu | TSGL Derneği', content: 'content/yonetim-kurulu/index.html' },
+    '/yonetim-kurulu.html': { title: 'Yönetim Kurulu | TSGL Derneği', content: 'content/yonetim-kurulu/index.html' },
     '/iletisim': { title: 'İletişim | TSGL Derneği', content: 'content/iletisim/index.html' },
+    '/iletisim.html': { title: 'İletişim | TSGL Derneği', content: 'content/iletisim/index.html' },
     '/okulumuz': { title: 'Okulumuz | TSGL Derneği', content: 'content/okulumuz/index.html' },
+    '/okulumuz.html': { title: 'Okulumuz | TSGL Derneği', content: 'content/okulumuz/index.html' },
     '/faaliyetler': { title: 'Faaliyetlerimiz | TSGL Derneği', content: 'content/faaliyetler/index.html' },
-    '/basari-oykuleri': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' }
+    '/faaliyetler.html': { title: 'Faaliyetlerimiz | TSGL Derneği', content: 'content/faaliyetler/index.html' },
+    '/basari-oykuleri': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' },
+    '/basari-oykuleri.html': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' }
   };
 
   const homeContent = document.getElementById('home-content');
