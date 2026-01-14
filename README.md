@@ -2,6 +2,30 @@
 
 Tevfik Sırrı Gür Lisesi Derneği için hazırlanmış, modern ve profesyonel web sitesi. Single Page Application (SPA) mantığıyla çalışan, erişilebilir ve responsive tasarım.
 
+## 🚀 GitHub Pages Deployment
+
+**ÖNEMLİ:** Bu site GitHub Pages'te yayınlanmak üzere yapılandırılmıştır.
+
+### Kurulum Adımları:
+
+1. **`.nojekyll` dosyası** repo kökünde bulunmalı (✅ Mevcut)
+2. GitHub repo → **Settings** → **Pages**
+3. **Source**: "Deploy from a branch"
+4. **Branch**: `main` (veya `master`) 
+5. **Folder**: `/ (root)`
+6. **Save** → 1-2 dakika bekle
+
+### URL Formatı:
+
+- Ana sayfa: `https://kullaniciadi.github.io/dernekSite/`
+- Sayfalar: `https://kullaniciadi.github.io/dernekSite/#/hakkimizda`
+
+**Hash-based routing** kullanılır: `#/hakkimizda`, `#/galeri`, vb.
+
+Detaylı bilgi için: [DEPLOYMENT.md](DEPLOYMENT.md)
+
+---
+
 ## 🎯 Özellikler
 
 ### ✨ Modern Özellikler

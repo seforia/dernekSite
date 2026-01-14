@@ -385,6 +385,14 @@
   }
 
   // === SPA ROUTING SYSTEM ===
+  // Base path desteği - GitHub Pages proje sayfaları için
+  const getBasePath = () => {
+    const pathname = window.location.pathname;
+    // Eğer /dernekSite/ gibi bir path varsa onu kullan
+    const match = pathname.match(/^(\/[^\/]+\/)/);
+    return match ? match[1] : '/';
+  };
+
   const routes = {
     '/': { title: 'TSGL Derneği', content: 'home' },
     '/hakkimizda': { title: 'Hakkımızda | TSGL Derneği', content: 'content/hakkimizda/index.html' },
