@@ -420,7 +420,15 @@
     '/faaliyetler': { title: 'Faaliyetlerimiz | TSGL Derneği', content: 'content/faaliyetler/index.html' },
     '/faaliyetler.html': { title: 'Faaliyetlerimiz | TSGL Derneği', content: 'content/faaliyetler/index.html' },
     '/basari-oykuleri': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' },
-    '/basari-oykuleri.html': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' }
+    '/basari-oykuleri.html': { title: 'Başarı Öykülerimiz | TSGL Derneği', content: 'content/basari-oykuleri/index.html' },
+    '/etkinlikler': { title: 'Etkinlikler | TSGL Derneği', content: 'content/etkinlikler/index.html' },
+    '/etkinlikler.html': { title: 'Etkinlikler | TSGL Derneği', content: 'content/etkinlikler/index.html' },
+    '/anketler': { title: 'Anketler | TSGL Derneği', content: 'content/anketler/index.html' },
+    '/anketler.html': { title: 'Anketler | TSGL Derneği', content: 'content/anketler/index.html' },
+    '/anma': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
+    '/anma.html': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
+    '/toplanti-tutanaklari': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' },
+    '/toplanti-tutanaklari.html': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' }
   };
 
   const homeContent = document.getElementById('home-content');

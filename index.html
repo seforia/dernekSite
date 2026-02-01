@@ -62,45 +62,58 @@
       <div class="nav-left">
         <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
           <ul>
-            <li><a href="/" data-link class="nav-home">Ana Sayfa</a></li>
+            <!-- Derneğimiz Dropdown -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">Derneğimiz</a>
               <div class="nav-submenu mega-menu">
-                <a href="/hakkimizda.html" data-link>
-                  <span class="submenu-icon">•</span>
+                <a href="/hakkimizda.html" data-link class="submenu-card">
+                  <span class="submenu-icon">ℹ️</span>
                   <span>Hakkımızda</span>
                 </a>
-                <a href="/tuzuk.html" data-link>
-                  <span class="submenu-icon">•</span>
+                <a href="/tuzuk.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📜</span>
                   <span>Dernek Tüzüğü</span>
                 </a>
-                <a href="/yonetim-kurulu.html" data-link>
-                  <span class="submenu-icon">•</span>
-                  <span>Yönetim Kurulu</span>
-                </a>
-                <a href="/okulumuz.html" data-link>
-                  <span class="submenu-icon">•</span>
-                  <span>Okulumuz</span>
-                </a>
-                <a href="/faaliyetler.html" data-link>
-                  <span class="submenu-icon">•</span>
+                <a href="/faaliyetler.html" data-link class="submenu-card">
+                  <span class="submenu-icon">🎯</span>
                   <span>Faaliyetlerimiz</span>
                 </a>
-                <a href="/basari-oykuleri.html" data-link>
-                  <span class="submenu-icon">•</span>
-                  <span>Başarı Öykülerimiz</span>
+                <a href="/yonetim-kurulu.html" data-link class="submenu-card">
+                  <span class="submenu-icon">👥</span>
+                  <span>Yönetim Kurulu</span>
                 </a>
-                <a href="#footer" class="scroll-to-footer">
-                  <span class="submenu-icon">•</span>
-                  <span>İletişim</span>
+                <a href="/toplanti-tutanaklari.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📑</span>
+                  <span>Toplantı Tutanakları</span>
                 </a>
               </div>
             </li>
-            <li><a href="/galeri.html" data-link class="nav-gallery">Galeri</a></li>
+
+            <!-- Okulumuz (direkt link) -->
+            <li><a href="/okulumuz.html" data-link>Okulumuz</a></li>
+
+            <!-- İz Bırakanlar Dropdown -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">İz Bırakanlar</a>
+              <div class="nav-submenu mega-menu">
+                <a href="/anma.html" data-link class="submenu-card">
+                  <span class="submenu-icon">🕯️</span>
+                  <span>Anma Köşesi</span>
+                </a>
+                <a href="/basari-oykuleri.html" data-link class="submenu-card">
+                  <span class="submenu-icon">🏆</span>
+                  <span>Başarı Öykülerimiz</span>
+                </a>
+                <a href="/galeri.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📸</span>
+                  <span>Galeri</span>
+                </a>
+              </div>
+            </li>
+
             <!-- Mobilde görünen ek butonlar -->
             <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.2);"></li>
             <li class="mobile-only"><a href="/burs.html" data-link class="nav-mobile-action">Burs Başvurusu</a></li>
-            <li class="mobile-only"><a href="/duyurular.html" data-link class="nav-mobile-action">Duyurular</a></li>
             <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">🎁 Bağış & Aidat</a></li>
             <li class="mobile-only"><button id="bank-info-btn-mobile" class="nav-mobile-bank" aria-label="Banka Bilgileri" title="Banka Bilgileri">🏦 Banka Bilgileri</button></li>
           </ul>
@@ -113,7 +126,25 @@
         <nav class="site-nav right-nav" role="navigation" aria-label="Sağ menü">
           <ul>
             <li><a href="/burs.html" data-link>Burs Başvurusu</a></li>
-            <li><a href="/duyurular" data-link>Duyurular</a></li>
+            
+            <!-- Duyurular Dropdown -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">Duyurular</a>
+              <div class="nav-submenu mega-menu">
+                <a href="/duyurular.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📢</span>
+                  <span>Duyurular</span>
+                </a>
+                <a href="/etkinlikler.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📅</span>
+                  <span>Etkinlikler</span>
+                </a>
+                <a href="/anketler.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📋</span>
+                  <span>Anketler</span>
+                </a>
+              </div>
+            </li>
           </ul>
         </nav>
         <a href="/bagis.html" data-link class="nav-donation">
@@ -268,25 +299,63 @@
       </div>
     </section>
 
+    <section class="section alt reveal" id="ozet-bantlari" aria-labelledby="ozet-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="ozet-title">Kısa Özet</h2>
+          <p>Ana hedeflerimizin hızlı özeti.</p>
+        </div>
+        <div class="grid three">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>Mezun Dayanışması</h3>
+            <p>Mezun ve öğrenciler arasında dayanışma.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>Proje ve Burslar</h3>
+            <p>Projeler, burslar ve dijital üye kaydı.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="3">
+            <h3>Atatürk İlkeleri</h3>
+            <p>Atatürk ilke ve inkılaplarına bağlılık.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="4">
+            <h3>Kurumsal Dil</h3>
+            <p>Tarafsız, kurumsal ve kapsayıcı dil.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="5">
+            <h3>Tarih Bilinci</h3>
+            <p>Milli tarih bilinci ve eğitim desteği.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="6">
+            <h3>Çevre ve Gönüllülük</h3>
+            <p>Çevre, hayvan hakları ve gönüllülük.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section alt reveal" id="yonetim" aria-labelledby="board-title">
       <div class="container">
         <div class="section-header">
-          <h2 id="board-title">Yönetim</h2>
-          <p>Yönetim kurulu ve görev dağılımı.</p>
+          <h2 id="board-title">Yönetim Kurulu</h2>
+          <p>Derneğimizin yönetim kadrosu ve görev dağılımı hakkında detaylı bilgi Yönetim Kurulu sayfasında yer almaktadır.</p>
         </div>
         <div class="grid three">
-          <article class="card person reveal" data-reveal-order="1">
-            <h3>Başkan</h3>
-            <p>İsim Soyisim</p>
+          <article class="card reveal" data-reveal-order="1">
+            <h3>👥 Yönetim Kurulu Üyeleri</h3>
+            <p>Tüm üyelerin özgeçmiş, mezuniyet yılı ve meslek bilgileri.</p>
           </article>
-          <article class="card person reveal" data-reveal-order="2">
-            <h3>Başkan Yardımcısı</h3>
-            <p>İsim Soyisim</p>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>🔍 Denetim Kurulu</h3>
+            <p>Mali ve idari işleri denetleyen kurulumuz.</p>
           </article>
-          <article class="card person reveal" data-reveal-order="3">
-            <h3>Genel Sekreter</h3>
-            <p>İsim Soyisim</p>
+          <article class="card reveal" data-reveal-order="3">
+            <h3>⚡ Görevler</h3>
+            <p>Kurulumuzun temel görev ve sorumlulukları.</p>
           </article>
+        </div>
+        <div style="text-align: center; margin-top: 32px;">
+          <a href="/yonetim-kurulu" data-link class="btn primary">Yönetim Kurulu Detayları</a>
         </div>
       </div>
     </section>
@@ -294,21 +363,21 @@
     <section class="section reveal" id="faaliyetler" aria-labelledby="activities-title">
       <div class="container">
         <div class="section-header">
-          <h2 id="activities-title">Faaliyetler</h2>
-          <p>Etkinlikler, projeler ve iş birlikleri.</p>
+          <h2 id="activities-title">Faaliyetler ve Projeler</h2>
+          <p>Derneğimizin sosyal sorumluluk ve dayanışma çalışmaları.</p>
         </div>
         <div class="grid three">
           <article class="card reveal" data-reveal-order="1">
-            <h3>Seminerler</h3>
-            <p>Toplumsal konularda düzenli seminerler.</p>
+            <h3>📚 Eğitim ve Burs</h3>
+            <p>Öğrencilere burs desteği ve eğitim kaynakları sağlamak.</p>
           </article>
           <article class="card reveal" data-reveal-order="2">
-            <h3>Gönüllülük</h3>
-            <p>Yerel projelerde gönüllü çalışmalar.</p>
+            <h3>🤝 Sosyal Projeler</h3>
+            <p>Toplumsal kalkınmaya katkı sağlayan saha çalışmaları.</p>
           </article>
           <article class="card reveal" data-reveal-order="3">
-            <h3>Bağış Kampanyaları</h3>
-            <p>Şeffaf ve hedef odaklı bağış süreçleri.</p>
+            <h3>🎯 Gönüllülük</h3>
+            <p>Yerel ve ulusal düzeyde gönüllü katılım ve destek.</p>
           </article>
         </div>
       </div>
@@ -318,16 +387,18 @@
       <div class="container">
         <div class="section-header">
           <h2 id="news-title">Duyurular</h2>
-          <p>Güncel haberler ve açıklamalar.</p>
+          <p>Güncel haberler, açıklamalar ve etkinlikler.</p>
         </div>
-        <div class="list">
-          <article class="list-item reveal" data-reveal-order="1">
-            <h3>Yeni Etkinlik</h3>
-            <p>Tarih ve yer bilgisi ile duyuru metni.</p>
+        <div class="grid two">
+          <article class="card reveal" data-reveal-order="1">
+            <h3>📢 Güncel Duyurular</h3>
+            <p>Derneğin son duyuruları, etkinlikleri ve önemli bilgilendirmeler.</p>
+            <a href="/duyurular" data-link class="btn secondary" style="margin-top: 12px;">Tüm Duyurular</a>
           </article>
-          <article class="list-item reveal" data-reveal-order="2">
-            <h3>Basın Açıklaması</h3>
-            <p>Resmi açıklama metni.</p>
+          <article class="card reveal" data-reveal-order="2">
+            <h3>📅 Yaklaşan Etkinlikler</h3>
+            <p>Derneğin organize ettiği seminer, konferans ve sosyal etkinlikler.</p>
+            <a href="/duyurular" data-link class="btn secondary" style="margin-top: 12px;">Detaylar</a>
           </article>
         </div>
       </div>
@@ -336,37 +407,38 @@
     <section class="section reveal" id="uyelik" aria-labelledby="membership-title">
       <div class="container">
         <div class="section-header">
-          <h2 id="membership-title">Üyelik</h2>
-          <p>Üyelik koşulları ve başvuru süreci.</p>
+          <h2 id="membership-title">Üyelik ve Katılım</h2>
+          <p>Derneğin bir üyesi olmak için gereken şartlar ve başvuru süreci.</p>
         </div>
-        <div class="grid two">
+        <div class="grid three">
           <article class="card reveal" data-reveal-order="1">
-            <h3>Koşullar</h3>
-            <p>Dernek tüzüğüne uygunluk ve gerekli belgeler.</p>
+            <h3>TSGL Mezunu</h3>
+            <p>Tevfik Sırrı Gür Lisesi mezunu olmak.</p>
           </article>
           <article class="card reveal" data-reveal-order="2">
-            <h3>Başvuru</h3>
-            <p><a class="btn secondary" href="#">Formu indir</a></p>
+            <h3>Tüzük Kabulü</h3>
+            <p>Dernek tüzüğünü kabul etmek.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="3">
+            <h3>Belge Başvurusu</h3>
+            <p>Gerekli belgelerle başvuru yapmak.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="4">
+            <h3>Yıllık Aidat</h3>
+            <p>Yıllık aidat taksitleri.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="5">
+            <h3>Bağış Seçenekleri</h3>
+            <p>Bağış ve destek seçenekleri.</p>
+          </article>
+          <article class="card reveal" data-reveal-order="6">
+            <h3>Mali Şeffaflık</h3>
+            <p>Şeffaf mali yönetim.</p>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section alt reveal" id="iletisim" aria-labelledby="contact-title">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="contact-title">İletişim</h2>
-          <p>Adres ve iletişim kanalları.</p>
-        </div>
-        <div class="grid two">
-          <article class="card reveal" data-reveal-order="1">
-            <h3>Adres</h3>
-            <p>Mahalle, Cadde, No, İl/İlçe</p>
-          </article>
-          <article class="card reveal" data-reveal-order="2">
-            <h3>İletişim</h3>
-            <p>E-posta: info@dernek.org<br />Telefon: (000) 000 00 00</p>
-          </article>
+        <div style="text-align: center; margin-top: 32px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          <a href="/kayit" data-link class="btn primary">Üye Ol</a>
+          <a href="/bagis" data-link class="btn primary">Aidat Öde</a>
         </div>
       </div>
     </section>

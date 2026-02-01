@@ -1,0 +1,127 @@
+<section class="page-hero reveal" aria-labelledby="page-title">
+  <div class="container">
+    <h1 id="page-title">Anketler</h1>
+    <p>Derneğimizin gelişimi için sizin görüşleriniz değerlidir.</p>
+  </div>
+</section>
+
+<section class="section reveal" id="anketler" aria-labelledby="surveys-title">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="surveys-title">Aktif Anketler</h2>
+      <p>Lütfen aşağıdaki anketleri doldurarak bize yardımcı olun.</p>
+    </div>
+
+    <!-- Anket 1 -->
+    <div class="card reveal" style="padding: 32px; margin-bottom: 24px;">
+      <h3 style="padding: 0; margin-bottom: 12px; color: var(--color-primary);">📋 Dernek Faaliyetlerine Memnuniyetiniz</h3>
+      <p style="padding: 0; color: var(--color-muted); margin-bottom: 24px;">
+        Derneğin sosyal, kültürel ve eğitim faaliyetleri hakkındaki görüşlerinizi öğrenmek istiyoruz.
+      </p>
+      
+      <form style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+          <label style="display: block; margin-bottom: 12px;"><strong>Derneğin genel faaliyetleri hakkında ne düşünüyorsunuz?</strong></label>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="radio" name="activities" value="excellent" required>
+              <span>Çok İyi</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="radio" name="activities" value="good" required>
+              <span>İyi</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="radio" name="activities" value="neutral" required>
+              <span>Orta</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="radio" name="activities" value="poor" required>
+              <span>Zayıf</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+          <label style="display: block; margin-bottom: 12px;"><strong>Hangi tür faaliyetlere daha fazla yer verilmesini istiyorsunuz?</strong></label>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="categories" value="education">
+              <span>Eğitim</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="categories" value="social">
+              <span>Sosyal</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="categories" value="cultural">
+              <span>Kültürel</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="categories" value="sports">
+              <span>Spor</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+          <label style="display: block; margin-bottom: 8px;"><strong>Önerileriniz:</strong></label>
+          <textarea name="suggestions" rows="4" placeholder="Derneğin geliştirilmesi için önerilerinizi buraya yazınız..." style="width: 100%; padding: 12px; border: 2px solid var(--color-secondary); border-radius: 6px; font-family: var(--font-sans); font-size: 14px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn primary" style="align-self: flex-start;">✓ Anketi Gönder</button>
+      </form>
+    </div>
+
+    <!-- Anket 2 -->
+    <div class="card reveal" style="padding: 32px; margin-bottom: 24px;">
+      <h3 style="padding: 0; margin-bottom: 12px; color: var(--color-primary);">🎯 Etkinlik Katılım Tercihleri</h3>
+      <p style="padding: 0; color: var(--color-muted); margin-bottom: 24px;">
+        Hangi tür etkinliklere katılmak istersiniz? Bu bilgiler bizim gelecek etkinliklerimizi planlamada yardımcı olacak.
+      </p>
+      
+      <form style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+          <label style="display: block; margin-bottom: 12px;"><strong>Hangi etkinliklere katılmayı tercih edersiniz?</strong></label>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="events" value="seminars">
+              <span>📚 Seminer ve Konferanslar</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="events" value="sports">
+              <span>⚽ Spor Etkinlikleri</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="events" value="cultural">
+              <span>🎭 Kültürel Etkinlikler</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="events" value="social">
+              <span>🤝 Sosyal Buluşmalar</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn primary" style="align-self: flex-start;">✓ Anketi Gönder</button>
+      </form>
+    </div>
+
+    <div class="card reveal" style="padding: 32px; background: linear-gradient(135deg, rgba(30,64,175,0.08) 0%, rgba(212,175,55,0.08) 100%); border-left: 4px solid var(--color-secondary);">
+      <h3 style="padding: 0; margin-bottom: 12px; color: var(--color-primary);">✓ Anketlere Katılmanız İçin Teşekkür Ederiz</h3>
+      <p style="padding: 0; margin: 0;">
+        Geri bildirimleriniz derneğimizin geliştirilmesinde çok önemlidir. Sizin önerileriniz sayesinde daha iyi bir dernek yapısı oluşturabiliriz.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Anketi gönderdiğiniz için teşekkür ederiz. Görüşleriniz bizim için çok değerlidir.');
+      this.reset();
+    });
+  });
+</script>
