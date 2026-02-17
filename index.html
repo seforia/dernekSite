@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <meta http-equiv="Content-Language" content="tr" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1f5fbf" />
-  <title>Tevfik Sırrı Gür Lisesi Derneği</title>
-  <meta name="description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <meta name="theme-color" content="#153aa1" />
+  <meta name="keywords" content="Tevfik Sırrı Gür Lisesi, Derneği, Ders öğretimi, Eğitim" />
+  <title>Tevfik Sırrı Gür Lisesi Derneği - Resmi Web Sitesi</title>
+  <meta name="description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen. Mezunlarını bir araya getiren derneğin resmi sitesi." />
+  <meta name="author" content="TSGL Derneği" />
+  <meta name="copyright" content="TSGL Derneği" />
+  <meta name="rating" content="General" />
+  <meta name="revisit-after" content="10 days" />
+  <meta name="robots" content="index, follow" />
+  <meta http-equiv="pragma" content="no-cache" />
   <meta property="og:title" content="Tevfik Sırrı Gür Lisesi Derneği" />
   <meta property="og:description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen" />
   <meta property="og:type" content="website" />
@@ -13,12 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="assets/css/styles.css" />
-  <link rel="stylesheet" href="assets/css/styles-updates.css" />
-  <link rel="stylesheet" href="assets/css/hero-mobile.css" />
-  <style>
-    img { loading: lazy; }
-  </style>
+  <link rel="stylesheet" href="assets/css/styles.css?v=6.0" />
+  <link rel="stylesheet" href="assets/css/styles-updates.css?v=6.0" />
+  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=6.0" />
 </head>
 <body>
   <!-- Modern Page Loader -->
@@ -35,6 +41,15 @@
 
   <!-- Confetti Container -->
   <div class="confetti-container" id="confetti-container"></div>
+
+  <!-- Scroll Progress & Scroll to Top -->
+  <div class="scroll-progress-container" id="scrollProgress">
+    <svg class="scroll-progress-ring" width="56" height="56">
+      <circle class="scroll-progress-bg" cx="28" cy="28" r="26"></circle>
+      <circle class="scroll-progress-bar" cx="28" cy="28" r="26" id="progressCircle"></circle>
+    </svg>
+    <button class="scroll-to-top-button" aria-label="Yukarı çık" title="Başa dön"></button>
+  </div>
 
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
@@ -65,7 +80,7 @@
             <!-- Derneğimiz Dropdown -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">Derneğimiz</a>
-              <div class="nav-submenu mega-menu">
+              <div class="nav-submenu mega-menu submenu-2col">
                 <a href="/hakkimizda.html" data-link class="submenu-card">
                   <span class="submenu-icon">ℹ️</span>
                   <span>Hakkımızda</span>
@@ -95,7 +110,7 @@
             <!-- İz Bırakanlar Dropdown -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">İz Bırakanlar</a>
-              <div class="nav-submenu mega-menu">
+              <div class="nav-submenu mega-menu submenu-1col">
                 <a href="/anma.html" data-link class="submenu-card">
                   <span class="submenu-icon">🕯️</span>
                   <span>Anma Köşesi</span>
@@ -130,7 +145,7 @@
             <!-- Duyurular Dropdown -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">Duyurular</a>
-              <div class="nav-submenu mega-menu">
+              <div class="nav-submenu mega-menu submenu-1col">
                 <a href="/duyurular.html" data-link class="submenu-card">
                   <span class="submenu-icon">📢</span>
                   <span>Duyurular</span>
@@ -265,6 +280,27 @@
       </div>
     </section>
 
+    <!-- Announcement Carousel Section -->
+    <section class="announcement-carousel" role="region" aria-label="Duyurular">
+      <div class="announcement-carousel-inner">
+        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+          <h2 class="announcement-carousel-title" style="margin-bottom: 0;">📢 DUYURULAR</h2>
+        </div>
+        <div class="announcement-carousel-content">
+          <div class="announcement-carousel-scroll">
+            <div class="announcement-carousel-item">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
+            <div class="announcement-carousel-item">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
+            <div class="announcement-carousel-item">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
+            <div class="announcement-carousel-item">AİDAT VE BAĞIŞ HESABI - Ziraat Bankası: TR88 0001 0007 9550 2865 9050 05</div>
+            <div class="announcement-carousel-item">BURS KULÜBÜ HESABI - Ziraat Bankası: TR64 0001 0007 9550 2865 9050 49</div>
+            <div class="announcement-carousel-item">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
+            <div class="announcement-carousel-item">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
+            <div class="announcement-carousel-item">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section reveal" id="kabatas-lisesi" aria-labelledby="kabatas-title">
       <div class="container">
         <div class="content-with-image">
@@ -295,6 +331,72 @@
             <h3>Vizyon</h3>
             <p>Sürdürülebilir projelerle kalıcı değerler üretmek.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="tarihi-anlar" aria-labelledby="history-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="history-title">Tarihi Anlar | Başarı Hikayeleri</h2>
+          <p>Okulumuzun ve Derneğimizin değerli anıları ve başarı öykülerimiz</p>
+        </div>
+        <div class="history-showcase">
+          <article class="history-main-card reveal" data-reveal-order="1">
+            <div class="history-main-media">
+              <img src="assets/img/tsglFoto2.png" alt="Okulumuzun tarihi binası" loading="lazy" />
+              <span class="history-badge">Okulumuzdan</span>
+            </div>
+            <div class="history-main-body">
+              <h3>Milli Bayramlar ve TSG Geleneği</h3>
+              <p>Mersin'de stadyum yokken 19 Mayis ve diger milli bayramlar okul bahcesinde kutlanirdi. Bu gelenek, okulun kulturunu ve birlik ruhunu bugune tasiyor.</p>
+              <time datetime="2025-07-17">Temmuz 17, 2025</time>
+              <a class="btn primary" href="/okulumuz" data-link style="margin-top: 16px;">Devamini Oku</a>
+            </div>
+          </article>
+
+          <div class="history-side-list reveal" data-reveal-order="2">
+            <a class="history-side-card" href="/etkinlikler" data-link>
+              <img src="assets/img/tsglFoto3.png" alt="Yonetim kurulu bulusmasi" loading="lazy" />
+              <div class="history-side-body">
+                <h4>Yonetim Kurulu Pilav Gununde</h4>
+                <time datetime="2025-07-17">Temmuz 17, 2025</time>
+                <p>Mezunlar bulusmasinda dayanisma ve geleneksel etkinlik ruhu.</p>
+              </div>
+            </a>
+            <a class="history-side-card" href="/duyurular" data-link>
+              <img src="assets/img/tsglFoto.png" alt="Fizik laboratuvari yenileme" loading="lazy" />
+              <div class="history-side-body">
+                <h4>Fizik Laboratuvari Yenilendi</h4>
+                <time datetime="2025-07-17">Temmuz 17, 2025</time>
+                <p>Mezun destegiyle laboratuvar modern cihazlarla guclendirildi.</p>
+              </div>
+            </a>
+            <a class="history-side-card" href="/duyurular" data-link>
+              <img src="assets/img/anılar.jpg" alt="Okul anilari" loading="lazy" />
+              <div class="history-side-body">
+                <h4>Hepinize Iyi Tatiller</h4>
+                <time datetime="2025-07-17">Temmuz 17, 2025</time>
+                <p>Yil boyunca emek veren ogrencilerimize keyifli bir ara.</p>
+              </div>
+            </a>
+            <a class="history-side-card" href="/basari-oykuleri" data-link>
+              <img src="assets/img/tsglFoto2.png" alt="Basari hikayeleri" loading="lazy" />
+              <div class="history-side-body">
+                <h4>Mezun Basari Hikayeleri</h4>
+                <time datetime="2025-07-17">Temmuz 17, 2025</time>
+                <p>Farkli alanlarda on plana cikan mezunlarimizin oykuleri.</p>
+              </div>
+            </a>
+            <a class="history-side-card" href="/okulumuz" data-link>
+              <img src="assets/img/tsglFoto3.png" alt="Okuldan guncel haber" loading="lazy" />
+              <div class="history-side-body">
+                <h4>Okulumuzdan Guncel Haber</h4>
+                <time datetime="2025-07-17">Temmuz 17, 2025</time>
+                <p>Okulumuzda gerceklesen son gelismeler ve etkinlik ozeti.</p>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -378,27 +480,6 @@
           <article class="card reveal" data-reveal-order="3">
             <h3>🎯 Gönüllülük</h3>
             <p>Yerel ve ulusal düzeyde gönüllü katılım ve destek.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt reveal" id="duyurular" aria-labelledby="news-title">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="news-title">Duyurular</h2>
-          <p>Güncel haberler, açıklamalar ve etkinlikler.</p>
-        </div>
-        <div class="grid two">
-          <article class="card reveal" data-reveal-order="1">
-            <h3>📢 Güncel Duyurular</h3>
-            <p>Derneğin son duyuruları, etkinlikleri ve önemli bilgilendirmeler.</p>
-            <a href="/duyurular" data-link class="btn secondary" style="margin-top: 12px;">Tüm Duyurular</a>
-          </article>
-          <article class="card reveal" data-reveal-order="2">
-            <h3>📅 Yaklaşan Etkinlikler</h3>
-            <p>Derneğin organize ettiği seminer, konferans ve sosyal etkinlikler.</p>
-            <a href="/duyurular" data-link class="btn secondary" style="margin-top: 12px;">Detaylar</a>
           </article>
         </div>
       </div>
@@ -616,10 +697,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <!-- Project Firebase config (fill in credentials) -->
 
-  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/firebase-config.js?v=2.0"></script>
   <!-- Auth module -->
-  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/auth.js?v=2.0"></script>
   <!-- Main app -->
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js?v=2.0"></script>
 </body>
 </html>

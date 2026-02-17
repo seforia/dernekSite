@@ -1,4 +1,50 @@
 (function () {
+  // === ULTRA SMOOTH SCROLL HELPER ===
+  // Yavaş ve yumuşak scroll animasyonu
+  function smoothScroll(targetScrollY, duration = 1500) {
+    const startScrollY = window.scrollY || window.pageYOffset;
+    const distance = targetScrollY - startScrollY;
+    const startTime = performance.now();
+
+    // Easing function - çok yumuşak cubic easing
+    function easeInOutCubic(t) {
+      return t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      const currentScrollY = startScrollY + distance * easedProgress;
+
+      window.scrollTo(0, currentScrollY);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // === SMOOTH SCROLL FOR ANCHOR LINKS ===
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (href === '#') return;
+
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    e.preventDefault();
+    const targetTop = target.offsetTop - 80; // header offset
+    smoothScroll(targetTop, 1500); // 1.5 saniye smooth scroll
+  }, true);
+
   // === PERFORMANCE THROTTLE HELPER ===
   function throttle(func, wait) {
     let timeout = null;
@@ -17,6 +63,8 @@
   // === HEADER SCROLL BEHAVIOR ===
   const siteHeader = document.querySelector('.site-header');
   const scrollUpBtn = document.getElementById('scroll-up-btn');
+  const scrollProgress = document.getElementById('scrollProgress');
+  const progressCircle = document.getElementById('progressCircle');
   
   // Sayfa başladığında is-top class'ını ekle
   if (siteHeader) {
@@ -27,9 +75,30 @@
   let scrollDirection = 'down';
   const SCROLL_THRESHOLD = 50;
   const HIDE_SCROLL_THRESHOLD = 60;
+  const SHOW_SCROLL_TOP_THRESHOLD = 80;
 
   function updateHeaderState() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate scroll progress
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    
+    // Update progress circle (164 is circumference of circle with r=26)
+    if (progressCircle) {
+      const offset = 164 - (scrolled / 100) * 164;
+      progressCircle.style.strokeDashoffset = offset;
+    }
+    
+    // Show/hide scroll progress indicator
+    if (scrollProgress) {
+      if (currentScroll > SHOW_SCROLL_TOP_THRESHOLD) {
+        scrollProgress.classList.add('visible');
+      } else {
+        scrollProgress.classList.remove('visible');
+      }
+    }
     
     // Scroll direction detection + header hide/show
     if (currentScroll > lastScroll) {
@@ -72,9 +141,56 @@
   // Sayfa yüklendiğinde kontrol et
   updateHeaderState();
 
-  // Scroll olayında kontrol et - throttled
-  const throttledScroll = throttle(updateHeaderState, 100);
+  // Scroll olayında kontrol et - throttled (200ms için daha yumuşak scroll davranışı)
+  const throttledScroll = throttle(updateHeaderState, 200);
   window.addEventListener('scroll', throttledScroll, { passive: true });
+  
+  // Scroll to top button click handler
+  if (scrollProgress) {
+    scrollProgress.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  
+  // === SMOOTH SCROLL PAGE NAVIGATION ===
+  // Sayfalar arası soft geçişler için fade animasyonu
+  const createPageTransitionEffect = () => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pageTransitionIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes pageTransitionOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+      
+      html.page-transitioning {
+        pointer-events: none;
+      }
+      
+      main {
+        animation: pageTransitionIn 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+    `;
+    document.head.appendChild(style);
+  };
+  
+  createPageTransitionEffect();
 
   // === MOBILE MENU (REWRITTEN SIMPLE VERSION) ===
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
@@ -125,23 +241,28 @@
     mobileOverlay.addEventListener('touchstart', (e) => { e.preventDefault(); closeMobileMenu(); }, { passive: false });
   }
 
-  // === MOBILE DROPDOWN TOGGLE (SIMPLE) ===
-  const dropdownToggle = document.querySelector('.nav-left .nav-dropdown > a');
-  const navSubmenu = document.querySelector('.nav-left .nav-submenu');
-  const navDropdown = document.querySelector('.nav-left .nav-dropdown');
+  // === MOBILE DROPDOWN TOGGLE FOR ALL DROPDOWNS ===
+  const dropdownToggleLinks = document.querySelectorAll('.nav-dropdown > a');
+  
+  dropdownToggleLinks.forEach((dropdownToggle) => {
+    const navDropdown = dropdownToggle.closest('.nav-dropdown');
+    const navSubmenu = navDropdown?.querySelector('.nav-submenu');
+    
+    if (!navDropdown || !navSubmenu) return;
 
-  if (dropdownToggle && navDropdown && navSubmenu) {
     const toggleDropdown = (e) => {
       if (window.innerWidth > 768) return; // only mobile
       e.preventDefault();
       e.stopPropagation();
+      
       const isOpen = navDropdown.classList.contains('open');
       navDropdown.classList.toggle('open', !isOpen);
-      navSubmenu.style.display = !isOpen ? 'grid' : 'none';
+      navSubmenu.style.display = !isOpen ? 'flex' : 'none';
     };
+    
     dropdownToggle.addEventListener('click', toggleDropdown, false);
     dropdownToggle.addEventListener('touchstart', toggleDropdown, { passive: false });
-  }
+  });
 
   // === MOBILE NAV LINK CLICKS (SIMPLE NAVIGATE) ===
   document.querySelectorAll('.nav-left a').forEach(link => {
@@ -168,7 +289,10 @@
 
         if (isFooterScroll) {
           const footer = document.querySelector('.site-footer');
-          if (footer) footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (footer) {
+            const targetTop = footer.offsetTop - 80;
+            smoothScroll(targetTop, 1500);
+          }
         } else if (href) {
           navigateTo(href);
         }
@@ -501,7 +625,10 @@
       if (section) {
         setTimeout(() => {
           const el = document.getElementById(section);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          if (el) {
+            const targetTop = el.offsetTop - 80;
+            smoothScroll(targetTop, 1500);
+          }
         }, 100);
       }
     });
@@ -524,7 +651,8 @@
       e.preventDefault();
       const footer = document.querySelector('.site-footer');
       if (footer) {
-        footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const footerTop = footer.offsetTop - 80;
+        smoothScroll(footerTop, 1500);
       }
       closeDropdowns();
     }
@@ -1127,7 +1255,8 @@
       setTimeout(() => {
         const containerElement = paymentForm.closest('.payment-form-container');
         if (containerElement) {
-          containerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const containerTop = containerElement.offsetTop - 80;
+          smoothScroll(containerTop, 1500);
         }
       }, 150);
     });
@@ -1191,10 +1320,8 @@
       
       if (scrollTop > 300) {
         scrollToTopBtn.classList.add('show');
-        scrollToTopBtn.style.display = 'flex';
       } else {
         scrollToTopBtn.classList.remove('show');
-        scrollToTopBtn.style.display = 'none';
       }
     };
 
@@ -1280,10 +1407,7 @@
   if (scrollUpBtn) {
     scrollUpBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      smoothScroll(0, 1500); // 1.5 saniye içinde yukarı scroll
     });
   }
 

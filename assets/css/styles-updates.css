@@ -198,7 +198,7 @@
   color: var(--color-primary); 
   font-weight: 700; 
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-  z-index: 100;
+  z-index: 1100;
   flex-shrink: 0;
   pointer-events: auto;
   grid-column: 2;
@@ -995,7 +995,7 @@
     display: inline-flex !important;
     align-items: center;
     gap: 12px;
-    background: #1e40af;
+    background: #153aa1;
     color: white;
     border-radius: 10px;
     text-decoration: none;
@@ -1014,7 +1014,7 @@
     gap: 12px;
     margin: 8px 20px;
     min-height: 52px;
-    background: #1e40af;
+    background: #153aa1;
     color: white;
     font-weight: 600;
     cursor: pointer;
@@ -1192,35 +1192,48 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   color: white;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999999;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
   padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.9);
 }
 
 .scroll-to-top-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   stroke: currentColor;
+  stroke-width: 2.5;
 }
 
-.scroll-to-top-btn.show {
+.scroll-to-top-btn.show,
+.scroll-to-top-btn.visible {
   display: flex !important;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
 }
 
 .scroll-to-top-btn:hover {
   background: linear-gradient(135deg, #e6c547 0%, #d4af37 100%);
-  transform: scale(1.1);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.5);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-1px) scale(1.04);
 }
 
 @media (max-width: 768px) {
@@ -1508,12 +1521,6 @@
   transition: transform 0.4s ease;
 }
 
-@media (max-width: 768px) {
-  /* Don't hide header on mobile */
-  .site-header.hide-header {
-    transform: none;
-  }
-}
 
 /* === SCROLL TO TOP BUTTON === */
 .scroll-up-btn {
@@ -1535,7 +1542,7 @@
   opacity: 0;
   visibility: hidden;
   transform: scale(0.8) translateY(20px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 0;
   line-height: 1;
@@ -1545,11 +1552,11 @@
 .scroll-up-btn:hover {
   background: linear-gradient(135deg, #e6c547 0%, #d4af37 100%);
   box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
-  transform: scale(1) translateY(0);
+  transform: scale(1.1) translateY(-5px);
 }
 
 .scroll-up-btn:active {
-  transform: scale(0.95) translateY(0);
+  transform: scale(0.95) translateY(-2px);
 }
 
 .scroll-up-btn.visible {
@@ -1578,5 +1585,917 @@
     width: 20px;
     height: 20px;
   }
+}
+
+/* ==================== TARİHİ ANLAR / BAŞARI ANI KARTLARI ==================== */
+
+/* History Grid - Mobile-First */
+.history-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  animation: fadeInUp 600ms ease-out forwards;
+  opacity: 0;
+}
+
+.history-card:nth-child(1) {
+  animation-delay: 100ms;
+}
+
+.history-card:nth-child(2) {
+  animation-delay: 200ms;
+}
+
+.history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-secondary);
+}
+
+.history-image {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  object-position: center;
+  background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
+  transition: transform 300ms ease;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.history-card:hover .history-image {
+  transform: scale(1.03);
+}
+
+.history-content {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.history-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+  font-family: var(--font-serif);
+}
+
+.history-content p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.history-content p em {
+  font-style: italic;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.history-year {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: rgba(30, 64, 175, 0.08);
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-top: 8px;
+  width: fit-content;
+  letter-spacing: 0.3px;
+}
+
+/* ==================== MODERNİZE EDİLMİŞ DROPDOWN MENÜ - FÜTÜRİSTİK STİL ==================== */
+
+/* Desktop Dropdown - Modern Futuristic Style */
+@media (min-width: 769px) {
+  .nav-submenu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: auto;
+    left: 0;
+    transform: translateY(-16px);
+    min-width: 700px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, var(--color-secondary) 0%, #7EB6E2 100%) 1;
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.25), 
+                0 0 60px rgba(126, 182, 226, 0.15), 
+                0 20px 60px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    padding: 28px 24px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .nav-submenu::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+    clip-path: polygon(0% 100%, 100% 100%, 50% 0%);
+    border-top: 2px solid;
+    border-image: linear-gradient(135deg, var(--color-secondary) 0%, #7EB6E2 100%) 1;
+  }
+
+  .nav-submenu.mega-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  .nav-dropdown.open .nav-submenu,
+  .nav-dropdown:hover .nav-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-dropdown:hover > a,
+  .nav-dropdown.open > a {
+    pointer-events: auto;
+  }
+
+  .nav-dropdown .nav-submenu {
+    pointer-events: none;
+  }
+
+  .nav-dropdown:hover .nav-submenu,
+  .nav-dropdown.open .nav-submenu {
+    pointer-events: auto;
+  }
+
+  /* Submenu Card - Enhanced Modern Style */
+  .submenu-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    padding: 18px 14px;
+    border-radius: 10px;
+    border: 2px solid rgba(30, 64, 175, 0.08);
+    background: #ffffff;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--color-text);
+    transition: all 240ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submenu-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--color-secondary) 0%, rgba(212, 175, 55, 0.3) 100%);
+    opacity: 0;
+    transition: opacity 240ms ease;
+    z-index: -1;
+  }
+
+  .submenu-card:hover {
+    background: #f8f9fa;
+    border-color: var(--color-secondary);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+    color: var(--color-primary);
+  }
+
+  .submenu-card:hover::before {
+    opacity: 0.06;
+  }
+
+  .submenu-icon {
+    font-size: 28px;
+    line-height: 1;
+    transition: all 200ms ease;
+    display: block;
+  }
+
+  .submenu-card:hover .submenu-icon {
+    transform: scale(1.15) rotate(8deg);
+  }
+
+  .submenu-card span:last-child {
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+}
+
+  /* ==================== TARIHI ANLAR SHOWCASE ==================== */
+  .history-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .history-main-card {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+  }
+
+  .history-main-media {
+    position: relative;
+    overflow: hidden;
+    background: #0f172a;
+  }
+
+  .history-main-media img {
+    width: 100%;
+    height: clamp(260px, 38vw, 420px);
+    object-fit: cover;
+    display: block;
+  }
+
+  .history-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #f8fafc;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    backdrop-filter: blur(6px);
+  }
+
+  .history-main-body {
+    padding: 20px 22px 24px;
+  }
+
+  .history-main-body h3 {
+    margin: 0 0 10px;
+    font-size: clamp(20px, 2vw, 24px);
+    color: var(--color-primary);
+  }
+
+  .history-main-body p {
+    margin: 0 0 14px;
+    color: #475569;
+  }
+
+  .history-main-body time {
+    font-size: 13px;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .history-side-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .history-side-card {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .history-side-card img {
+    width: 96px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .history-side-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+  }
+
+  .history-side-body h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    color: #0f172a;
+  }
+
+  .history-side-body time {
+    display: inline-block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
+  .history-side-body p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+  }
+
+  @media (max-width: 980px) {
+    .history-showcase {
+      grid-template-columns: 1fr;
+    }
+
+    .history-side-card {
+      grid-template-columns: 110px 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .history-main-media img {
+      height: 240px;
+    }
+
+    .history-side-card {
+      grid-template-columns: 1fr;
+    }
+
+    .history-side-card img {
+      width: 100%;
+      height: 160px;
+    }
+  }
+
+/* Mobile Dropdown Menu - Modern Stack */
+@media (max-width: 768px) {
+  .site-nav {
+    display: none;
+  }
+
+  .nav-submenu {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    min-width: 100%;
+    max-width: none;
+    padding: 12px 0;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .nav-submenu.mega-menu {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .nav-dropdown.open .nav-submenu {
+    display: grid;
+  }
+
+  .submenu-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 64, 175, 0.08);
+    background: rgba(30, 64, 175, 0.03);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-text);
+    transition: all 180ms ease;
+    position: relative;
+  }
+
+  .submenu-card::before {
+    display: none;
+  }
+
+  .submenu-card:active {
+    background: rgba(30, 64, 175, 0.08);
+    transform: scale(0.98);
+  }
+
+  .submenu-icon {
+    font-size: 24px;
+    line-height: 1;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submenu-card span:last-child {
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .submenu-card:hover {
+    background: rgba(30, 64, 175, 0.06);
+    border-color: var(--color-primary);
+    transform: translateX(4px);
+  }
+}
+
+/* ==================== TARİHİ ANLAR MOBILE OPTİMİZASYONU ==================== */
+
+@media (max-width: 768px) {
+  .history-grid {
+    gap: 20px;
+  }
+
+  .history-card {
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .history-image {
+    height: 240px;
+  }
+
+  .history-content {
+    padding: 20px 16px;
+  }
+
+  .history-content h3 {
+    font-size: 16px;
+  }
+
+  .history-content p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .history-grid {
+    gap: 16px;
+  }
+
+  .history-card {
+    border-radius: 10px;
+  }
+
+  .history-image {
+    height: 200px;
+  }
+
+  .history-content {
+    padding: 16px 14px;
+    gap: 10px;
+  }
+
+  .history-content h3 {
+    font-size: 15px;
+  }
+
+  .history-content p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .history-year {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}
+
+/* ==================== MOBİL MENÜ DROPDOWN İLERİ OPTİMİZASYON ==================== */
+
+/* Mobile Menu - Hamburger Menü Açıktığında Dropdown'lar */
+@media (max-width: 768px) {
+  .left-nav .nav-dropdown {
+    width: 100%;
+  }
+
+  .left-nav .nav-submenu {
+    margin-top: 4px;
+    padding: 8px 0;
+  }
+
+  .left-nav .submenu-card {
+    margin: 0 8px;
+    padding: 12px 12px;
+    border-radius: 8px;
+  }
+
+  .left-nav .submenu-card:active {
+    background: rgba(30, 64, 175, 0.1);
+  }
+
+  /* Alt dropdown animasyonu */
+  .nav-dropdown.open .nav-submenu {
+    animation: slideDown 200ms ease-out;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== HERO SLIDER RESPONSIVE ENHANCEMENTS ==================== */
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 500px;
+  }
+
+  .hero-slider {
+    height: 100%;
+  }
+
+  .hero-slide {
+    height: 100%;
+  }
+
+  .hero-slide img {
+    height: 100%;
+  }
+
+  .hero-inner {
+    padding: 40px 0;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .hero-text .lead {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 400px;
+  }
+
+  .hero-text h1 {
+    font-size: 24px;
+  }
+
+  .hero-text .lead {
+    font-size: 14px;
+  }
+}
+
+/* ==================== SECTION RESPONSIVE IMPROVEMENTS ==================== */
+
+@media (max-width: 768px) {
+  .section {
+    padding: 32px 0;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  .section-header p {
+    font-size: 14px;
+  }
+
+  .grid.two,
+  .grid.three {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 24px 0;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+  }
+
+  .section-header p {
+    font-size: 13px;
+  }
+
+  .grid.two,
+  .grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== FUTURISTIC DROPDOWN (DESKTOP) ==================== */
+
+@media (min-width: 769px) {
+  :root {
+    --nav-glow: rgba(56, 189, 248, 0.35);
+    --nav-core: rgba(14, 116, 144, 0.9);
+    --nav-edge: rgba(125, 211, 252, 0.55);
+  }
+
+  .nav-dropdown > a {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .nav-dropdown > a::before {
+    content: '';
+    position: absolute;
+    inset: -6px -10px;
+    border-radius: 10px;
+    background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.18), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.12), transparent 55%),
+                linear-gradient(135deg, rgba(14, 116, 144, 0.12), rgba(30, 64, 175, 0.08));
+    opacity: 0;
+    transition: opacity 220ms ease;
+    z-index: -1;
+  }
+
+  .nav-dropdown > a:hover::before,
+  .nav-dropdown.open > a::before {
+    opacity: 1;
+  }
+
+  .nav-dropdown > a::after {
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid rgba(56, 189, 248, 0.9);
+    border-bottom: 2px solid rgba(56, 189, 248, 0.9);
+    box-shadow: 0 0 12px var(--nav-glow);
+  }
+
+  .nav-submenu {
+    background: linear-gradient(135deg, rgba(8, 21, 44, 0.96), rgba(10, 35, 74, 0.98));
+    border: 1px solid rgba(125, 211, 252, 0.55);
+    box-shadow: 0 18px 50px rgba(5, 15, 35, 0.5), 0 0 0 1px rgba(56, 189, 248, 0.25), 0 0 24px var(--nav-glow);
+    backdrop-filter: blur(12px) saturate(140%);
+    padding: 18px;
+  }
+
+  .nav-submenu::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(circle at 20% 10%, rgba(56, 189, 248, 0.22), transparent 45%),
+                radial-gradient(circle at 80% 0%, rgba(16, 185, 129, 0.16), transparent 50%);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  .nav-submenu.mega-menu {
+    gap: 14px;
+  }
+
+  .nav-submenu.submenu-2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 380px;
+    max-width: 460px;
+  }
+
+  .nav-submenu.submenu-1col {
+    grid-template-columns: 1fr;
+    min-width: 220px;
+    max-width: 260px;
+  }
+
+  .nav-submenu .submenu-card {
+    background: linear-gradient(145deg, rgba(10, 23, 45, 0.92), rgba(14, 40, 82, 0.9));
+    border: 1px solid rgba(125, 211, 252, 0.4);
+    color: #e6f4ff;
+    box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-submenu .submenu-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(56, 189, 248, 0.18), transparent);
+    transform: translateX(-120%);
+    transition: transform 300ms ease;
+  }
+
+  .nav-submenu .submenu-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--nav-edge);
+    box-shadow: 0 10px 24px rgba(2, 12, 26, 0.45), 0 0 20px var(--nav-glow);
+    background: linear-gradient(145deg, rgba(10, 23, 45, 0.96), rgba(14, 40, 82, 0.96));
+    color: #e6f4ff;
+  }
+
+  .nav-submenu .submenu-card:hover::after {
+    transform: translateX(120%);
+  }
+
+  .nav-submenu .submenu-card .submenu-icon {
+    color: #a5f3fc;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+  }
+
+  .nav-submenu .submenu-card span:last-child {
+    letter-spacing: 0.3px;
+  }
+}
+
+/* ==================== SCROLL TO TOP (DESKTOP) ==================== */
+
+@media (min-width: 769px) {
+  .scroll-to-top-btn {
+    right: 32px;
+    bottom: 32px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(212, 175, 55, 0.35);
+  }
+
+  .scroll-to-top-btn.show {
+    display: flex !important;
+  }
+}
+
+/* ==================== MODERN SCROLL EFFECTS ==================== */
+
+/* Smooth scroll behavior for all sections */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* Card entrance animation */
+.card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.2s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Reveal animations */
+.reveal {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.reveal[data-reveal-order="1"] { animation-delay: 0.1s; }
+.reveal[data-reveal-order="2"] { animation-delay: 0.2s; }
+.reveal[data-reveal-order="3"] { animation-delay: 0.3s; }
+
+/* Smooth section transitions */
+.section {
+  position: relative;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+}
+
+/* Hover effects for interactive elements */
+button, a[href*="#"], a[data-link] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content fade-in for images */
+img {
+  transition: opacity 0.4s ease;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Card hover effects */
+.card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Text selection styling */
+::selection {
+  background-color: var(--color-secondary);
+  color: #0a1420;
+}
+
+/* Smooth transitions for all state changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Disable transitions for animations */
+.reveal,
+.card,
+.fadeInUp,
+.slideInLeft,
+.slideInRight,
+.scaleIn {
+  transition-duration: 0ms;
+}
+
+/* Modern scrollbar styling (Webkit browsers) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.5);
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: rgba(212, 175, 55, 0.5) transparent;
+  scrollbar-width: thin;
 }
 
