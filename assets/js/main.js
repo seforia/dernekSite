@@ -62,10 +62,13 @@
 
   // === HEADER SCROLL BEHAVIOR ===
   const siteHeader = document.querySelector('.site-header');
-  const scrollUpBtn = document.getElementById('scroll-up-btn');
+  const scrollUpBtn = document.querySelector('.scroll-to-top-button');
   const scrollProgress = document.getElementById('scrollProgress');
   const progressCircle = document.getElementById('progressCircle');
   
+  // DEBUG
+  console.log('Button element:', scrollUpBtn);
+  console.log('Container element:', scrollProgress);
   // Sayfa başladığında is-top class'ını ekle
   if (siteHeader) {
     siteHeader.classList.add('is-top');
@@ -73,34 +76,18 @@
   
   let lastScroll = 0;
   let scrollDirection = 'down';
-  const SCROLL_THRESHOLD = 50;
-  const HIDE_SCROLL_THRESHOLD = 60;
-  const SHOW_SCROLL_TOP_THRESHOLD = 80;
+  const SCROLL_THRESHOLD = 80;
+  const HIDE_SCROLL_THRESHOLD = 100;
 
   function updateHeaderState() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Calculate scroll progress
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    
-    // Update progress circle (164 is circumference of circle with r=26)
-    if (progressCircle) {
-      const offset = 164 - (scrolled / 100) * 164;
-      progressCircle.style.strokeDashoffset = offset;
+    // DEBUG - Her çağrıda log
+    if (currentScroll > HIDE_SCROLL_THRESHOLD || currentScroll !== lastScroll) {
+      console.log('updateHeaderState called - Scroll:', currentScroll, 'LastScroll:', lastScroll, 'Threshold:', HIDE_SCROLL_THRESHOLD);
     }
     
-    // Show/hide scroll progress indicator
-    if (scrollProgress) {
-      if (currentScroll > SHOW_SCROLL_TOP_THRESHOLD) {
-        scrollProgress.classList.add('visible');
-      } else {
-        scrollProgress.classList.remove('visible');
-      }
-    }
-    
-    // Scroll direction detection + header hide/show
+    // Header hidden/show logic
     if (currentScroll > lastScroll) {
       // Scrolling down
       scrollDirection = 'down';
@@ -128,27 +115,60 @@
     // Scroll-to-top button visibility (always reflect threshold)
     if (scrollUpBtn) {
       if (currentScroll > HIDE_SCROLL_THRESHOLD) {
-        scrollUpBtn.classList.add('visible');
+        if (!scrollUpBtn.classList.contains('visible')) {
+          scrollUpBtn.classList.add('visible');
+          console.log('Button VISIBLE ADDED');
+        }
       } else {
-        scrollUpBtn.classList.remove('visible');
+        if (scrollUpBtn.classList.contains('visible')) {
+          scrollUpBtn.classList.remove('visible');
+          console.log('Button VISIBLE REMOVED');
+        }
       }
     }
     
     lastScroll = currentScroll;
-    console.log('Scroll:', currentScroll, 'Direction:', scrollDirection, 'is-top:', siteHeader?.classList.contains('is-top'), 'is-scrolled:', siteHeader?.classList.contains('is-scrolled'), 'hidden:', siteHeader?.classList.contains('hide-header'));
   }
 
   // Sayfa yüklendiğinde kontrol et
   updateHeaderState();
 
-  // Scroll olayında kontrol et - throttled (200ms için daha yumuşak scroll davranışı)
-  const throttledScroll = throttle(updateHeaderState, 200);
-  window.addEventListener('scroll', throttledScroll, { passive: true });
+  // Scroll olayında kontrol et - Poll method (setInterval)
+  setInterval(updateHeaderState, 200);
   
   // Scroll to top button click handler
-  if (scrollProgress) {
-    scrollProgress.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (scrollUpBtn) {
+    scrollUpBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Button clicked, scrolling to top');
+      const smoothScroll = () => {
+        const start = window.scrollY;
+        const duration = 1000;
+        const startTime = performance.now();
+        
+        const easeInOutCubic = (t) => {
+          return t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        };
+        
+        const animate = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = easeInOutCubic(progress);
+          const currentScroll = start * (1 - easeProgress);
+          
+          window.scrollTo(0, currentScroll);
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        
+        requestAnimationFrame(animate);
+      };
+      
+      smoothScroll();
     });
   }
   
@@ -243,6 +263,9 @@
 
   // === MOBILE DROPDOWN TOGGLE FOR ALL DROPDOWNS ===
   const dropdownToggleLinks = document.querySelectorAll('.nav-dropdown > a');
+  const isDropdownToggle = (element) => {
+    return element && element.closest('.nav-dropdown > a');
+  };
   
   dropdownToggleLinks.forEach((dropdownToggle) => {
     const navDropdown = dropdownToggle.closest('.nav-dropdown');
@@ -257,7 +280,8 @@
       
       const isOpen = navDropdown.classList.contains('open');
       navDropdown.classList.toggle('open', !isOpen);
-      navSubmenu.style.display = !isOpen ? 'flex' : 'none';
+      navSubmenu.style.display = !isOpen ? 'grid' : 'none';
+      navSubmenu.style.maxHeight = !isOpen ? '600px' : '0';
     };
     
     dropdownToggle.addEventListener('click', toggleDropdown, false);
@@ -272,7 +296,7 @@
 
     const handleClick = (e) => {
       // Skip dropdown toggle itself; handled above
-      if (link === dropdownToggle && window.innerWidth <= 768) {
+      if (isDropdownToggle(link) && window.innerWidth <= 768) {
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -280,7 +304,7 @@
 
       if (window.innerWidth <= 768) {
         const href = link.getAttribute('href') || '';
-        const isFooterScroll = href.startsWith('#footer') || link.classList.contains('scroll-to-footer');
+        const isFooterScroll = href.startsWith('#footer') || link.classList.contains('scroll-to-footer') || href === '#footer';
 
         e.preventDefault();
         e.stopPropagation();
@@ -293,7 +317,7 @@
             const targetTop = footer.offsetTop - 80;
             smoothScroll(targetTop, 1500);
           }
-        } else if (href) {
+        } else if (href && href !== '#') {
           navigateTo(href);
         }
         return;
@@ -304,87 +328,7 @@
     link.addEventListener('touchstart', handleClick, { passive: false });
   });
 
-  // === BANK INFO MODAL ===
-  const infoBtn = document.getElementById('info-btn');
-  const bankInfoBtn = document.getElementById('bank-info-btn');
-  const bankInfoBtnMobile = document.getElementById('bank-info-btn-mobile');
-  const hamburgerBtn = document.getElementById('mobile-menu-toggle');
-  const bankModal = document.getElementById('bank-modal');
-  const bankModalOverlay = document.getElementById('bank-modal-overlay');
-  const bankModalClose = document.getElementById('bank-modal-close');
-  const gotoBagis = document.getElementById('goto-bagis');
-  const gotoMembership = document.getElementById('goto-membership');
-  
-  const openBankModal = () => {
-    bankModal.classList.add('open');
-    bankModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-  };
 
-  const closeBankModal = () => {
-    bankModal.classList.remove('open');
-    bankModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  };
-
-  if (infoBtn) {
-    infoBtn.addEventListener('click', openBankModal);
-  }
-
-  const attachBankBtn = (btn) => {
-    if (!btn) return;
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (window.innerWidth <= 768) closeMobileMenu();
-      openBankModal();
-    });
-  };
-
-  attachBankBtn(bankInfoBtn);
-  attachBankBtn(bankInfoBtnMobile);
-
-  if (hamburgerBtn) {
-    // Hamburger düğmesinin event'i zaten mobileMenuToggle'de tanımlı
-    // Burada bank modal açma kodu olmasın
-    // Hamburger butonuna event listener eklemeyin
-  }
-
-  if (bankModalClose) {
-    bankModalClose.addEventListener('click', () => {
-      closeBankModal();
-      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-    });
-  }
-
-  if (bankModalOverlay) {
-    bankModalOverlay.addEventListener('click', () => {
-      closeBankModal();
-      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-    });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && bankModal.classList.contains('open')) {
-      closeBankModal();
-      if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-    }
-  });
-
-  if (gotoBagis) {
-    gotoBagis.addEventListener('click', () => {
-      closeBankModal();
-      navigateTo('/bagis');
-    });
-  }
-
-  if (gotoMembership) {
-    gotoMembership.addEventListener('click', () => {
-      closeBankModal();
-      navigateTo('/bagis');
-    });
-  }
 
   const navDropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
   const dropdownToggles = Array.from(document.querySelectorAll('.nav-dropdown > a'));
@@ -551,6 +495,8 @@
     '/anketler.html': { title: 'Anketler | TSGL Derneği', content: 'content/anketler/index.html' },
     '/anma': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
     '/anma.html': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
+    '/urunlerimiz': { title: 'Ürünlerimiz | TSGL Derneği', content: 'content/urunlerimiz/index.html' },
+    '/urunlerimiz.html': { title: 'Ürünlerimiz | TSGL Derneği', content: 'content/urunlerimiz/index.html' },
     '/toplanti-tutanaklari': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' },
     '/toplanti-tutanaklari.html': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' }
   };
@@ -1291,24 +1237,7 @@
 
   }
 
-  // === MOBILE BANK BUTTON HANDLER ===
-  const mobileBankBtn = document.getElementById('bank-info-btn-mobile');
-  if (mobileBankBtn) {
-    mobileBankBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const bankModal = document.getElementById('bank-modal');
-      if (bankModal) {
-        bankModal.classList.add('active');
-        bankModal.setAttribute('aria-hidden', 'false');
-        // Menüyü kapat
-        const navLeft = document.querySelector('.nav-left');
-        if (navLeft && navLeft.classList.contains('mobile-active')) {
-          navLeft.classList.remove('mobile-active');
-          hamburger.classList.remove('active');
-        }
-      }
-    });
-  }
+
 
   // === SCROLL TO TOP BUTTON ===
   const scrollToTopBtn = document.getElementById('scroll-to-top-btn');

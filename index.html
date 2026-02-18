@@ -22,9 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="assets/css/styles.css?v=6.0" />
-  <link rel="stylesheet" href="assets/css/styles-updates.css?v=6.0" />
-  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=6.0" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=6.3" />
+  <link rel="stylesheet" href="assets/css/styles-updates.css?v=6.3" />
+  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=6.3" />
 </head>
 <body>
   <!-- Modern Page Loader -->
@@ -48,8 +48,9 @@
       <circle class="scroll-progress-bg" cx="28" cy="28" r="26"></circle>
       <circle class="scroll-progress-bar" cx="28" cy="28" r="26" id="progressCircle"></circle>
     </svg>
-    <button class="scroll-to-top-button" aria-label="Yukarı çık" title="Başa dön"></button>
   </div>
+  
+  <button class="scroll-to-top-button" id="scroll-up-btn" aria-label="Yukarı çık" title="Başa dön" style="position: fixed; bottom: 30px; right: 30px; width: 40px; height: 40px; background: #153aa1; border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); opacity: 1 !important; visibility: visible !important;"></button>
 
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
@@ -97,6 +98,10 @@
                   <span class="submenu-icon">👥</span>
                   <span>Yönetim Kurulu</span>
                 </a>
+                <a href="/urunlerimiz.html" data-link class="submenu-card">
+                  <span class="submenu-icon">🛍️</span>
+                  <span>Ürünlerimiz</span>
+                </a>
                 <a href="/toplanti-tutanaklari.html" data-link class="submenu-card">
                   <span class="submenu-icon">📑</span>
                   <span>Toplantı Tutanakları</span>
@@ -126,11 +131,29 @@
               </div>
             </li>
 
+            <!-- Duyurular Dropdown -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">Duyurular</a>
+              <div class="nav-submenu mega-menu submenu-1col">
+                <a href="/duyurular.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📢</span>
+                  <span>Duyurular</span>
+                </a>
+                <a href="/etkinlikler.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📅</span>
+                  <span>Etkinlikler</span>
+                </a>
+                <a href="/anketler.html" data-link class="submenu-card">
+                  <span class="submenu-icon">📋</span>
+                  <span>Anketler</span>
+                </a>
+              </div>
+            </li>
+
             <!-- Mobilde görünen ek butonlar -->
             <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.2);"></li>
             <li class="mobile-only"><a href="/burs.html" data-link class="nav-mobile-action">Burs Başvurusu</a></li>
-            <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">🎁 Bağış & Aidat</a></li>
-            <li class="mobile-only"><button id="bank-info-btn-mobile" class="nav-mobile-bank" aria-label="Banka Bilgileri" title="Banka Bilgileri">🏦 Banka Bilgileri</button></li>
+            <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">Bağış & Aidat</a></li>
           </ul>
         </nav>
       </div>
@@ -170,76 +193,11 @@
             <span class="donation-line">Aidat</span>
           </span>
         </a>
-        <button class="bank-info-btn" id="bank-info-btn" aria-label="Banka Bilgileri" title="Banka Bilgileri">
-          <img src="assets/img/bank-building.png" alt="" class="bank-info-icon" aria-hidden="true" />
-        </button>
       </div>
     </div>
   </header>
 
-  <!-- Bank Info Sidebar Modal -->
-  <div class="bank-modal" id="bank-modal" role="dialog" aria-labelledby="bank-modal-title" aria-hidden="true">
-    <div class="bank-modal-overlay" id="bank-modal-overlay"></div>
-    <div class="bank-modal-container">
-      <button class="bank-modal-close" id="bank-modal-close" aria-label="Kapat">✕</button>
-      
-      <div class="bank-modal-header">
-        <img src="assets/img/tsglLogo.png" alt="TSGL Derneği" class="bank-modal-logo" />
-        <h2 id="bank-modal-title" class="bank-modal-title">Tevfik Sırrı Gür Lisesi Derneği</h2>
-        <p class="bank-modal-subtitle">Banka Hesaplarımız</p>
-      </div>
-      
-      <div class="bank-section">
-        <h3 class="bank-section-title">AİDAT & DİĞER BAĞIŞ HESAPLARI</h3>
-        <div class="bank-info">
-          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
-          <div class="bank-details">
-            <p><span class="bank-label">Şube Kodu:</span> 088</p>
-            <p><span class="bank-label">Hesap No:</span> 6294560</p>
-          </div>
-          <div class="bank-iban-box">
-            <span class="bank-label">IBAN:</span>
-            <span class="bank-iban">TR19 0006 2000 0880 0006 2945 60</span>
-          </div>
-        </div>
-      </div>
 
-      <div class="bank-section">
-        <h3 class="bank-section-title">BURS HESABI</h3>
-        <div class="bank-info">
-          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
-          <div class="bank-details">
-            <p><span class="bank-label">Şube Kodu:</span> 088</p>
-            <p><span class="bank-label">Hesap No:</span> 6294561</p>
-          </div>
-          <div class="bank-iban-box">
-            <span class="bank-label">IBAN:</span>
-            <span class="bank-iban">TR89 0006 2000 0880 0006 2945 61</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bank-section">
-        <h3 class="bank-section-title">ETKİNLİK HESABI</h3>
-        <div class="bank-info">
-          <p class="bank-institution">Garanti Bankası (Kadıköy Şubesi)</p>
-          <div class="bank-details">
-            <p><span class="bank-label">Şube Kodu:</span> 088</p>
-            <p><span class="bank-label">Hesap No:</span> 6294562</p>
-          </div>
-          <div class="bank-iban-box">
-            <span class="bank-label">IBAN:</span>
-            <span class="bank-iban">TR62 0006 2000 0880 0006 2945 62</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bank-actions">
-        <button class="bank-btn donate-btn" id="goto-bagis">Bağış Yap</button>
-        <button class="bank-btn membership-btn" id="goto-membership">Aidat Öde</button>
-      </div>
-    </div>
-  </div>
 
   <main id="main" data-main-content>
     <div id="home-content">
@@ -544,29 +502,14 @@
   <footer class="site-footer" role="contentinfo">
     <div class="container">
       <div class="footer-content">
-        <!-- Sol Kolon - Banka Hesapları -->
+        <!-- Sol Kolon - İletişim -->
         <div class="footer-column">
-          <h3 class="footer-title">Banka Hesap Numaralarımız</h3>
+          <h3 class="footer-title">Bağış ve İletişim</h3>
           
           <div class="footer-bank-account">
-            <h4>Aidat & Diğer Bağış Hesapları</h4>
-            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
-            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294560</p>
-            <p class="bank-iban"><strong>IBAN:</strong> TR19 0006 2000 0880 0006 2945 60</p>
-          </div>
-
-          <div class="footer-bank-account">
-            <h4>Burs Hesabı</h4>
-            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
-            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294561</p>
-            <p class="bank-iban"><strong>IBAN:</strong> TR89 0006 2000 0880 0006 2945 61</p>
-          </div>
-
-          <div class="footer-bank-account">
-            <h4>Etkinlik Hesabı</h4>
-            <p class="bank-name">Garanti Bankası (Kadıköy Şubesi)</p>
-            <p class="bank-detail"><strong>Şube Kodu:</strong> 088 / <strong>Hesap No:</strong> 6294562</p>
-            <p class="bank-iban"><strong>IBAN:</strong> TR62 0006 2000 0880 0006 2945 62</p>
+            <h4>Mustafa Yontar - Bağış ve Sorular için</h4>
+            <p class="bank-name"><strong>Telefon:</strong> <a href="tel:905322745852" style="color: inherit; text-decoration: underline; font-weight: 700;">+90 532 274 58 52</a></p>
+            <p style="color: var(--color-muted);">WhatsApp: <a href="https://wa.me/905322745852" target="_blank" style="color: var(--color-secondary); text-decoration: underline; font-weight: 600;">WhatsApp ile İletişim</a></p>
           </div>
         </div>
 
@@ -599,21 +542,16 @@
               </svg>
             </div>
             <div>
-              <p><strong>Bahariye Cad. Adliye Palas Apt.</strong></p>
-              <p>No:72 Da:8 Bahariye Kadıköy/</p>
-              <p>İSTANBUL</p>
+              <p><strong>Tevfik Sırrı Gür Lisesi Derneği</strong></p>
+              <p>Gazi Mahallesi, 1309 Sokak</p>
+              <p>Ahmet Arif Bey Apartmanı, No 22 A</p>
+              <p>Yenişehir / Mersin</p>
             </div>
           </div>
 
           <div class="footer-contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-            </div>
-            <div>
-              <p><strong>(0216) 347 88 43</strong></p>
-            </div>
+            <p><strong>(Bağış ve Bilgi için):</strong> <a href="tel:905322745852" style="color: inherit; text-decoration: underline; font-weight: 700;">+90 532 274 58 52</a></p>
+            <p style="margin-top: 8px;"><strong>WhatsApp:</strong> <a href="https://wa.me/905322745852" target="_blank" style="color: var(--color-secondary); text-decoration: underline; font-weight: 600;">Mesaj Gönder</a></p>
           </div>
 
           <div class="footer-contact-item">
@@ -625,19 +563,6 @@
             </div>
             <div>
               <p><a href="mailto:info@tsgldernek.org">info@tsgldernek.org</a></p>
-            </div>
-          </div>
-
-          <div class="footer-contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-            <div>
-              <p><strong>H.içi:</strong> 08:30 - 17:00</p>
-              <p><strong>H.sonu:</strong> Kapalı</p>
             </div>
           </div>
         </div>
@@ -701,6 +626,6 @@
   <!-- Auth module -->
   <script src="assets/js/auth.js?v=2.0"></script>
   <!-- Main app -->
-  <script src="assets/js/main.js?v=2.0"></script>
+  <script src="assets/js/main.js?v=3.0"></script>
 </body>
 </html>
