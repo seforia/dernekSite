@@ -1964,3 +1964,233 @@ figcaption { padding: 12px 16px; font-size: 14px; color: var(--color-secondary);
     font-size: 20px;
   }
 }
+
+/* ==================== HAMBURGER MENU BUTTON ==================== */
+.mobile-menu-toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 2px solid rgba(21, 58, 161, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 60;
+  transition: all 0.3s ease;
+  padding: 0;
+  margin-right: 16px;
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(21, 58, 161, 0.05);
+  border-color: var(--color-primary);
+}
+
+.mobile-menu-toggle:active {
+  transform: scale(0.95);
+}
+
+.hamburger-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hamburger-line:nth-child(1) {
+  top: 12px;
+}
+
+.hamburger-line:nth-child(2) {
+  top: 21px;
+}
+
+.hamburger-line:nth-child(3) {
+  top: 30px;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+  top: 21px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-50%) scale(0);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+  top: 21px;
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+/* Mobile Nav Overlay */
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 49;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1;
+}
+
+/* ==================== TABLET RESPONSIVE (768px - 1024px) ==================== */
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav-overlay {
+    display: block;
+  }
+
+  .nav-wrap {
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+  }
+
+  .nav-left {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 320px;
+    height: 100vh;
+    background: white;
+    z-index: 51;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 0 32px;
+    overflow-y: auto;
+    transition: left 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .nav-left.mobile-active {
+    left: 0;
+  }
+
+  .site-nav {
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-nav ul {
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-nav li {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .site-nav a {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    border-radius: 0;
+  }
+
+  .nav-dropdown > a {
+    width: 100%;
+    padding: 16px 24px;
+    justify-content: space-between;
+  }
+
+  .nav-dropdown > a::after {
+    margin-left: auto;
+  }
+
+  .nav-submenu {
+    position: static;
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 0;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: none;
+    background: #f9f9f9;
+  }
+
+  .nav-submenu.submenu-2col {
+    display: none;
+    min-width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .nav-dropdown.open .nav-submenu {
+    display: grid !important;
+  }
+
+  .nav-submenu a,
+  .nav-submenu .submenu-card {
+    padding: 14px 32px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    font-size: 15px;
+  }
+
+  .nav-right {
+    margin-left: auto;
+    gap: 12px;
+  }
+
+  .nav-donation {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  /* Logo scaling for tablet */
+  .site-header.is-top .brand-logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .site-header.is-scrolled .brand-logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .brand-logo {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+/* ==================== MOBILE RESPONSIVE (max 768px) ==================== */
+@media (max-width: 768px) {
+  .nav-left {
+    width: 280px;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .announcement-text-short {
+    display: block;
+  }
+
+  .announcement-text {
+    display: none;
+  }
+}
