@@ -469,10 +469,10 @@
     '/galeri.html': { title: 'Galeri | TSGL Derneği', content: 'content/galeri/index.html' },
     '/duyurular': { title: 'Duyurular | TSGL Derneği', content: 'content/duyurular/index.html' },
     '/duyurular.html': { title: 'Duyurular | TSGL Derneği', content: 'content/duyurular/index.html' },
-    '/kayit': { title: 'Üye Kayıt | TSGL Derneği', content: 'content/kayit/index.html' },
-    '/kayit.html': { title: 'Üye Kayıt | TSGL Derneği', content: 'content/kayit/index.html' },
     '/giris': { title: 'Üye Girişi | TSGL Derneği', content: 'content/giris/index.html' },
     '/giris.html': { title: 'Üye Girişi | TSGL Derneği', content: 'content/giris/index.html' },
+    '/admin': { title: 'Admin Paneli | TSGL Derneği', content: 'content/admin/index.html' },
+    '/admin.html': { title: 'Admin Paneli | TSGL Derneği', content: 'content/admin/index.html' },
     '/burs': { title: 'Burs Başvurusu | TSGL Derneği', content: 'content/burs/index.html' },
     '/burs.html': { title: 'Burs Başvurusu | TSGL Derneği', content: 'content/burs/index.html' },
     '/tuzuk': { title: 'Dernek Tüzüğü | TSGL Derneği', content: 'content/tuzuk/index.html' },
@@ -505,14 +505,62 @@
   const dynamicContent = document.getElementById('dynamic-content');
   const mainContent = document.querySelector('[data-main-content]');
 
+  const isYazilarPath = (path) => {
+    if (!path) return false;
+    const decoded = decodeURIComponent(String(path));
+    const cleaned = decoded.split('?')[0].replace(/\.html$/, '').replace(/\/+$/, '');
+    const normalized = cleaned.toLowerCase().replace(/ı/g, 'i');
+    return normalized === '/yazilar';
+  };
+
+  const isAdminPath = (path) => {
+    if (!path) return false;
+    const decoded = decodeURIComponent(String(path));
+    const cleaned = decoded.split('?')[0].replace(/\.html$/, '').replace(/\/+$/, '');
+    return cleaned === '/admin';
+  };
+
+  const isGirisPath = (path) => {
+    if (!path) return false;
+    const decoded = decodeURIComponent(String(path));
+    const cleaned = decoded.split('?')[0].replace(/\.html$/, '').replace(/\/+$/, '');
+    return cleaned === '/giris';
+  };
+
   function getCurrentPath() {
     // GitHub Pages ve file: protokolü için hash-based routing kullan
     const h = window.location.hash.replace(/^#/, '');
-    const cleaned = h ? `/${h.replace(/^\/+/, '').replace(/\.html$/, '')}` : '/';
+    const decoded = decodeURIComponent(h);
+    const hashPath = decoded.split('?')[0];
+    const cleaned = hashPath ? `/${hashPath.replace(/^\/+/, '').replace(/\.html$/, '')}` : '/';
     return cleaned;
   }
 
   async function loadContent(path) {
+    // Admin paneline özel yönlendirme (Yazılar gibi)
+    if (isAdminPath(path)) {
+      const base = getBasePath();
+      window.location.href = `${base}content/admin/index.html`;
+      return;
+    }
+
+    // Giriş sayfasına özel yönlendirme (Script'lerin çalışması için)
+    if (isGirisPath(path)) {
+      const base = getBasePath();
+      window.location.href = `${base}content/giris/index.html`;
+      return;
+    }
+
+    if (isYazilarPath(path)) {
+      const base = getBasePath();
+      const hash = window.location.hash.replace(/^#/, '');
+      const decoded = decodeURIComponent(hash);
+      const hashQuery = decoded.includes('?') ? decoded.split('?')[1] : '';
+      const querySuffix = hashQuery ? `?${hashQuery}` : '';
+      window.location.href = `${base}content/yazılar/index.html${querySuffix}`;
+      return;
+    }
+
     const route = routes[path] || routes['/'];
     document.title = route.title;
 
@@ -563,7 +611,12 @@
 
   function navigateTo(url, section = null) {
     // GitHub Pages için hash-based routing kullan
-    const cleanUrl = url.replace(/\.html$/, '');
+    const cleanUrl = String(url || '').replace(/\.html$/, '');
+    if (isYazilarPath(cleanUrl)) {
+      const base = getBasePath();
+      window.location.href = `${base}content/yazılar/index.html`;
+      return;
+    }
     const hashUrl = `#${cleanUrl.replace(/^\//, '')}`;
     window.location.hash = hashUrl;
 
@@ -1331,6 +1384,81 @@
       }
     }, 500);
   });
+
+  // === LOAD RECENT POSTS ON HOMEPAGE ===
+  async function loadRecentPosts() {
+    const container = document.getElementById('recent-posts-list');
+    if (!container) return; // Not on homepage
+
+    try {
+      // Wait for Firebase to be ready
+      if (!window.TSGLAuth || !window.TSGLAuth.isReady()) {
+        console.log('Firebase not ready, skipping recent posts');
+        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #999;"><p>Yazılar yüklenemedi</p></div>';
+        return;
+      }
+
+      // Get latest 5 posts
+      const result = await window.TSGLAuth.getPosts(5);
+      const posts = result.posts;
+
+      if (!posts || posts.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #999;"><p>Henüz yazı yok</p></div>';
+        return;
+      }
+
+      // Create post cards
+      container.innerHTML = '';
+      posts.forEach(post => {
+        const card = document.createElement('a');
+        card.className = 'history-side-card';
+        card.href = 'content/yazılar/index.html';
+        
+        const excerpt = post.content ? post.content.substring(0, 80) + '...' : 'Detaylar için tıklayın';
+        const dateStr = post.createdAt && post.createdAt.toDate ? 
+          post.createdAt.toDate().toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' }) : 
+          'Tarih bilinmiyor';
+        
+        // Use post image if available, otherwise use default
+        const imgSrc = post.imageUrl || 'assets/img/tsglFoto2.png';
+        const isBase64 = imgSrc.startsWith('data:image');
+        
+        card.innerHTML = `
+          ${isBase64 ? 
+            `<div style="width: 100%; height: 150px; overflow: hidden; border-radius: 8px;">
+              <img src="${imgSrc}" alt="${escapeHtml(post.title)}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>` :
+            `<img src="${imgSrc}" alt="${escapeHtml(post.title)}" loading="lazy" />`
+          }
+          <div class="history-side-body">
+            <h4>${escapeHtml(post.title)}</h4>
+            <time>${dateStr}</time>
+            <p>${escapeHtml(excerpt)}</p>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+
+      console.log('✅ Ana sayfada', posts.length, 'yazı gösteriliyor');
+    } catch (error) {
+      console.error('Recent posts yüklenirken hata:', error);
+      container.innerHTML = '<div style="text-align: center; padding: 1rem; color: #999;"><p>Yazılar yüklenemedi</p></div>';
+    }
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Load recent posts after Firebase is ready
+  setTimeout(() => {
+    if (window.TSGLAuth && window.TSGLAuth.isReady()) {
+      loadRecentPosts();
+    }
+  }, 1000);
 
   // === SCROLL TO TOP BUTTON ===
   if (scrollUpBtn) {

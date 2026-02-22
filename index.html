@@ -62,7 +62,7 @@
       <div class="announcement-actions">
         <a href="/giris.html" data-link class="announcement-link">
           <img src="assets/img/login_4043192.png" alt="" class="login-image" aria-hidden="true" />
-          <span class="login-text">Giriş Yap/Üye Ol</span>
+          <span class="login-text">Giriş Yap</span>
         </a>
       </div>
     </div>
@@ -147,11 +147,16 @@
                   <span class="submenu-icon">📋</span>
                   <span>Anketler</span>
                 </a>
+                <a href="content/yazılar/index.html" class="submenu-card">
+                  <span class="submenu-icon">✍️</span>
+                  <span>Yazılar</span>
+                </a>
               </div>
             </li>
 
             <!-- Mobilde görünen ek butonlar -->
             <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.2);"></li>
+            <li class="mobile-only"><a href="/giris.html" data-link class="nav-mobile-action">🔐 Üye Girişi</a></li>
             <li class="mobile-only"><a href="/burs.html" data-link class="nav-mobile-action">Burs Başvurusu</a></li>
             <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">Bağış & Aidat</a></li>
           </ul>
@@ -164,6 +169,7 @@
         <nav class="site-nav right-nav" role="navigation" aria-label="Sağ menü">
           <ul>
             <li><a href="/burs.html" data-link>Burs Başvurusu</a></li>
+            <li><a href="/giris.html" data-link>Üye Girişi</a></li>
             
             <!-- Duyurular Dropdown -->
             <li class="nav-dropdown">
@@ -180,6 +186,10 @@
                 <a href="/anketler.html" data-link class="submenu-card">
                   <span class="submenu-icon">📋</span>
                   <span>Anketler</span>
+                </a>
+                <a href="content/yazılar/index.html" class="submenu-card">
+                  <span class="submenu-icon">✍️</span>
+                  <span>Yazılar</span>
                 </a>
               </div>
             </li>
@@ -293,65 +303,65 @@
       </div>
     </section>
 
-    <section class="section reveal" id="tarihi-anlar" aria-labelledby="history-title">
+    <section class="section reveal" id="yazilar" aria-labelledby="yazilar-title">
       <div class="container">
         <div class="section-header">
-          <h2 id="history-title">Tarihi Anlar | Başarı Hikayeleri</h2>
-          <p>Okulumuzun ve Derneğimizin değerli anıları ve başarı öykülerimiz</p>
+          <h2 id="yazilar-title">Yazılar</h2>
+          <p>Okulumuzun ve Derneğimizin değerli anıları, deneyimleri ve başarı yazıları</p>
         </div>
         <div class="history-showcase">
-          <article class="history-main-card reveal" data-reveal-order="1">
+          <a href="content/yazılar/index.html" class="history-main-card reveal" data-reveal-order="1" style="cursor: pointer; text-decoration: none; color: inherit; display: block;">
             <div class="history-main-media">
               <img src="assets/img/tsglFoto2.png" alt="Okulumuzun tarihi binası" loading="lazy" />
-              <span class="history-badge">Okulumuzdan</span>
+              <span class="history-badge">Yazılar</span>
             </div>
             <div class="history-main-body">
-              <h3>Milli Bayramlar ve TSG Geleneği</h3>
-              <p>Mersin'de stadyum yokken 19 Mayis ve diger milli bayramlar okul bahcesinde kutlanirdi. Bu gelenek, okulun kulturunu ve birlik ruhunu bugune tasiyor.</p>
+              <h3>TSGL'den İlham Veren Yazılar</h3>
+              <p>Okulumuzun ve Derneğimizin hikayelerini, mezunlarımızin deneyimlerini ve ilham veren basari yazilarini bir araya getiriyoruz.</p>
               <time datetime="2025-07-17">Temmuz 17, 2025</time>
-              <a class="btn primary" href="/okulumuz" data-link style="margin-top: 16px;">Devamini Oku</a>
+              <span class="btn primary" style="margin-top: 16px; display: inline-block;">Tüm Yazılar</span>
             </div>
-          </article>
+          </a>
 
-          <div class="history-side-list reveal" data-reveal-order="2">
-            <a class="history-side-card" href="/etkinlikler" data-link>
+          <div id="recent-posts-list" class="history-side-list reveal" data-reveal-order="2">
+            <a class="history-side-card" href="content/yazılar/index.html">
               <img src="assets/img/tsglFoto3.png" alt="Yonetim kurulu bulusmasi" loading="lazy" />
               <div class="history-side-body">
-                <h4>Yonetim Kurulu Pilav Gununde</h4>
+                <h4>Atatürk ve Tarih</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
-                <p>Mezunlar bulusmasinda dayanisma ve geleneksel etkinlik ruhu.</p>
+                <p>Ataturk’un mirasi ve okul kulturumuze yansiyan tarihsel izler.</p>
               </div>
             </a>
-            <a class="history-side-card" href="/duyurular" data-link>
+            <a class="history-side-card" href="content/yazılar/index.html">
               <img src="assets/img/tsglFoto.png" alt="Fizik laboratuvari yenileme" loading="lazy" />
               <div class="history-side-body">
-                <h4>Fizik Laboratuvari Yenilendi</h4>
+                <h4>Egitim</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
-                <p>Mezun destegiyle laboratuvar modern cihazlarla guclendirildi.</p>
+                <p>Ogrenci ve mezunlarimizin egitim yolculuklarindan notlar.</p>
               </div>
             </a>
-            <a class="history-side-card" href="/duyurular" data-link>
+            <a class="history-side-card" href="content/yazılar/index.html">
               <img src="assets/img/anılar.jpg" alt="Okul anilari" loading="lazy" />
               <div class="history-side-body">
-                <h4>Hepinize Iyi Tatiller</h4>
+                <h4>Iklim ve Cevre</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
-                <p>Yil boyunca emek veren ogrencilerimize keyifli bir ara.</p>
+                <p>Okulumuzun cevre bilinci ve surdurulebilirlik calismalari.</p>
               </div>
             </a>
-            <a class="history-side-card" href="/basari-oykuleri" data-link>
+            <a class="history-side-card" href="content/yazılar/index.html">
               <img src="assets/img/tsglFoto2.png" alt="Basari hikayeleri" loading="lazy" />
               <div class="history-side-body">
-                <h4>Mezun Basari Hikayeleri</h4>
+                <h4>Kultur - Sanat ve Gezi</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
-                <p>Farkli alanlarda on plana cikan mezunlarimizin oykuleri.</p>
+                <p>Sanat, kultur ve gezi deneyimlerini paylastigimiz yazi dizisi.</p>
               </div>
             </a>
-            <a class="history-side-card" href="/okulumuz" data-link>
+            <a class="history-side-card" href="content/yazılar/index.html">
               <img src="assets/img/tsglFoto3.png" alt="Okuldan guncel haber" loading="lazy" />
               <div class="history-side-body">
-                <h4>Okulumuzdan Guncel Haber</h4>
+                <h4>Toplum</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
-                <p>Okulumuzda gerceklesen son gelismeler ve etkinlik ozeti.</p>
+                <p>Topluma katki saglayan projeler ve dayanisma hikayeleri.</p>
               </div>
             </a>
           </div>
@@ -476,7 +486,6 @@
           </article>
         </div>
         <div style="text-align: center; margin-top: 32px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-          <a href="/kayit" data-link class="btn primary">Üye Ol</a>
           <a href="/bagis" data-link class="btn primary">Aidat Öde</a>
         </div>
       </div>
@@ -525,7 +534,6 @@
             <li><a href="/okulumuz.html" data-link>Okulumuz</a></li>
             <li><a href="/burs.html" data-link>Burslar</a></li>
             <li><a href="/iletisim.html" data-link>İletişim</a></li>
-            <li><a href="/kayit.html" data-link>Üyelik</a></li>
             <li><a href="/bagis.html" data-link>Bağış & Aidat</a></li>
           </ul>
         </div>
@@ -620,11 +628,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <!-- Project Firebase config (fill in credentials) -->
 
   <script src="assets/js/firebase-config.js?v=2.0"></script>
   <!-- Auth module -->
-  <script src="assets/js/auth.js?v=2.0"></script>
+  <script src="assets/js/auth.js?v=2.1"></script>
   <!-- Main app -->
   <script src="assets/js/main.js?v=3.0"></script>
 </body>

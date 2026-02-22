@@ -82,7 +82,11 @@
   top: 0; 
   z-index: 50; 
   backdrop-filter: saturate(140%) blur(10px); 
-  background: rgba(255,255,255,0.98); 
+  background: rgba(255,255,255,0.80); 
+  background-image: url('../img/ataturk.jpg');
+  background-size: cover;
+  background-position: center 70%;
+  background-attachment: fixed;
   border-bottom: 1px solid rgba(212,175,55,0.15); 
   box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
   animation: fadeInDown 600ms ease-out; 
@@ -327,16 +331,146 @@
 
 /* Basit responsive düzenlemeler */
 @media (max-width: 1024px) {
+  /* Hamburger menü göster - Tablet için */
+  .mobile-menu-toggle {
+    display: flex !important;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 100005;
+    width: 48px;
+    height: 48px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.93);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-nav-overlay {
+    display: block;
+  }
+
+  .nav-left {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 320px;
+    height: 100vh;
+    background: white;
+    z-index: 100000;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 0 32px;
+    overflow-y: auto;
+    transition: left 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .nav-left.mobile-active {
+    left: 0;
+  }
+
+  .site-nav {
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-nav ul {
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-nav li {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .site-nav a {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    border-radius: 0;
+  }
+
+  .nav-dropdown > a {
+    width: 100%;
+    padding: 16px 24px;
+    justify-content: space-between;
+  }
+
+  .nav-submenu {
+    position: static;
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 0;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: none;
+    background: #f9f9f9;
+  }
+
+  .nav-submenu.submenu-2col,
+  .nav-submenu.submenu-1col {
+    display: none;
+    grid-template-columns: 1fr;
+  }
+
+  .nav-dropdown.open .nav-submenu {
+    display: grid !important;
+  }
+
+  .nav-submenu a,
+  .nav-submenu .submenu-card {
+    padding: 14px 32px;
+    font-size: 15px;
+  }
+
   .nav-wrap {
-    grid-template-columns: minmax(240px, 1fr) 180px minmax(300px, 1fr);
-    gap: 20px;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
     padding: 0 16px;
   }
-  .nav-left { gap: 14px; }
-  .right-nav ul, .left-nav ul { gap: 22px; }
-  .nav-right { padding-right: clamp(40px, 9vw, 140px); }
+  
+  .nav-right {
+    margin-left: auto;
+    gap: 12px;
+    padding-right: 60px;
+  }
+
+  .nav-donation {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
   
   .announcement-text { font-size: 12px; }
+
+  /* Logo scaling için tablet */
+  .site-header.is-top .brand-logo {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  .site-header.is-scrolled .brand-logo {
+    width: 45px !important;
+    height: 45px !important;
+  }
+
+  .brand-logo {
+    width: 65px !important;
+    height: 65px !important;
+  }
 }
 
 @media (max-width: 768px) {

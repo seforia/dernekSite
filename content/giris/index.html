@@ -1,33 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Üye Girişi - TSGL Derneği</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/styles-updates.css">
+</head>
+<body>
+
 <section class="page-hero">
   <div class="container">
-    <h1>Giriş Yap</h1>
-    <p>Onaylı hesabınızla giriş yapın.</p>
+    <h1>Üye Girişi</h1>
+    <p>Hesabınızla giriş yapın veya yeni üye olun.</p>
   </div>
 </section>
 
 <section class="section" aria-labelledby="login-title">
   <div class="container">
+    <!-- Giriş Formu -->
     <div class="section-header">
-      <h2 id="login-title">Üyelik Girişi</h2>
-      <p>Giriş için e-posta ve şifrenizi giriniz.</p>
+      <h2 id="login-title">Giriş Yap</h2>
+      <p>Onaylı hesabınızla giriş için e-posta ve şifrenizi giriniz.</p>
     </div>
 
     <form id="login-form" class="form-wrapper card reveal" data-reveal-order="0">
       <div class="form-row two-cols">
         <div class="form-field">
-          <label for="email">E-posta</label>
-          <input type="email" id="email" name="email" required placeholder="ornek@domain.com" />
+          <label for="login-email">E-posta</label>
+          <input type="email" id="login-email" name="email" required placeholder="ornek@domain.com" />
         </div>
         <div class="form-field">
-          <label for="password">Şifre</label>
-          <input type="password" id="password" name="password" required placeholder="••••••••" />
+          <label for="login-password">Şifre</label>
+          <input type="password" id="login-password" name="password" required placeholder="••••••••" />
         </div>
       </div>
       <div class="form-actions">
         <button type="submit" class="btn primary">Giriş Yap</button>
-        <a href="/kayit.html" data-link class="btn ghost">Hesabım yok</a>
       </div>
       <div id="login-msg" class="form-info" aria-live="polite" style="margin-top:12px;"></div>
     </form>
+
+    <!-- Ayırıcı -->
+    <div style="text-align: center; margin: 3rem 0; position: relative;">
+      <div style="border-top: 1px solid #e0e0e0; position: absolute; width: 100%; top: 50%;"></div>
+      <span style="background: #f5f5f5; padding: 0 1rem; position: relative; color: #666; font-weight: 500;">VEYA</span>
+    </div>
+
+    <!-- Kayıt Formu -->
+    <div class="section-header">
+      <h2 id="signup-title">Yeni Üye Ol</h2>
+      <p>Derneğimize üye olmak için aşağıdaki formu doldurun. Başvurunuz yönetici onayından sonra aktif olacaktır.</p>
+    </div>
+
+    <form id="signup-form" class="form-wrapper card reveal" data-reveal-order="1">
+      <div class="form-row two-cols">
+        <div class="form-field">
+          <label for="signup-name">Ad Soyad *</label>
+          <input type="text" id="signup-name" name="name" required placeholder="Adınız Soyadınız" />
+        </div>
+        <div class="form-field">
+          <label for="signup-email">E-posta *</label>
+          <input type="email" id="signup-email" name="email" required placeholder="ornek@domain.com" />
+        </div>
+      </div>
+      <div class="form-row two-cols">
+        <div class="form-field">
+          <label for="signup-password">Şifre (en az 6 karakter) *</label>
+          <input type="password" id="signup-password" name="password" required placeholder="••••••••" minlength="6" />
+        </div>
+        <div class="form-field">
+          <label for="signup-password-confirm">Şifre Tekrar *</label>
+          <input type="password" id="signup-password-confirm" name="passwordConfirm" required placeholder="••••••••" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Üye Ol</button>
+      </div>
+      <div id="signup-msg" class="form-info" aria-live="polite" style="margin-top:12px;"></div>
+    </form>
+
+    <div class="form-info" style="margin-top: 2rem; background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 4px;">
+      <p><strong>📌 Önemli:</strong> Kayıt işleminiz tamamlandıktan sonra yönetici onayı beklemelisiniz. Başvurunuz incelendikten sonra e-posta ile bilgilendirileceksiniz.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="../../index.html" class="btn secondary">← Ana Sayfaya Dön</a>
+    </div>
   </div>
 </section>
+
+<!-- Firebase and Auth Scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script src="../../assets/js/firebase-config.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="giris.js"></script>
+
+</body>
+</html>

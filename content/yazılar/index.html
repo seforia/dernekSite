@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta http-equiv="Content-Language" content="tr" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <meta name="theme-color" content="#153aa1" />
+  <meta name="description" content="Tevfik Sırrı Gür Lisesi Derneği - Üyeler tarafından yayınlanan yazılar" />
+  <title>Yazılar - Tevfik Sırrı Gür Lisesi Derneği</title>
+  <link rel="icon" href="../../assets/img/tsglLogo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+  <link rel="stylesheet" href="../../assets/css/styles-updates.css" />
+  <link rel="stylesheet" href="../../assets/css/hero-mobile.css" />
+  <link rel="stylesheet" href="../../assets/css/posts-modern.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <script src="../../assets/js/firebase-config.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+</head>
+<body>
+  <!-- Page Loader -->
+  <div class="page-loader" id="page-loader">
+    <div class="spinner-container">
+      <div class="modern-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <div class="spinner-text">Yükleniyor...</div>
+    </div>
+  </div>
+
+  <div class="scroll-progress-container" id="scrollProgress">
+    <svg class="scroll-progress-ring" width="56" height="56">
+      <circle class="scroll-progress-bg" cx="28" cy="28" r="26"></circle>
+      <circle class="scroll-progress-bar" cx="28" cy="28" r="26" id="progressCircle"></circle>
+    </svg>
+  </div>
+  
+  <button class="scroll-to-top-button" id="scroll-up-btn" aria-label="Yukarı çık" title="Başa dön"></button>
+
+  <a class="skip-link" href="#main">İçeriğe geç</a>
+
+  <div class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-spacer"></div>
+      <p class="announcement-text">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
+      <p class="announcement-text-short">TSGL DERNEĞİ</p>
+      <div class="announcement-actions">
+        <a href="../../index.html#giris" class="announcement-link">
+          <img src="../../assets/img/login_4043192.png" alt="" class="login-image" />
+          <span class="login-text">Giriş Yap</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header" role="banner">
+    <div class="container nav-wrap">
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menü" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-left">
+        <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
+          <ul>
+            <li><a href="../../index.html">Ana Sayfa</a></li>
+            <li><a href="index.html" class="active">Yazılar</a></li>
+            <li><a href="../../index.html#hakkimizda">Hakkımızda</a></li>
+            <li><a href="../../index.html#iletisim">İletişim</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-logo">
+        <a href="../../index.html" class="brand floating-brand">
+          <img src="../../assets/img/tsglLogo.png" alt="TSGL Logo" class="brand-logo">
+        </a>
+      </div>
+      <div class="nav-right">
+        <div id="auth-ui" class="auth-ui"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="posts-page">
+    <!-- Page Header -->
+    <section class="posts-hero">
+      <div class="container">
+        <h1>Yazılar</h1>
+        <p>Derneğin üyeleri tarafından yayınlanan yazılar</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="posts-container">
+      <div class="container posts-grid">
+        <!-- Sidebar -->
+        <aside class="posts-sidebar">
+          <div class="sidebar-section">
+            <h3>Kategoriler</h3>
+            <div id="categories-filter" class="categories-list">
+              <button class="category-btn active" data-category="all">
+                Tümü <span class="category-count">(0)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3>Arama</h3>
+            <input 
+              type="text" 
+              id="search-input" 
+              class="search-input" 
+              placeholder="Yazıları ara..." 
+              aria-label="Yazıları ara"
+            />
+          </div>
+
+          <div class="sidebar-section" id="user-actions" style="display: none;">
+            <button id="new-post-btn" class="btn primary full-width">
+              + Yeni Yazı Ekle
+            </button>
+          </div>
+        </aside>
+
+        <!-- Posts List -->
+        <section class="posts-main">
+          <!-- Featured Post -->
+          <div id="featured-post-container" style="display: none;"></div>
+
+          <!-- New Post Form (Hidden by default) -->
+          <div id="new-post-form-container" class="new-post-form-container" style="display: none;">
+            <h2>Yeni Yazı Yayınla</h2>
+            <form id="new-post-form" class="post-form">
+                <div class="form-group">
+                  <label for="post-title">Yazı Başlığı</label>
+                  <input 
+                    type="text" 
+                    id="post-title" 
+                    name="title" 
+                    required 
+                    placeholder="Başlık"
+                    maxlength="100"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="post-category">Kategori</label>
+                  <select id="post-category" name="category" required>
+                    <option value="">Kategori Seçiniz</option>
+                    <option value="Genel">Genel</option>
+                    <option value="Etkinlik">Etkinlik</option>
+                    <option value="Haber">Haber</option>
+                    <option value="Deneyim">Deneyim</option>
+                    <option value="Eğitim">Eğitim</option>
+                    <option value="Diğer">Diğer</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="post-content">Yazı İçeriği</label>
+                  <textarea 
+                    id="post-content" 
+                    name="content" 
+                    required 
+                    rows="8"
+                    placeholder="Yazının içeriğini yazınız..."
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="post-image">Yazı Görselleri (opsiyonel, birden fazla seçebilirsiniz)</label>
+                  <input 
+                    type="file" 
+                    id="post-image" 
+                    name="image" 
+                    accept="image/*"
+                    multiple
+                  />
+                  <small style="color: #666; font-size: 0.85rem; margin-top: 4px; display: block;">Her görsel maksimum 5MB olmalıdır</small>
+                  <div class="image-preview-grid" id="image-preview-grid" style="display: none; margin-top: 12px;"></div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn primary">Yayınla</button>
+                  <button type="button" id="cancel-post-btn" class="btn secondary">İptal</button>
+                </div>
+              </form>
+          </div>
+
+          <!-- Posts List -->
+          <div id="posts-list" class="posts-list">
+            <div class="loading">Yazılar yükleniyor...</div>
+          </div>
+
+          <!-- Load More Button -->
+          <div id="load-more-container" class="load-more-container" style="display: none;">
+            <button id="load-more-btn" class="btn secondary">Daha Fazla Yükle</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Post Detail Modal -->
+    <div id="post-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">×</button>
+        
+        <div id="post-detail-container">
+          <!-- Post detail will be loaded here -->
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+          <h3>Yorumlar</h3>
+          
+          <!-- New Comment Form (for logged-in users) -->
+          <div id="comment-form-container" class="comment-form-container" style="display: none;">
+            <form id="new-comment-form" class="comment-form">
+              <textarea 
+                id="comment-content" 
+                name="content" 
+                required 
+                rows="3"
+                placeholder="Bir yorum yazınız..."
+              ></textarea>
+              <button type="submit" class="btn primary">Yorum Yap</button>
+            </form>
+          </div>
+
+          <!-- Comments List -->
+          <div id="comments-list" class="comments-list">
+            <div class="loading">Yorumlar yükleniyor...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2024 Tevfik Sırrı Gür Lisesi Derneği. Tüm hakları saklıdır.</p>
+    </div>
+  </footer>
+
+  <script defer src="../../assets/js/posts-page.js"></script>
+  <script>
+    // Standalone scroll handlers for posts page
+    (function() {
+      const header = document.querySelector('.site-header');
+      const scrollUpBtn = document.getElementById('scroll-up-btn');
+      const progressContainer = document.getElementById('scrollProgress');
+      const progressCircle = document.getElementById('progressCircle');
+      
+      if (header) {
+        header.classList.add('is-scrolled');
+      }
+      
+      let lastScroll = 0;
+      
+      function updateScrollUI() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Header behavior
+        if (header) {
+          if (currentScroll > lastScroll && currentScroll > 100) {
+            header.classList.add('hide-header');
+          } else {
+            header.classList.remove('hide-header');
+          }
+          
+          header.classList.toggle('is-top', currentScroll < 48);
+          header.classList.toggle('is-scrolled', currentScroll >= 48);
+        }
+        
+        // Scroll progress
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
+        
+        if (progressCircle) {
+          const circumference = 2 * Math.PI * 26;
+          const offset = circumference - (scrollPercent / 100) * circumference;
+          progressCircle.style.strokeDashoffset = offset;
+        }
+        
+        // Show/hide scroll button
+        if (scrollUpBtn && progressContainer) {
+          if (currentScroll > 300) {
+            scrollUpBtn.style.display = 'flex';
+            progressContainer.style.display = 'block';
+          } else {
+            scrollUpBtn.style.display = 'none';
+            progressContainer.style.display = 'none';
+          }
+        }
+        
+        lastScroll = currentScroll;
+      }
+      
+      // Scroll to top
+      if (scrollUpBtn) {
+        scrollUpBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      
+      // Init progress circle
+      if (progressCircle) {
+        const circumference = 2 * Math.PI * 26;
+        progressCircle.style.strokeDasharray = circumference;
+        progressCircle.style.strokeDashoffset = circumference;
+      }
+      
+      window.addEventListener('scroll', updateScrollUI, { passive: true });
+      updateScrollUI();
+      
+      // Mobile menu
+      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      const navLeft = document.querySelector('.nav-left');
+      
+      if (mobileToggle && navLeft) {
+        mobileToggle.addEventListener('click', () => {
+          const isOpen = navLeft.classList.toggle('open');
+          mobileToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
