@@ -300,7 +300,7 @@
       e.preventDefault();
     }
     
-    e.stopImmediatePropagation();
+    e.stopPropagation();
     
     const dropdown = trigger.closest('.nav-dropdown');
     if (!dropdown) return;
@@ -319,7 +319,7 @@
       dropdown.classList.add('open');
       trigger.setAttribute('aria-expanded', 'true');
     }
-  }, true);
+  });
 
   // MOBILE: Close submenu items and navigate
   document.addEventListener('click', (e) => {
@@ -341,7 +341,7 @@
         smoothScroll(footer.offsetTop - 80, 1500);
       }
     }
-  }, true);
+  });
 
   // DESKTOP: Hover support for dropdowns
   document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
