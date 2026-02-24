@@ -3,10 +3,27 @@
 
   const signupForm = document.getElementById('signup-form');
   const signupMsg = document.getElementById('signup-msg');
+  const signupBtn = document.getElementById('signupBtn');
+  const consentCheckbox = document.getElementById('membershipConsent');
 
   if (!signupForm) {
     console.warn('Kayıt formu bulunamadı');
     return;
+  }
+
+  // Onay kutucugu kontrolü - butonu aktif/pasif yap
+  if (consentCheckbox && signupBtn) {
+    consentCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        signupBtn.disabled = false;
+        signupBtn.style.opacity = '1';
+        signupBtn.style.cursor = 'pointer';
+      } else {
+        signupBtn.disabled = true;
+        signupBtn.style.opacity = '0.5';
+        signupBtn.style.cursor = 'not-allowed';
+      }
+    });
   }
 
   signupForm.addEventListener('submit', async (e) => {

@@ -22,9 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="assets/css/styles.css?v=6.3" />
-  <link rel="stylesheet" href="assets/css/styles-updates.css?v=6.3" />
-  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=6.3" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=15.0">
+  <link rel="stylesheet" href="assets/css/styles-updates.css?v=9.0">
+  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=8.0" />
 </head>
 <body>
   <!-- Modern Page Loader -->
@@ -42,16 +42,6 @@
   <!-- Confetti Container -->
   <div class="confetti-container" id="confetti-container"></div>
 
-  <!-- Scroll Progress & Scroll to Top -->
-  <div class="scroll-progress-container" id="scrollProgress">
-    <svg class="scroll-progress-ring" width="56" height="56">
-      <circle class="scroll-progress-bg" cx="28" cy="28" r="26"></circle>
-      <circle class="scroll-progress-bar" cx="28" cy="28" r="26" id="progressCircle"></circle>
-    </svg>
-  </div>
-  
-  <button class="scroll-to-top-button" id="scroll-up-btn" aria-label="Yukarı çık" title="Başa dön" style="position: fixed; bottom: 30px; right: 30px; width: 40px; height: 40px; background: #153aa1; border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); opacity: 1 !important; visibility: visible !important;"></button>
-
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
   <div class="announcement-bar" role="region" aria-label="Üst duyuru">
@@ -68,13 +58,20 @@
     </div>
   </div>
 
+  <!-- Karartma overlay — hamburger menü için -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
   <header class="site-header" role="banner">
     <div class="container nav-wrap">
-      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menü" aria-expanded="false">
+
+      <!-- 1. HAMBURGERBUTOn -->
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
+
+      <!-- 2. SOL NAV PANELİ -->
       <div class="nav-left">
         <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
           <ul>
@@ -131,7 +128,10 @@
               </div>
             </li>
 
-            <!-- Duyurular Dropdown -->
+            <!-- Mobilde görünen ek butonlar -->
+            <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(21,58,161,0.15);"></li>
+            
+            <!-- Duyurular Dropdown (mobilde) -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">Duyurular</a>
               <div class="nav-submenu mega-menu submenu-1col">
@@ -153,23 +153,23 @@
                 </a>
               </div>
             </li>
-
-            <!-- Mobilde görünen ek butonlar -->
-            <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.2);"></li>
-            <li class="mobile-only"><a href="/giris.html" data-link class="nav-mobile-action">🔐 Üye Girişi</a></li>
+            
             <li class="mobile-only"><a href="/burs.html" data-link class="nav-mobile-action">Burs Başvurusu</a></li>
             <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">Bağış & Aidat</a></li>
           </ul>
         </nav>
-      </div>
-      <a class="brand floating-brand" href="/" data-link aria-label="Ana sayfa">
-        <img src="assets/img/tsglLogo.png" alt="TSGL Derneği Logosu" class="brand-logo" />
+      </div><!-- /nav-left -->
+
+      <!-- 3. LOGO (ortada) -->
+      <a class="floating-brand" href="/" data-link aria-label="Ana sayfa">
+        <img src="assets/img/tsglLogo.png" alt="TSGL Logosu" class="brand-logo" />
       </a>
+
+      <!-- 4. SAĞ NAV -->
       <div class="nav-right">
         <nav class="site-nav right-nav" role="navigation" aria-label="Sağ menü">
           <ul>
             <li><a href="/burs.html" data-link>Burs Başvurusu</a></li>
-            <li><a href="/giris.html" data-link>Üye Girişi</a></li>
             
             <!-- Duyurular Dropdown -->
             <li class="nav-dropdown">
@@ -499,7 +499,8 @@
     <div class="cookie-consent-container">
       <div class="cookie-consent-text">
         <strong>🍪 Çerez Kullanımı</strong>
-        <p>Web sitemizde deneyiminizi geliştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımını kabul etmiş olursunuz.</p>
+        <p>Web sitemizde deneyiminizi geliştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımını kabul etmiş olursunuz. 
+        <a href="content/gizlilik/" style="color: #d4af37; text-decoration: underline;">Detaylı Bilgi</a></p>
       </div>
       <div class="cookie-consent-actions">
         <button class="cookie-btn cookie-btn-accept" id="cookie-accept">Kabul Et</button>
@@ -580,6 +581,10 @@
       <div class="footer-bottom">
         <div class="footer-copyright">
           <p>©<span id="y"></span> Tevfik Sırrı Gür Lisesi Derneği. Her Hakkı Saklıdır.</p>
+          <p style="margin-top: 8px; font-size: 14px;">
+            <a href="content/gizlilik/" style="color: #d4af37; text-decoration: none; margin-right: 15px;">Gizlilik Politikası</a>
+            <a href="content/gizlilik/" style="color: #d4af37; text-decoration: none;">Çerez Politikası</a>
+          </p>
         </div>
         <div class="footer-social">
           <a href="#" class="social-btn" aria-label="Facebook" title="Facebook">
@@ -605,9 +610,9 @@
   </footer>
 
   <!-- Scroll to Top Button -->
-  <button id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Yukarı Kaydır" title="Başa Dön">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="18 15 12 9 6 15"></polyline>
+  <button id="scrollToTop" aria-label="Sayfanın başına git" title="Yukarı Çık">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 15 L12 8 L19 15" />
     </svg>
   </button>
 
@@ -631,10 +636,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <!-- Project Firebase config (fill in credentials) -->
 
-  <script src="assets/js/firebase-config.js?v=2.0"></script>
+  <script src="assets/js/firebase-config.js?v=4.0"></script>
   <!-- Auth module -->
-  <script src="assets/js/auth.js?v=2.1"></script>
+  <script src="assets/js/auth.js?v=4.0"></script>
   <!-- Main app -->
-  <script src="assets/js/main.js?v=3.0"></script>
+  <script src="assets/js/main.js?v=11.0"></script>
 </body>
 </html>

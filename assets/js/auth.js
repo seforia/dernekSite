@@ -114,9 +114,9 @@
   }
 
   // Sign up with approval flow
-  async function signUp({ name, email, password }) {
+  async function signUp({ name, email, graduationYear, password }) {
     try {
-      console.log('🔍 signUp: Firebase Auth createUser başlıyor...', { name, email });
+      console.log('🔍 signUp: Firebase Auth createUser başlıyor...', { name, email, graduationYear });
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       console.log('✅ signUp: Firebase Auth başarılı, UID:', cred.user.uid);
       
@@ -128,6 +128,7 @@
         uid: cred.user.uid,
         name,
         email,
+        graduationYear,
         status: 'pending',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -192,6 +193,11 @@
       throw new Error('Yazı eklemek için hesabınızın onaylanması gerekiyor.');
     }
 
+    // Kullanıcının mezuniyet yılını çek
+    const userDoc = await db.collection('users').doc(currentUser.uid).get();
+    const userData = userDoc.data();
+    const graduationYear = userData?.graduationYear || '';
+
     // Backward compatibility: imageUrl (single) veya imageUrls (array)
     let finalImageUrls = null;
     if (imageUrls && Array.isArray(imageUrls) && imageUrls.length > 0) {
@@ -205,6 +211,7 @@
       userId: currentUser.uid,
       authorName: currentUser.displayName || 'Anonim',
       authorEmail: currentUser.email,
+      authorGraduationYear: graduationYear,
       title: title.trim(),
       content: content.trim(),
       category: category.trim(),

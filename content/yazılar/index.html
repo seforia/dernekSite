@@ -104,8 +104,11 @@
         <!-- Sidebar -->
         <aside class="posts-sidebar">
           <div class="sidebar-section">
-            <h3>Kategoriler</h3>
-            <div id="categories-filter" class="categories-list">
+            <div class="categories-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 12px;" id="categories-toggle">
+              <h3 style="margin: 0;">Kategoriler</h3>
+              <span class="toggle-icon" style="font-size: 1.2em; transition: transform 0.3s; transform: rotate(-90deg);">▼</span>
+            </div>
+            <div id="categories-filter" class="categories-list" style="display: none;">
               <button class="category-btn active" data-category="all">
                 Tümü <span class="category-count">(0)</span>
               </button>

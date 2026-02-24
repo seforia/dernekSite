@@ -1,8 +1,38 @@
 (function() {
   'use strict';
 
+  // Admin UID - Sadece bu kullanıcı admin sayfasına erişebilir
+  const ADMIN_UID = '2iN63xcdOGUNQJWp3Ia4ws0EYys2';
+
   let allUsers = [];
   let currentTab = 'pending';
+
+  // Admin kontrolü
+  function checkAdminAccess() {
+    if (!window.TSGLAuth || !window.TSGLAuth.isReady()) {
+      return false;
+    }
+
+    const currentUser = window.TSGLAuth.auth.currentUser;
+    
+    if (!currentUser) {
+      showError('Bu sayfayı görüntülemek için giriş yapmalısınız.');
+      setTimeout(() => {
+        window.location.href = '../../index.html';
+      }, 2000);
+      return false;
+    }
+
+    if (currentUser.uid !== ADMIN_UID) {
+      showError('⛔ Bu sayfaya erişim yetkiniz yok. Yalnızca yöneticiler erişebilir.');
+      setTimeout(() => {
+        window.location.href = '../../index.html';
+      }, 2000);
+      return false;
+    }
+
+    return true;
+  }
 
   // Tab switching
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -41,9 +71,8 @@
       return;
     }
 
-    // Check if user is logged in (admin check can be added here)
-    if (!window.TSGLAuth.auth.currentUser) {
-      showError('Bu sayfayı görüntülemek için giriş yapmalısınız.');
+    // Admin kontrolü
+    if (!checkAdminAccess()) {
       return;
     }
 
@@ -179,8 +208,28 @@
     return div.innerHTML;
   }
 
+  // Firebase hazır olduğunda admin kontrolü yap ve sayfayı yükle
+  function initAdminPage() {
+    if (!window.TSGLAuth || !window.TSGLAuth.isReady()) {
+      setTimeout(initAdminPage, 100);
+      return;
+    }
+
+    // Auth state değişikliklerini dinle
+    window.TSGLAuth.auth.onAuthStateChanged((user) => {
+      if (checkAdminAccess()) {
+        // Erişim kontrolü geçti, admin içeriğini göster
+        const accessCheck = document.getElementById('access-check');
+        const adminContent = document.getElementById('admin-content');
+        
+        if (accessCheck) accessCheck.style.display = 'none';
+        if (adminContent) adminContent.style.display = 'block';
+        
+        loadUsers('pending');
+      }
+    });
+  }
+
   // Initial load
-  setTimeout(() => {
-    loadUsers('pending');
-  }, 500);
+  initAdminPage();
 })();

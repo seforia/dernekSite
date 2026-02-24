@@ -147,6 +147,21 @@
 
   // Setup event listeners
   function setupEventListeners() {
+    // Categories toggle
+    const categoriesToggle = document.getElementById('categories-toggle');
+    const categoriesFilter = document.getElementById('categories-filter');
+    const toggleIcon = document.querySelector('.toggle-icon');
+    
+    if (categoriesToggle && categoriesFilter) {
+      categoriesToggle.addEventListener('click', () => {
+        const isVisible = categoriesFilter.style.display !== 'none';
+        categoriesFilter.style.display = isVisible ? 'none' : 'block';
+        if (toggleIcon) {
+          toggleIcon.style.transform = isVisible ? 'rotate(-90deg)' : 'rotate(0deg)';
+        }
+      });
+    }
+
     // New post button
     document.getElementById('new-post-btn')?.addEventListener('click', showNewPostForm);
 
@@ -360,7 +375,7 @@
         <div class="post-meta">
           <div class="post-author-info">
             <div class="post-avatar">${escapeHtml(initials)}</div>
-            <span>${escapeHtml(post.authorName)}</span>
+            <span>${escapeHtml(post.authorName)}${post.authorGraduationYear ? ` (${post.authorGraduationYear})` : ''}</span>
           </div>
           <span class="post-reading-time">⏱️ ${readingTime} dk</span>
         </div>
@@ -426,7 +441,7 @@
           <div class="featured-author">
             <div class="featured-avatar">${escapeHtml(initials)}</div>
             <div>
-              <div style="font-weight: 700; color: #1a1a1a;">${escapeHtml(post.authorName)}</div>
+              <div style="font-weight: 700; color: #1a1a1a;">${escapeHtml(post.authorName)}${post.authorGraduationYear ? ` (${post.authorGraduationYear})` : ''}</div>
               <div style="font-size: 0.85rem; color: #999;">📅 ${formatDate(post.createdAt)}</div>
             </div>
           </div>
@@ -534,7 +549,7 @@
         <article class="post-detail">
           <h2>${escapeHtml(fullPost.title)}</h2>
           <div class="post-detail-meta">
-            <span>👤 ${escapeHtml(fullPost.authorName)}</span>
+            <span>👤 ${escapeHtml(fullPost.authorName)}${fullPost.authorGraduationYear ? ` (${fullPost.authorGraduationYear})` : ''}</span>
             <span>📁 ${escapeHtml(fullPost.category)}</span>
             <span>📅 ${formatDate(fullPost.createdAt)}</span>
             <span>👁️ ${fullPost.viewCount || 0}</span>
@@ -1354,8 +1369,38 @@
 
   // Update category counts
   async function updateCategoryCounts() {
-    // This would require querying each category count
-    // For now, we'll keep it simple
+    try {
+      // Tüm postları al
+      const allPostsResult = await window.TSGLAuth.getPosts(1000);
+      const allPosts = allPostsResult.posts;
+      
+      // Kategorilere göre say
+      const categoryCounts = {};
+      allPosts.forEach(post => {
+        const cat = post.category || 'Diğer';
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      });
+      
+      // Tümü sayısını güncelle
+      const allBtn = document.querySelector('.category-btn[data-category="all"] .category-count');
+      if (allBtn) {
+        allBtn.textContent = `(${allPosts.length})`;
+      }
+      
+      // Her kategori butonunun sayısını güncelle
+      document.querySelectorAll('.category-btn[data-category]').forEach(btn => {
+        const category = btn.dataset.category;
+        if (category !== 'all') {
+          const countSpan = btn.querySelector('.category-count');
+          if (countSpan) {
+            const count = categoryCounts[category] || 0;
+            countSpan.textContent = `(${count})`;
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Kategori sayıları güncellenirken hata:', error);
+    }
   }
 
   // Utility functions

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Paneli - Üye Onayları</title>
   <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/styles-updates.css">
   <style>
     .admin-container {
       max-width: 1200px;
@@ -188,13 +189,38 @@
   </style>
 </head>
 <body>
+  <!-- Admin Header -->
+  <div class="announcement-bar" style="background: #1e40af;">
+    <div class="container announcement-inner">
+      <div class="announcement-spacer"></div>
+      <p class="announcement-text" style="color: white; font-weight: 600;">TSGL DERNEĞİ - YÖNETİM PANELİ</p>
+      <p class="announcement-text-short" style="color: white;">ADMIN</p>
+      <div class="announcement-actions">
+        <a href="../../index.html" class="announcement-link" style="background: rgba(255,255,255,0.2);">
+          <span class="login-text" style="color: white;">← Ana Sayfa</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="admin-container">
     <div class="admin-header">
-      <h1>👤 Üye Yönetimi</h1>
-      <p>Bekleyen üyelik başvurularını onaylayın veya reddedin</p>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1>👤 Üye Yönetimi</h1>
+          <p>Bekleyen üyelik başvurularını onaylayın veya reddedin</p>
+        </div>
+        <a href="../../index.html" class="btn secondary" style="text-decoration: none;">← Geri Dön</a>
+      </div>
     </div>
 
     <div id="error-msg" class="error-message" style="display: none;"></div>
+
+    <div id="access-check" class="loading" style="text-align: center; padding: 3rem; color: #0066cc;">
+      <p>🔒 Yetki kontrolü yapılıyor...</p>
+    </div>
+
+    <div id="admin-content" style="display: none;">
 
     <div class="user-tabs">
       <button class="tab-btn active" data-tab="pending">Bekleyen Başvurular</button>
@@ -222,7 +248,9 @@
       <div class="loading">Yükleniyor...</div>
       <div class="users-grid"></div>
     </div>
-  </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-container -->
 
   <!-- Firebase and Auth Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>

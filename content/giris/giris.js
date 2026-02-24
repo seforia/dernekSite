@@ -60,16 +60,35 @@
 
   // === KAYIT FORMU ===
   if (signupForm) {
+    const signupBtn = document.getElementById('signupBtn');
+    const signupConsent = document.getElementById('signupConsent');
+
+    // Onay kutucugu kontrolü - butonu aktif/pasif yap
+    if (signupConsent && signupBtn) {
+      signupConsent.addEventListener('change', function() {
+        if (this.checked) {
+          signupBtn.disabled = false;
+          signupBtn.style.opacity = '1';
+          signupBtn.style.cursor = 'pointer';
+        } else {
+          signupBtn.disabled = true;
+          signupBtn.style.opacity = '0.5';
+          signupBtn.style.cursor = 'not-allowed';
+        }
+      });
+    }
+
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const name = document.getElementById('signup-name').value.trim();
       const email = document.getElementById('signup-email').value.trim();
+      const graduationYear = document.getElementById('signup-graduation-year').value.trim();
       const password = document.getElementById('signup-password').value;
       const passwordConfirm = document.getElementById('signup-password-confirm').value;
 
       // Validasyon
-      if (!name || !email || !password || !passwordConfirm) {
+      if (!name || !email || !graduationYear || !password || !passwordConfirm) {
         showMessage(signupMsg, 'Lütfen tüm alanları doldurun.', 'error');
         return;
       }
@@ -93,8 +112,8 @@
       try {
         showMessage(signupMsg, 'Kayıt işlemi yapılıyor...', 'info');
         
-        console.log('🔍 Kayıt: signUp() çağrılıyor...', { name, email });
-        await window.TSGLAuth.signUp({ name, email, password });
+        console.log('🔍 Kayıt: signUp() çağrılıyor...', { name, email, graduationYear });
+        await window.TSGLAuth.signUp({ name, email, graduationYear, password });
         console.log('✅ Kayıt: Başarılı!');
         
         showMessage(signupMsg, '✅ Kayıt başarılı! Hesabınız yönetici onayı bekliyor. Onaylandığında e-posta ile bilgilendirileceksiniz.', 'success');

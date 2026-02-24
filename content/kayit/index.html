@@ -227,9 +227,33 @@
           </div>
         </fieldset>
 
+        <!-- Üyelik Sözleşmesi Onayı -->
+        <div class="form-section consent-section" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0; border: 2px solid #d4af37;">
+          <div class="consent-box">
+            <label class="consent-label" style="display: flex; align-items: flex-start; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="membershipConsent" name="membershipConsent" required style="margin-right: 12px; margin-top: 6px; width: 22px; height: 22px; cursor: pointer; flex-shrink: 0; accent-color: #1e40af;">
+              <div style="flex: 1;">
+                <strong style="color: #1e40af; display: block; margin-bottom: 12px; font-size: 16px;">Dernek Üyelik Sözleşmesi ve Taahhütnamesi</strong>
+                <div style="line-height: 1.8; color: #333; font-size: 14px;">
+                  <p style="margin-bottom: 12px;">Derneğe üyelik başvurusu yaparken vermiş olduğum bilgilerin doğru ve eksiksiz olduğunu beyan ederim.</p>
+                  
+                  <p style="margin-bottom: 12px;">Dernek web sitesini amacı dışında kullanmayacağımı, siteye zarar verecek, sistemi meşgul edecek, yanıltıcı veya kötüye kullanım niteliği taşıyan herhangi bir işlem yapmayacağımı kabul ederim.</p>
+                  
+                  <p style="margin-bottom: 12px;">Dernek tüzüğüne, etik kurallarına ve yönetim kurulu kararlarına uygun hareket edeceğimi; üyeliğimin yönetim kurulu onayına tabi olduğunu bildiğimi kabul ederim.</p>
+                  
+                  <p style="margin-bottom: 12px;">Gerektiğinde üyelik bilgilerimin doğrulanabileceğini ve uygun görülmemesi halinde üyeliğimin reddedilebileceğini kabul ediyorum.</p>
+                  
+                  <p style="margin-bottom: 0;">Kişisel verilerimin işlenmesi hakkında <a href="../gizlilik/" target="_blank" style="color: #1e40af; text-decoration: underline; font-weight: 600;">Gizlilik ve Çerez Politikası</a>'nı okudum ve kabul ediyorum.</p>
+                </div>
+                <strong style="display: block; margin-top: 18px; color: #155724; font-size: 15px; padding: 12px; background: #d4edda; border-radius: 4px; border-left: 4px solid #28a745;">Yukarıdaki maddeleri okudum, anladım ve kabul ediyorum.</strong>
+              </div>
+            </label>
+          </div>
+        </div>
+
         <!-- Form Butonları -->
         <div class="form-actions">
-          <button type="submit" class="btn primary">Kayıt Ol</button>
+          <button type="submit" id="signupBtn" class="btn primary" disabled style="opacity: 0.5; cursor: not-allowed;">Üye Ol</button>
           <button type="reset" class="btn secondary">Formu Temizle</button>
         </div>
 

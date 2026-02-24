@@ -62,13 +62,9 @@
 
   // === HEADER SCROLL BEHAVIOR ===
   const siteHeader = document.querySelector('.site-header');
-  const scrollUpBtn = document.querySelector('.scroll-to-top-button');
   const scrollProgress = document.getElementById('scrollProgress');
   const progressCircle = document.getElementById('progressCircle');
   
-  // DEBUG
-  console.log('Button element:', scrollUpBtn);
-  console.log('Container element:', scrollProgress);
   // Sayfa başladığında is-top class'ını ekle
   if (siteHeader) {
     siteHeader.classList.add('is-top');
@@ -81,11 +77,6 @@
 
   function updateHeaderState() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // DEBUG - Her çağrıda log
-    if (currentScroll > HIDE_SCROLL_THRESHOLD || currentScroll !== lastScroll) {
-      console.log('updateHeaderState called - Scroll:', currentScroll, 'LastScroll:', lastScroll, 'Threshold:', HIDE_SCROLL_THRESHOLD);
-    }
     
     // Header hidden/show logic
     if (currentScroll > lastScroll) {
@@ -112,65 +103,14 @@
       siteHeader?.classList.remove('is-scrolled');
     }
     
-    // Scroll-to-top button visibility (always reflect threshold)
-    if (scrollUpBtn) {
-      if (currentScroll > HIDE_SCROLL_THRESHOLD) {
-        if (!scrollUpBtn.classList.contains('visible')) {
-          scrollUpBtn.classList.add('visible');
-          console.log('Button VISIBLE ADDED');
-        }
-      } else {
-        if (scrollUpBtn.classList.contains('visible')) {
-          scrollUpBtn.classList.remove('visible');
-          console.log('Button VISIBLE REMOVED');
-        }
-      }
-    }
-    
     lastScroll = currentScroll;
   }
 
   // Sayfa yüklendiğinde kontrol et
   updateHeaderState();
 
-  // Scroll olayında kontrol et - Poll method (setInterval)
-  setInterval(updateHeaderState, 200);
-  
-  // Scroll to top button click handler
-  if (scrollUpBtn) {
-    scrollUpBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('Button clicked, scrolling to top');
-      const smoothScroll = () => {
-        const start = window.scrollY;
-        const duration = 1000;
-        const startTime = performance.now();
-        
-        const easeInOutCubic = (t) => {
-          return t < 0.5
-            ? 4 * t * t * t
-            : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        };
-        
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const easeProgress = easeInOutCubic(progress);
-          const currentScroll = start * (1 - easeProgress);
-          
-          window.scrollTo(0, currentScroll);
-          
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          }
-        };
-        
-        requestAnimationFrame(animate);
-      };
-      
-      smoothScroll();
-    });
-  }
+  // Scroll olayında kontrol et
+  window.addEventListener('scroll', updateHeaderState, { passive: true });
   
   // === SMOOTH SCROLL PAGE NAVIGATION ===
   // Sayfalar arası soft geçişler için fade animasyonu
@@ -212,22 +152,26 @@
   
   createPageTransitionEffect();
 
-  // === MOBILE MENU SYSTEM - COMPLETELY REWRITTEN ===
+  // === MOBILE MENU SYSTEM (Modern Hamburger) ===
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
   const navLeft = document.querySelector('.nav-left');
   const navRight = document.querySelector('.nav-right');
-  let mobileOverlay = document.querySelector('.mobile-nav-overlay');
+  let mobileOverlay = document.getElementById('mobile-nav-overlay');
 
-  // Create overlay if not exists
+  // Create overlay if not exists (güvenlik)
   if (!mobileOverlay && mobileMenuToggle) {
     mobileOverlay = document.createElement('div');
     mobileOverlay.className = 'mobile-nav-overlay';
+    mobileOverlay.id = 'mobile-nav-overlay';
     document.body.appendChild(mobileOverlay);
   }
 
-  // Mobile menu state
+  // Durum
   let mobileMenuOpen = false;
+  const MOBILE_BREAKPOINT = 1024;
+  const isMobileView = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
+  // Aç / Kapat fonksiyonları
   const openMobileMenu = () => {
     mobileMenuOpen = true;
     mobileMenuToggle?.classList.add('active');
@@ -245,130 +189,117 @@
     mobileOverlay?.classList.remove('active');
     mobileMenuToggle?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    
-    // Close all dropdowns when closing menu - CSS handles animation via .open class
-    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-      dropdown.classList.remove('open');
+    // Tüm dropdown'ları kapat
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      const t = d.querySelector(':scope > a');
+      if (t) t.setAttribute('aria-expanded', 'false');
     });
   };
 
-  const toggleMobileMenu = () => {
-    if (mobileMenuOpen) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
-    }
-  };
+  const toggleMobileMenu = () =>
+    mobileMenuOpen ? closeMobileMenu() : openMobileMenu();
 
-  // Hamburger button click
+  // Hamburger buton tıklama
   if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', (e) => {
+    mobileMenuToggle.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       toggleMobileMenu();
     });
   }
 
-  // Overlay click
+  // Overlay tıklama → kapat
   if (mobileOverlay) {
-    mobileOverlay.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeMobileMenu();
-    });
+    mobileOverlay.addEventListener('click', () => closeMobileMenu());
   }
 
-  // === DROPDOWN SYSTEM - MOBILE & DESKTOP ===
-  const MOBILE_BREAKPOINT = 1024;
-  const isMobileView = () => window.innerWidth <= MOBILE_BREAKPOINT;
-
-  // Initialize dropdown triggers with proper ARIA attributes
-  document.querySelectorAll('.nav-dropdown > a').forEach(trigger => {
-    trigger.setAttribute('aria-expanded', 'false');
-    trigger.setAttribute('aria-haspopup', 'true');
+  // ESC tuşu → kapat
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenuOpen) closeMobileMenu();
   });
 
-  // MOBILE: Click handler for dropdown toggles (accordion)
-  document.addEventListener('click', (e) => {
-    // Only in mobile view
+  // MOBİL: Dropdown başlıklarına tıklama (accordion)
+  document.addEventListener('click', e => {
     if (!isMobileView()) return;
-    
-    const trigger = e.target.closest('.nav-dropdown > a');
-    if (!trigger) return;
-    
-    // Don't navigate to #
-    if (trigger.getAttribute('href') === '#') {
-      e.preventDefault();
-    }
-    
-    e.stopPropagation();
-    
-    const dropdown = trigger.closest('.nav-dropdown');
-    if (!dropdown) return;
-    
+
+    // Check if clicked element is inside dropdown header
+    const clickedLink = e.target.closest('a');
+    if (!clickedLink) return;
+
+    const dropdown = clickedLink.parentElement;
+    if (!dropdown || !dropdown.classList.contains('nav-dropdown')) return;
+
+    // Make sure it's the direct child link (not submenu link)
+    const directChild = dropdown.querySelector(':scope > a');
+    if (clickedLink !== directChild) return;
+
+    e.preventDefault();    // href="#" navigasyonunu engelle
+    e.stopPropagation();   // üst handler'lara gitme
+
     const isOpen = dropdown.classList.contains('open');
-    
-    // Close all dropdowns
+
+    // Tüm dropdown'ları kapat
     document.querySelectorAll('.nav-dropdown.open').forEach(d => {
       d.classList.remove('open');
       const t = d.querySelector(':scope > a');
       if (t) t.setAttribute('aria-expanded', 'false');
     });
-    
-    // Toggle current
+
+    // Bu dropdown'ı aç (toggle)
     if (!isOpen) {
       dropdown.classList.add('open');
-      trigger.setAttribute('aria-expanded', 'true');
+      clickedLink.setAttribute('aria-expanded', 'true');
     }
   });
 
-  // MOBILE: Close submenu items and navigate
-  document.addEventListener('click', (e) => {
+  // MOBİL: Submenu linke tıklandığında menüyü kapat
+  document.addEventListener('click', e => {
     if (!isMobileView()) return;
-    
     const link = e.target.closest('.submenu-card, .nav-left a:not(.nav-dropdown > a)');
     if (!link) return;
-    
     const href = link.getAttribute('href') || '';
-    
-    // Close menu for navigation
-    if (href && href !== '#' && !href.startsWith('#footer')) {
-      closeMobileMenu();
-    } else if (href.startsWith('#footer')) {
-      e.preventDefault();
-      closeMobileMenu();
-      const footer = document.querySelector('.site-footer');
-      if (footer) {
-        smoothScroll(footer.offsetTop - 80, 1500);
-      }
-    }
+    if (href && href !== '#') closeMobileMenu();
   });
 
-  // DESKTOP: Hover support for dropdowns
+  // Tüm dropdown'ları kapat (fonksiyon)
+  const closeDropdowns = () => {
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      const t = d.querySelector(':scope > a');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  // MASAÜSTÜ: Hover dropdown
+  let dropdownTimeout;
   document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
     dropdown.addEventListener('mouseenter', () => {
       if (isMobileView()) return;
+      if (dropdownTimeout) clearTimeout(dropdownTimeout);
       dropdown.classList.add('open');
-      const trigger = dropdown.querySelector(':scope > a');
-      if (trigger) trigger.setAttribute('aria-expanded', 'true');
+      const t = dropdown.querySelector(':scope > a');
+      if (t) t.setAttribute('aria-expanded', 'true');
     });
-    
     dropdown.addEventListener('mouseleave', () => {
       if (isMobileView()) return;
-      dropdown.classList.remove('open');
-      const trigger = dropdown.querySelector(':scope > a');
-      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      if (dropdownTimeout) clearTimeout(dropdownTimeout);
+      dropdownTimeout = setTimeout(() => {
+        dropdown.classList.remove('open');
+        const t = dropdown.querySelector(':scope > a');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }, 150);
     });
   });
 
-  // DESKTOP: Close dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
+  // MASAÜSTÜ: Dışarı tıkla → kapat
+  document.addEventListener('click', e => {
     if (isMobileView()) return;
     if (e.target.closest('.nav-dropdown')) return;
-    
-    document.querySelectorAll('.nav-dropdown.open').forEach(dropdown => {
-      dropdown.classList.remove('open');
-      const trigger = dropdown.querySelector(':scope > a');
-      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      const t = d.querySelector(':scope > a');
+      if (t) t.setAttribute('aria-expanded', 'false');
     });
   });
 
@@ -1283,34 +1214,72 @@
 
   }
 
-
-
   // === SCROLL TO TOP BUTTON ===
-  const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+  const scrollToTopBtn = document.getElementById('scrollToTop');
   
   if (scrollToTopBtn) {
-    // Scroll event listener for showing/hiding button
-    const handleScrollToTopVisibility = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let lastScrollPos = 0;
+    
+    // Scrollda butonu göster/gizle
+    const handleScroll = () => {
+      // Scroll pozisyonunu al - tüm metodları dene
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
       
-      if (scrollTop > 300) {
-        scrollToTopBtn.classList.add('show');
+      // Button göster/gizle
+      if (scrollPos > 300) {
+        scrollToTopBtn.classList.add('visible');
       } else {
-        scrollToTopBtn.classList.remove('show');
+        scrollToTopBtn.classList.remove('visible');
+      }
+      lastScrollPos = scrollPos;
+    };
+    
+    // Multiple event listeners
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleScroll, { passive: true });
+    window.addEventListener('touchmove', handleScroll, { passive: true });
+    
+    // RAF loop - her frame kontrol (smooth animations için)
+    let checking = true;
+    const checkScroll = () => {
+      if (checking) {
+        handleScroll();
+        requestAnimationFrame(checkScroll);
       }
     };
-
-    // Initial check
-    handleScrollToTopVisibility();
+    checkScroll();
     
-    // Add scroll listener
-    window.addEventListener('scroll', handleScrollToTopVisibility, { passive: true });
-
+    // Page load'da kontrol
+    setTimeout(() => handleScroll(), 100);
+    
+    // Butona tıklandığında yukarı kaydır - smooth scroll
     scrollToTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      // Smooth scroll animasyonu (2 saniye)
+      let start = window.pageYOffset || document.documentElement.scrollTop;
+      let target = 0;
+      let distance = start - target;
+      let duration = 2000; // 2 saniye
+      let startTime = null;
+      
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        let elapsed = currentTime - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function (ease-out cubic)
+        let easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        let newPosition = start - (distance * easeProgress);
+        window.scrollTo(0, newPosition);
+        document.documentElement.scrollTop = newPosition;
+        document.body.scrollTop = newPosition;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
     });
   }
 
@@ -1452,14 +1421,6 @@
       loadRecentPosts();
     }
   }, 1000);
-
-  // === SCROLL TO TOP BUTTON ===
-  if (scrollUpBtn) {
-    scrollUpBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      smoothScroll(0, 1500); // 1.5 saniye içinde yukarı scroll
-    });
-  }
 
 })();
 
