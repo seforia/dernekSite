@@ -326,6 +326,7 @@ button { transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1); }
     border-right: 1px solid rgba(21,58,161,0.1);
   }
   .nav-left.mobile-active { left: 0; }
+  .nav-left.open { left: 0 !important; } /* yazılar sayfası ve diğer sayfalar için */
 
   /* nav-left'taki Duyurular dropdown'u mobilde göster */
   .nav-left .nav-dropdown:nth-last-child(3) { display: block !important; }

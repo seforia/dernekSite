@@ -16,14 +16,295 @@
   <link rel="stylesheet" href="../../assets/css/styles-updates.css" />
   <link rel="stylesheet" href="../../assets/css/hero-mobile.css" />
   <link rel="stylesheet" href="../../assets/css/posts-modern.css" />
+  <style>
+    /* Header - Yazılar Sayfası */
+    .site-header {
+      position: relative;
+      z-index: 100;
+    }
+    
+    /* Mobile Menu Navigation - Yazılar Sayfası (Anasayfa ile aynı) */
+    @media (max-width: 1024px) {
+      .mobile-menu-toggle { 
+        display: flex;
+        z-index: 2001;
+      }
+      
+      .mobile-nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1998;
+        transition: all 0.3s ease;
+      }
+      
+      .mobile-nav-overlay.active {
+        display: block !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        pointer-events: auto !important;
+      }
+      
+      /* Sol nav paneli → soldan kayar (Anasayfa ile aynı) */
+      .nav-left {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 320px;
+        height: 100vh;
+        background: linear-gradient(180deg, #fff 0%, #fafbff 100%);
+        z-index: 2000;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 0 32px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+        border-right: 1px solid rgba(21,58,161,0.1);
+      }
+      
+      .nav-left.mobile-active,
+      .nav-left.open {
+        left: 0 !important;
+      }
+      
+      /* Özel scrollbar */
+      .nav-left::-webkit-scrollbar { 
+        width: 5px; 
+      }
+      .nav-left::-webkit-scrollbar-track { 
+        background: #f1f1f1; 
+      }
+      .nav-left::-webkit-scrollbar-thumb { 
+        background: #153aa1; 
+        border-radius: 3px; 
+      }
+      
+      /* Nav listesi dikey */
+      .site-nav {
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .site-nav ul {
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .site-nav li {
+        width: 100%;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+      }
+      
+      .site-nav a {
+        width: 100%;
+        padding: 18px 24px;
+        font-size: 16px;
+        border-radius: 0;
+        display: block;
+        color: #1a2332;
+        transition: all 0.25s;
+        position: relative;
+        z-index: 2010;
+      }
+      
+      .site-nav a:hover {
+        background: linear-gradient(90deg, rgba(21,58,161,0.08), rgba(21,58,161,0.04));
+        color: #153aa1;
+        padding-left: 30px;
+      }
+      
+      /* Dropdown başlıkları ve submenu */
+      .nav-dropdown > a {
+        width: 100%;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 16px;
+        color: #153aa1;
+        background: linear-gradient(90deg, rgba(21,58,161,0.05), rgba(21,58,161,0.02));
+        border-left: 3px solid transparent;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        user-select: none;
+        transition: all 0.25s;
+      }
+      
+      .nav-dropdown > a:hover {
+        background: linear-gradient(90deg, rgba(21,58,161,0.12), rgba(21,58,161,0.06)) !important;
+        border-left-color: #153aa1;
+        padding-left: 30px;
+      }
+      
+      .nav-dropdown > a::after {
+        content: '▼';
+        font-size: 11px;
+        color: #153aa1;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .nav-dropdown.open > a::after {
+        transform: rotate(180deg);
+      }
+      
+      .nav-dropdown.open > a {
+        background: linear-gradient(90deg, rgba(21,58,161,0.15), rgba(21,58,161,0.08)) !important;
+        border-left-color: #d4af37;
+      }
+      
+      .nav-submenu {
+        position: static;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        transform: none !important;
+        opacity: 0;
+        visibility: visible !important;
+        display: grid;
+        grid-template-columns: 1fr !important;
+        background: linear-gradient(180deg, #f8f9ff, #f5f7ff);
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: none;
+        border-left: 4px solid #153aa1;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .nav-dropdown.open .nav-submenu {
+        max-height: 2000px !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      
+      .submenu-card {
+        padding: 16px 32px;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(21,58,161,0.06);
+        font-size: 15px;
+        color: #1a2332;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.25s;
+      }
+      
+      .submenu-card:hover {
+        background: linear-gradient(90deg, rgba(21,58,161,0.1), rgba(21,58,161,0.05));
+        padding-left: 40px;
+      }
+      
+      .submenu-icon {
+        font-size: 18px;
+      }
+      
+      .mobile-only-divider {
+        display: block !important;
+      }
+      
+      .mobile-only {
+        display: block !important;
+      }
+      
+      .mobile-only a {
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04));
+        color: #153aa1;
+        border-left: 3px solid transparent;
+      }
+      
+      .mobile-only a:hover {
+        background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.08));
+        border-left-color: #d4af37;
+        padding-left: 30px;
+      }
+      
+      .nav-mobile-donation {
+        background: linear-gradient(90deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04)) !important;
+        color: #153aa1 !important;
+        font-weight: 600 !important;
+        border-left: 3px solid transparent !important;
+      }
+      
+      .nav-mobile-donation:hover {
+        background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.08)) !important;
+        border-left-color: #d4af37 !important;
+      }
+    }
+    
+    /* Scroll to Top Button - Yazılar Sayfası */
+    #scrollToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+      z-index: 999999 !important;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #scrollToTop.visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+    
+    #scrollToTop:hover {
+      background: linear-gradient(135deg, #e6c547 0%, #d4af37 100%);
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.6);
+    }
+    
+    #scrollToTop svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script src="../../assets/js/firebase-config.js"></script>
   <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/main.js"></script>
 </head>
 <body>
+  <!-- Karartma overlay — hamburger menü için -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
   <!-- Page Loader -->
   <div class="page-loader" id="page-loader">
     <div class="spinner-container">
@@ -43,7 +324,11 @@
     </svg>
   </div>
   
-  <button class="scroll-to-top-button" id="scroll-up-btn" aria-label="Yukarı çık" title="Başa dön"></button>
+  <button id="scrollToTop" aria-label="Yukarı çık" title="Başa dön">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 15 L12 8 L19 15" />
+    </svg>
+  </button>
 
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
@@ -71,10 +356,87 @@
       <div class="nav-left">
         <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
           <ul>
-            <li><a href="../../index.html">Ana Sayfa</a></li>
-            <li><a href="index.html" class="active">Yazılar</a></li>
-            <li><a href="../../index.html#hakkimizda">Hakkımızda</a></li>
-            <li><a href="../../index.html#iletisim">İletişim</a></li>
+            <!-- Derneğimiz Dropdown -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">Derneğimiz</a>
+              <div class="nav-submenu mega-menu submenu-2col">
+                <a href="../../index.html#hakkimizda" class="submenu-card">
+                  <span class="submenu-icon">ℹ️</span>
+                  <span>Hakkımızda</span>
+                </a>
+                <a href="../../index.html#tuzuk" class="submenu-card">
+                  <span class="submenu-icon">📜</span>
+                  <span>Dernek Tüzüğü</span>
+                </a>
+                <a href="../../index.html#faaliyetler" class="submenu-card">
+                  <span class="submenu-icon">🎯</span>
+                  <span>Faaliyetlerimiz</span>
+                </a>
+                <a href="../../index.html#yonetim-kurulu" class="submenu-card">
+                  <span class="submenu-icon">👥</span>
+                  <span>Yönetim Kurulu</span>
+                </a>
+                <a href="../../index.html#urunlerimiz" class="submenu-card">
+                  <span class="submenu-icon">🛍️</span>
+                  <span>Ürünlerimiz</span>
+                </a>
+                <a href="../../index.html#toplanti-tutanaklari" class="submenu-card">
+                  <span class="submenu-icon">📑</span>
+                  <span>Toplantı Tutanakları</span>
+                </a>
+              </div>
+            </li>
+
+            <!-- Okulumuz (direkt link) -->
+            <li><a href="../../index.html#okulumuz">Okulumuz</a></li>
+
+            <!-- İz Bırakanlar Dropdown -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">İz Bırakanlar</a>
+              <div class="nav-submenu mega-menu submenu-1col">
+                <a href="../../index.html#anma" class="submenu-card">
+                  <span class="submenu-icon">🕯️</span>
+                  <span>Anma Köşesi</span>
+                </a>
+                <a href="../../index.html#basari-oykuleri" class="submenu-card">
+                  <span class="submenu-icon">🏆</span>
+                  <span>Başarı Öykülerimiz</span>
+                </a>
+                <a href="../../index.html#galeri" class="submenu-card">
+                  <span class="submenu-icon">📸</span>
+                  <span>Galeri</span>
+                </a>
+              </div>
+            </li>
+
+            <!-- Mobilde görünen ek butonlar -->
+            <li class="mobile-only-divider" style="margin: 20px 0; border-top: 1px solid rgba(21,58,161,0.15);"></li>
+            
+            <!-- Duyurular Dropdown (mobilde) -->
+            <li class="nav-dropdown">
+              <a href="#" aria-expanded="false" aria-haspopup="true">Duyurular</a>
+              <div class="nav-submenu mega-menu submenu-1col">
+                <a href="../../index.html#duyurular" class="submenu-card">
+                  <span class="submenu-icon">📢</span>
+                  <span>Duyurular</span>
+                </a>
+                <a href="../../index.html#etkinlikler" class="submenu-card">
+                  <span class="submenu-icon">📅</span>
+                  <span>Etkinlikler</span>
+                </a>
+                <a href="../../index.html#anketler" class="submenu-card">
+                  <span class="submenu-icon">📋</span>
+                  <span>Anketler</span>
+                </a>
+                <a href="index.html" class="submenu-card">
+                  <span class="submenu-icon">✍️</span>
+                  <span>Yazılar</span>
+                </a>
+              </div>
+            </li>
+            
+            <li class="mobile-only"><a href="../../index.html#burs" class="nav-mobile-action">Burs Başvurusu</a></li>
+            <li class="mobile-only"><a href="../../index.html#bagis" class="nav-mobile-action nav-mobile-donation">Bağış & Aidat</a></li>
           </ul>
         </nav>
       </div>
@@ -255,84 +617,63 @@
 
   <script defer src="../../assets/js/posts-page.js"></script>
   <script>
-    // Standalone scroll handlers for posts page
+    // Progress circle animation for posts page
     (function() {
-      const header = document.querySelector('.site-header');
-      const scrollUpBtn = document.getElementById('scroll-up-btn');
-      const progressContainer = document.getElementById('scrollProgress');
       const progressCircle = document.getElementById('progressCircle');
       
-      if (header) {
-        header.classList.add('is-scrolled');
-      }
-      
-      let lastScroll = 0;
-      
-      function updateScrollUI() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Header behavior
-        if (header) {
-          if (currentScroll > lastScroll && currentScroll > 100) {
-            header.classList.add('hide-header');
-          } else {
-            header.classList.remove('hide-header');
-          }
-          
-          header.classList.toggle('is-top', currentScroll < 48);
-          header.classList.toggle('is-scrolled', currentScroll >= 48);
-        }
-        
-        // Scroll progress
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
-        
-        if (progressCircle) {
-          const circumference = 2 * Math.PI * 26;
-          const offset = circumference - (scrollPercent / 100) * circumference;
-          progressCircle.style.strokeDashoffset = offset;
-        }
-        
-        // Show/hide scroll button
-        if (scrollUpBtn && progressContainer) {
-          if (currentScroll > 300) {
-            scrollUpBtn.style.display = 'flex';
-            progressContainer.style.display = 'block';
-          } else {
-            scrollUpBtn.style.display = 'none';
-            progressContainer.style.display = 'none';
-          }
-        }
-        
-        lastScroll = currentScroll;
-      }
-      
-      // Scroll to top
-      if (scrollUpBtn) {
-        scrollUpBtn.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-      
-      // Init progress circle
       if (progressCircle) {
         const circumference = 2 * Math.PI * 26;
         progressCircle.style.strokeDasharray = circumference;
         progressCircle.style.strokeDashoffset = circumference;
+        
+        window.addEventListener('scroll', () => {
+          const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
+          const offset = circumference - (scrollPercent / 100) * circumference;
+          progressCircle.style.strokeDashoffset = offset;
+        }, { passive: true });
       }
       
-      window.addEventListener('scroll', updateScrollUI, { passive: true });
-      updateScrollUI();
-      
-      // Mobile menu
-      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      // FALLBACK: Hamburger menü toggle (main.js aktif değilse)
+      const toggleBtn = document.getElementById('mobile-menu-toggle');
       const navLeft = document.querySelector('.nav-left');
+      const overlay = document.getElementById('mobile-nav-overlay');
       
-      if (mobileToggle && navLeft) {
-        mobileToggle.addEventListener('click', () => {
-          const isOpen = navLeft.classList.toggle('open');
-          mobileToggle.setAttribute('aria-expanded', String(isOpen));
+      if (toggleBtn && navLeft) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Toggle classes
+          const isOpen = navLeft.classList.toggle('mobile-active');
+          navLeft.classList.toggle('open');
+          toggleBtn.classList.toggle('active');
+          toggleBtn.setAttribute('aria-expanded', String(isOpen));
+          
+          // Overlay toggle
+          if (overlay) {
+            if (isOpen) {
+              overlay.classList.add('active');
+            } else {
+              overlay.classList.remove('active');
+            }
+          }
+          
+          // Body scroll lock
+          document.body.style.overflow = isOpen ? 'hidden' : '';
         });
+        
+        // Overlay kapatma
+        if (overlay) {
+          overlay.addEventListener('click', () => {
+            navLeft.classList.remove('mobile-active', 'open');
+            toggleBtn.classList.remove('active');
+            overlay.classList.remove('active');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+          });
+        }
       }
     })();
   </script>
