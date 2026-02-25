@@ -198,6 +198,7 @@
 
     mount.innerHTML = html;
     bindEvents(mount);
+    bindRsvpEvents(mount);
   }
 
   // ───── Bind UI events ─────────────────────────────────────────
@@ -288,7 +289,7 @@
     if (lb) lb.hidden = true;
     document.body.style.overflow = '';
   }
-  }
+
 
   // ───── RSVP ───────────────────────────────────────────────────
   function bindRsvpEvents(mount) {
