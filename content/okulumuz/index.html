@@ -105,6 +105,396 @@
       });
     </script>
 
+    <!-- ===================== E-KİTAP / DERGİ VİEWER ===================== -->
+    <style>
+      /* ─── Ebook Wrapper ─── */
+      .ebook-wrapper {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 16px;
+        padding: 28px 28px 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.45);
+        position: relative;
+      }
+
+      /* ─── Top bar ─── */
+      .ebook-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .ebook-topbar-info { display: flex; flex-direction: column; gap: 2px; }
+      .ebook-topbar-title { font-weight: 700; font-size: 1rem; color: #d4af37; }
+      .ebook-topbar-sub   { font-size: .82rem; color: rgba(255,255,255,.65); }
+      .ebook-topbar-actions { display: flex; gap: 8px; }
+      .ebook-icon-btn {
+        background: rgba(255,255,255,.1);
+        border: 1px solid rgba(255,255,255,.2);
+        color: #fff;
+        border-radius: 8px;
+        padding: 7px 11px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background .2s;
+        line-height: 1;
+      }
+      .ebook-icon-btn:hover { background: rgba(255,255,255,.22); }
+
+      /* ─── Book stage ─── */
+      .ebook-stage {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .ebook-book {
+        display: flex;
+        position: relative;
+        background: #f8f5ef;
+        border-radius: 3px 3px 3px 3px;
+        box-shadow: -6px 0 14px rgba(0,0,0,.4), 6px 0 14px rgba(0,0,0,.4), 0 14px 40px rgba(0,0,0,.55);
+        overflow: hidden;
+        width: 100%;
+        max-width: 900px;
+        min-height: 360px;
+        transition: opacity .25s;
+      }
+      .ebook-book.turning { opacity: .55; }
+
+      /* ─── Spine ─── */
+      .ebook-spine {
+        position: absolute;
+        left: 50%; top: 0; bottom: 0;
+        width: 8px;
+        transform: translateX(-50%);
+        background: linear-gradient(to right, #7a6445, #c4a87a, #7a6445);
+        box-shadow: 0 0 10px rgba(0,0,0,.5);
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      /* ─── Page areas ─── */
+      .ebook-page {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #fffff8;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .ebook-page.left  { box-shadow: inset -6px 0 12px rgba(0,0,0,.07); }
+      .ebook-page.right { box-shadow: inset  6px 0 12px rgba(0,0,0,.07); }
+      .ebook-page canvas { max-width: 100%; height: auto; display: block; }
+
+      /* ─── Page loader ─── */
+      .ebook-loader {
+        position: absolute; inset: 0;
+        display: flex; justify-content: center; align-items: center;
+        background: #fffff8;
+      }
+      .ebook-spinner {
+        width: 38px; height: 38px;
+        border: 3px solid rgba(30,64,175,.18);
+        border-top-color: #1e40af;
+        border-radius: 50%;
+        animation: ebookSpin .75s linear infinite;
+      }
+      @keyframes ebookSpin { to { transform: rotate(360deg); } }
+
+      /* ─── Nav arrows ─── */
+      .ebook-arrow {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background: rgba(0,0,0,.52);
+        border: none; color: #fff;
+        width: 42px; height: 42px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        cursor: pointer; z-index: 20;
+        transition: background .2s, transform .12s;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .ebook-arrow:hover  { background: rgba(0,0,0,.82); }
+      .ebook-arrow:active { transform: translateY(-50%) scale(.9); }
+      .ebook-arrow.left-a { left:  -21px; }
+      .ebook-arrow.right-a{ right: -21px; }
+      .ebook-arrow:disabled { opacity: .28; cursor: default; }
+
+      /* ─── Bottom bar ─── */
+      .ebook-bottombar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        gap: 12px;
+      }
+      .ebook-dots {
+        display: flex; gap: 6px; flex-wrap: wrap;
+        justify-content: center; flex: 1;
+      }
+      .ebook-dot {
+        width: 9px; height: 9px;
+        border-radius: 50%; border: none;
+        background: rgba(255,255,255,.28);
+        cursor: pointer;
+        transition: background .2s, transform .2s;
+        padding: 0;
+      }
+      .ebook-dot.active { background: #d4af37; transform: scale(1.35); }
+
+      /* ─── Fullscreen overlay ─── */
+      .ebook-wrapper.fs-mode {
+        position: fixed; inset: 0; z-index: 9999;
+        border-radius: 0; overflow: auto;
+      }
+
+      /* ─── Single-page mode (mobile / odd last) ─── */
+      @media (max-width: 620px) {
+        .ebook-page.right { display: none; }
+        .ebook-spine { display: none; }
+        .ebook-arrow.left-a  { left:  4px; }
+        .ebook-arrow.right-a { right: 4px; }
+      }
+    </style>
+
+    <section class="section reveal" id="dergi-viewer" aria-labelledby="dergi-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="dergi-title">📖 MEGARON Dergisi – Makale</h2>
+          <p>Okulumuz mimarisi hakkında yayınlanmış akademik makaleyi aşağıdan okuyabilirsiniz.</p>
+        </div>
+
+        <div class="ebook-wrapper reveal">
+
+          <!-- Top bar -->
+          <div class="ebook-topbar">
+            <div class="ebook-topbar-info">
+              <span class="ebook-topbar-title">MEGARON — Selvi Ünlü</span>
+              <span class="ebook-topbar-sub">Sayfa <span id="eb-cur">1</span> / <span id="eb-tot">…</span></span>
+            </div>
+            <div class="ebook-topbar-actions">
+              <button id="eb-fs"  class="ebook-icon-btn" title="Tam ekran">⛶</button>
+              <a id="eb-dl" href="#"
+                 download class="ebook-icon-btn" title="PDF İndir">⬇ İndir</a>
+            </div>
+          </div>
+
+          <!-- Book stage -->
+          <div class="ebook-stage">
+            <div class="ebook-book" id="eb-book">
+              <div class="ebook-page left" id="eb-left">
+                <canvas id="eb-cvs-l"></canvas>
+                <div class="ebook-loader" id="eb-ldr-l"><div class="ebook-spinner"></div></div>
+              </div>
+              <div class="ebook-spine"></div>
+              <div class="ebook-page right" id="eb-right">
+                <canvas id="eb-cvs-r"></canvas>
+                <div class="ebook-loader" id="eb-ldr-r"><div class="ebook-spinner"></div></div>
+              </div>
+            </div>
+            <button class="ebook-arrow left-a"  id="eb-prev-a" disabled title="Önceki sayfa">❮</button>
+            <button class="ebook-arrow right-a" id="eb-next-a" title="Sonraki sayfa">❯</button>
+          </div>
+
+          <!-- Bottom bar -->
+          <div class="ebook-bottombar">
+            <button id="eb-prev-b" class="btn secondary" disabled>← Önceki</button>
+            <div class="ebook-dots" id="eb-dots"></div>
+            <button id="eb-next-b" class="btn primary">Sonraki →</button>
+          </div>
+
+        </div><!-- /.ebook-wrapper -->
+      </div>
+    </section>
+
+    <script>
+    (function () {
+      'use strict';
+      /* Dinamik base path: GitHub Pages subdirectory'yi de destekler */
+      var _base = (function () {
+        var m = window.location.pathname.match(/^(\/[^\/]+\/)/);
+        return m ? m[1] : '/';
+      })();
+      var PDF_URL = _base + 'assets/img/okulumuzHakk%C4%B1nda/MEGARON-15870-ARTICLE-SELVI_UNLU.pdf';
+      var PDFJS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      var WORKER_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      var pdfDoc = null, totalPages = 0, spread = 0, rendering = false;
+
+      /* ── helpers ── */
+      function isMobile() { return window.innerWidth <= 620; }
+      function pagesPerSpread() { return isMobile() ? 1 : 2; }
+      function maxSpread() { return Math.ceil(totalPages / pagesPerSpread()) - 1; }
+
+      function el(id) { return document.getElementById(id); }
+      var $book  = el('eb-book'),
+          $cvsl  = el('eb-cvs-l'), $ldrL = el('eb-ldr-l'),
+          $cvsr  = el('eb-cvs-r'), $ldrR = el('eb-ldr-r'),
+          $cur   = el('eb-cur'),   $tot  = el('eb-tot'),
+          $prevA = el('eb-prev-a'),$nextA = el('eb-next-a'),
+          $prevB = el('eb-prev-b'),$nextB = el('eb-next-b'),
+          $dots  = el('eb-dots'),  $fs   = el('eb-fs'),
+          $dl    = el('eb-dl'),
+          $wrap  = $book ? $book.closest('.ebook-wrapper') : null;
+
+      /* indirme linki href'ini dinamik ata */
+      if ($dl) $dl.href = PDF_URL;
+
+      /* ── load PDF.js dynamically ── */
+      function bootstrap() {
+        if (typeof pdfjsLib !== 'undefined') { init(); return; }
+        var s = document.createElement('script');
+        s.src = PDFJS_CDN;
+        s.onload = function () {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = WORKER_SRC;
+          init();
+        };
+        document.head.appendChild(s);
+      }
+
+      function init() {
+        pdfjsLib.getDocument(PDF_URL).promise.then(function (pdf) {
+          pdfDoc = pdf;
+          totalPages = pdf.numPages;
+          $tot.textContent = totalPages;
+          buildDots();
+          renderSpread(0);
+        }).catch(function (e) {
+          console.error('PDF yüklenemedi:', e);
+          $book.innerHTML = '<p style="padding:2rem;color:#c00;text-align:center">PDF yüklenemedi.</p>';
+        });
+      }
+
+      /* ── dots ── */
+      function buildDots() {
+        $dots.innerHTML = '';
+        var n = Math.ceil(totalPages / pagesPerSpread());
+        for (var i = 0; i < n; i++) {
+          var d = document.createElement('button');
+          d.className = 'ebook-dot' + (i === 0 ? ' active' : '');
+          d.setAttribute('aria-label', 'Sayfa ' + (i * pagesPerSpread() + 1));
+          d.dataset.idx = i;
+          d.addEventListener('click', function () { goTo(+this.dataset.idx); });
+          $dots.appendChild(d);
+        }
+      }
+
+      /* ── render a spread ── */
+      function renderSpread(idx) {
+        if (rendering) return;
+        rendering = true;
+        spread = idx;
+
+        var leftNum  = idx * pagesPerSpread() + 1;
+        var rightNum = isMobile() ? null : leftNum + 1;
+
+        $cur.textContent = leftNum;
+
+        /* update dots */
+        $dots.querySelectorAll('.ebook-dot').forEach(function (d) {
+          d.classList.toggle('active', +d.dataset.idx === idx);
+        });
+
+        /* update buttons */
+        var atStart = idx === 0;
+        var atEnd   = idx >= maxSpread();
+        $prevA.disabled = $prevB.disabled = atStart;
+        $nextA.disabled = $nextB.disabled = atEnd;
+
+        /* flip animation */
+        $book.classList.add('turning');
+
+        var done = 0;
+        var needed = (rightNum && rightNum <= totalPages) ? 2 : 1;
+
+        function pageRendered() {
+          done++;
+          if (done >= needed) { $book.classList.remove('turning'); rendering = false; }
+        }
+
+        renderPage(leftNum, $cvsl, $ldrL, pageRendered);
+
+        if (rightNum && rightNum <= totalPages) {
+          renderPage(rightNum, $cvsr, $ldrR, pageRendered);
+        } else {
+          var ctx = $cvsr.getContext('2d');
+          ctx.clearRect(0, 0, $cvsr.width, $cvsr.height);
+          $ldrR.style.display = 'none';
+          pageRendered();
+        }
+      }
+
+      function renderPage(pageNum, canvas, loader, cb) {
+        loader.style.display = 'flex';
+        pdfDoc.getPage(pageNum).then(function (page) {
+          var containerW = canvas.parentElement.offsetWidth || 380;
+          var vp0  = page.getViewport({ scale: 1 });
+          var sc   = containerW / vp0.width;
+          var vp   = page.getViewport({ scale: sc });
+          canvas.width  = vp.width;
+          canvas.height = vp.height;
+          return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+        }).then(function () {
+          loader.style.display = 'none';
+          if (cb) cb();
+        }).catch(function () { loader.style.display = 'none'; if (cb) cb(); });
+      }
+
+      function goTo(idx) {
+        if (idx < 0 || idx > maxSpread() || rendering) return;
+        renderSpread(idx);
+      }
+
+      /* ── navigation ── */
+      $prevA.addEventListener('click', function () { goTo(spread - 1); });
+      $nextA.addEventListener('click', function () { goTo(spread + 1); });
+      $prevB.addEventListener('click', function () { goTo(spread - 1); });
+      $nextB.addEventListener('click', function () { goTo(spread + 1); });
+
+      /* keyboard arrows */
+      document.addEventListener('keydown', function (e) {
+        if (!pdfDoc) return;
+        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(spread - 1);
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  goTo(spread + 1);
+      });
+
+      /* touch / swipe */
+      var touchX = null;
+      ($wrap || document).addEventListener('touchstart', function (e) {
+        touchX = e.touches[0].clientX;
+      }, { passive: true });
+      ($wrap || document).addEventListener('touchend', function (e) {
+        if (touchX === null) return;
+        var diff = touchX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) diff > 0 ? goTo(spread + 1) : goTo(spread - 1);
+        touchX = null;
+      }, { passive: true });
+
+      /* fullscreen */
+      $fs.addEventListener('click', function () {
+        $wrap.classList.toggle('fs-mode');
+        this.textContent = $wrap.classList.contains('fs-mode') ? '✕' : '⛶';
+        if (pdfDoc) { rendering = false; renderSpread(spread); }
+      });
+
+      /* resize → re-render */
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          if (pdfDoc) { buildDots(); rendering = false; renderSpread(spread); }
+        }, 300);
+      });
+
+      bootstrap();
+    })();
+    </script>
+    <!-- ===================================== -->
+
     <section class="section alt reveal" id="basarilar" aria-labelledby="achievements-title">
       <div class="container">
         <div class="section-header">
