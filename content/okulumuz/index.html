@@ -246,11 +246,16 @@
       }
       .ebook-dot.active { background: #d4af37; transform: scale(1.35); }
 
-      /* ─── Fullscreen overlay ─── */
-      .ebook-wrapper.fs-mode {
-        position: fixed; inset: 0; z-index: 9999;
-        border-radius: 0; overflow: auto;
-      }
+      /* ─── Native fullscreen ─── */
+      .ebook-stage:-webkit-full-screen { background:#111; padding:20px; box-sizing:border-box; }
+      .ebook-stage:-moz-full-screen    { background:#111; padding:20px; box-sizing:border-box; }
+      .ebook-stage:fullscreen          { background:#111; padding:20px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; }
+      .ebook-stage:fullscreen .ebook-book     { max-width:90vw; }
+      .ebook-stage:fullscreen .ebook-arrow    { position:fixed; top:50%; transform:translateY(-50%); }
+      .ebook-stage:fullscreen .ebook-arrow.left-a  { left:16px; }
+      .ebook-stage:fullscreen .ebook-arrow.right-a { right:16px; }
+      /* zoom buton disabled */
+      .ebook-icon-btn:disabled { opacity:.35; cursor:default; }
 
       /* ─── Single-page mode (mobile / odd last) ─── */
       @media (max-width: 620px) {
@@ -277,9 +282,11 @@
               <span class="ebook-topbar-sub">Sayfa <span id="eb-cur">1</span> / <span id="eb-tot">…</span></span>
             </div>
             <div class="ebook-topbar-actions">
+              <button id="eb-zoom-out" class="ebook-icon-btn" title="Uzaklaştır">－</button>
+              <span id="eb-zoom-label" style="color:#d4af37;font-size:.85rem;min-width:36px;text-align:center">100%</span>
+              <button id="eb-zoom-in"  class="ebook-icon-btn" title="Yaklaştır">＋</button>
               <button id="eb-fs"  class="ebook-icon-btn" title="Tam ekran">⛶</button>
-              <a id="eb-dl" href="#"
-                 download class="ebook-icon-btn" title="PDF İndir">⬇ İndir</a>
+              <button id="eb-dl" class="ebook-icon-btn" title="PDF İndir">⬇ İndir</button>
             </div>
           </div>
 
@@ -324,7 +331,8 @@
       var PDFJS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
       var WORKER_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-      var pdfDoc = null, totalPages = 0, spread = 0, rendering = false;
+      var pdfDoc = null, totalPages = 0, spread = 0, rendering = false, zoomLevel = 1.0;
+      var ZOOM_STEP = 0.25, ZOOM_MIN = 0.5, ZOOM_MAX = 3.0;
 
       /* ── helpers ── */
       function isMobile() { return window.innerWidth <= 620; }
@@ -332,18 +340,25 @@
       function maxSpread() { return Math.ceil(totalPages / pagesPerSpread()) - 1; }
 
       function el(id) { return document.getElementById(id); }
-      var $book  = el('eb-book'),
-          $cvsl  = el('eb-cvs-l'), $ldrL = el('eb-ldr-l'),
-          $cvsr  = el('eb-cvs-r'), $ldrR = el('eb-ldr-r'),
-          $cur   = el('eb-cur'),   $tot  = el('eb-tot'),
-          $prevA = el('eb-prev-a'),$nextA = el('eb-next-a'),
-          $prevB = el('eb-prev-b'),$nextB = el('eb-next-b'),
-          $dots  = el('eb-dots'),  $fs   = el('eb-fs'),
-          $dl    = el('eb-dl'),
-          $wrap  = $book ? $book.closest('.ebook-wrapper') : null;
+      var $book    = el('eb-book'),
+          $cvsl    = el('eb-cvs-l'),   $ldrL    = el('eb-ldr-l'),
+          $cvsr    = el('eb-cvs-r'),   $ldrR    = el('eb-ldr-r'),
+          $cur     = el('eb-cur'),     $tot     = el('eb-tot'),
+          $prevA   = el('eb-prev-a'),  $nextA   = el('eb-next-a'),
+          $prevB   = el('eb-prev-b'),  $nextB   = el('eb-next-b'),
+          $dots    = el('eb-dots'),    $fs      = el('eb-fs'),
+          $dl      = el('eb-dl'),
+          $zoomIn  = el('eb-zoom-in'), $zoomOut = el('eb-zoom-out'),
+          $zoomLbl = el('eb-zoom-label'),
+          $stage   = $book ? $book.closest('.ebook-stage') : null,
+          $wrap    = $book ? $book.closest('.ebook-wrapper') : null;
 
-      /* indirme linki href'ini dinamik ata */
-      if ($dl) $dl.href = PDF_URL;
+      function updateZoomLabel() {
+        if ($zoomLbl) $zoomLbl.textContent = Math.round(zoomLevel * 100) + '%';
+        if ($zoomOut) $zoomOut.disabled = zoomLevel <= ZOOM_MIN;
+        if ($zoomIn)  $zoomIn.disabled  = zoomLevel >= ZOOM_MAX;
+      }
+      updateZoomLabel();
 
       /* ── load PDF.js dynamically ── */
       function bootstrap() {
@@ -435,9 +450,8 @@
           var dpr        = window.devicePixelRatio || 1;
           var containerW = canvas.parentElement.offsetWidth || 380;
           var vp0 = page.getViewport({ scale: 1 });
-          var sc  = containerW / vp0.width;
-          var vp  = page.getViewport({ scale: sc * dpr }); // fiziksel piksel
-          /* canvas boyutu = fiziksel; CSS boyutu = mantıksal → keskin render */
+          var sc  = (containerW / vp0.width) * zoomLevel;
+          var vp  = page.getViewport({ scale: sc * dpr });
           canvas.width  = vp.width;
           canvas.height = vp.height;
           canvas.style.width  = (vp.width  / dpr) + 'px';
@@ -479,11 +493,46 @@
         touchX = null;
       }, { passive: true });
 
-      /* fullscreen */
-      $fs.addEventListener('click', function () {
-        $wrap.classList.toggle('fs-mode');
-        this.textContent = $wrap.classList.contains('fs-mode') ? '✕' : '⛶';
+      /* ── zoom ── */
+      $zoomIn.addEventListener('click', function () {
+        if (zoomLevel < ZOOM_MAX) { zoomLevel = Math.min(ZOOM_MAX, +(zoomLevel + ZOOM_STEP).toFixed(2)); }
+        updateZoomLabel();
         if (pdfDoc) { rendering = false; renderSpread(spread); }
+      });
+      $zoomOut.addEventListener('click', function () {
+        if (zoomLevel > ZOOM_MIN) { zoomLevel = Math.max(ZOOM_MIN, +(zoomLevel - ZOOM_STEP).toFixed(2)); }
+        updateZoomLabel();
+        if (pdfDoc) { rendering = false; renderSpread(spread); }
+      });
+
+      /* ── fullscreen (native API) ── */
+      $fs.addEventListener('click', function () {
+        var target = $stage || $wrap;
+        if (!document.fullscreenElement) {
+          (target.requestFullscreen || target.webkitRequestFullscreen || target.mozRequestFullScreen).call(target);
+        } else {
+          (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+        }
+      });
+      document.addEventListener('fullscreenchange', function () {
+        $fs.textContent = document.fullscreenElement ? '✕' : '⛶';
+        if (pdfDoc) { rendering = false; setTimeout(function () { renderSpread(spread); }, 120); }
+      });
+
+      /* ── indirme (Blob URL – CORS sorunu olmaz) ── */
+      $dl.addEventListener('click', function () {
+        fetch(PDF_URL)
+          .then(function (r) { return r.blob(); })
+          .then(function (blob) {
+            var url = URL.createObjectURL(blob);
+            var a   = document.createElement('a');
+            a.href     = url;
+            a.download = 'MEGARON-SELVI_UNLU.pdf';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 2000);
+          })
+          .catch(function () { window.open(PDF_URL, '_blank'); });
       });
 
       /* resize → re-render */
