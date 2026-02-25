@@ -22,9 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="assets/css/styles.css?v=15.0">
-  <link rel="stylesheet" href="assets/css/styles-updates.css?v=9.0">
-  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=8.0" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=17.0">
+  <link rel="stylesheet" href="assets/css/styles-updates.css?v=16.0">
+  <link rel="stylesheet" href="assets/css/hero-mobile.css?v=9.0" />
 </head>
 <body>
   <!-- Modern Page Loader -->
@@ -46,15 +46,34 @@
 
   <div class="announcement-bar" role="region" aria-label="Üst duyuru">
     <div class="container announcement-inner">
+      <!-- Mobile: Left - Association Name -->
+      <p class="announcement-text mobile-header-item">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
+      <p class="announcement-text-short mobile-header-item">TSGL DERNEĞİ</p>
+      
+      <!-- Desktop: Spacer -->
       <div class="announcement-spacer"></div>
-      <p class="announcement-text">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
-      <p class="announcement-text-short">TSGL DERNEĞİ</p>
-      <div class="announcement-actions">
+      <p class="announcement-text desktop-only">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
+      <p class="announcement-text-short desktop-only">TSGL DERNEĞİ</p>
+      
+      <!-- Mobile: Center - Logo -->
+      <a class="mobile-header-logo mobile-header-item" href="/" data-link aria-label="Ana sayfa">
+        <img src="assets/img/tsglLogo.png" alt="TSGL Logosu" />
+      </a>
+      
+      <!-- Desktop: Actions -->
+      <div class="announcement-actions desktop-only">
         <a href="/giris.html" data-link class="announcement-link">
           <img src="assets/img/login_4043192.png" alt="" class="login-image" aria-hidden="true" />
           <span class="login-text">Giriş Yap</span>
         </a>
       </div>
+      
+      <!-- Mobile: Right - Hamburger Menu -->
+      <button class="mobile-menu-toggle mobile-header-item" id="mobile-menu-toggle-top" aria-label="Menüyü aç" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </div>
 
@@ -98,10 +117,6 @@
                 <a href="/urunlerimiz.html" data-link class="submenu-card">
                   <span class="submenu-icon">🛍️</span>
                   <span>Ürünlerimiz</span>
-                </a>
-                <a href="/toplanti-tutanaklari.html" data-link class="submenu-card">
-                  <span class="submenu-icon">📑</span>
-                  <span>Toplantı Tutanakları</span>
                 </a>
               </div>
             </li>
@@ -147,7 +162,7 @@
                   <span class="submenu-icon">📋</span>
                   <span>Anketler</span>
                 </a>
-                <a href="content/yazılar/index.html" class="submenu-card">
+                <a href="content/yazılar/index.html" data-link class="submenu-card">
                   <span class="submenu-icon">✍️</span>
                   <span>Yazılar</span>
                 </a>
@@ -156,6 +171,11 @@
             
             <li class="mobile-only"><a href="/burs.html" data-link class="nav-mobile-action">Burs Başvurusu</a></li>
             <li class="mobile-only"><a href="/bagis.html" data-link class="nav-mobile-action nav-mobile-donation">Bağış & Aidat</a></li>
+            <li class="mobile-only mobile-only-divider"></li>
+            <li class="mobile-only"><a href="/giris.html" data-link class="nav-mobile-action">
+              <img src="assets/img/login_4043192.png" alt="" style="width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle;" aria-hidden="true" />
+              Giriş Yap
+            </a></li>
           </ul>
         </nav>
       </div><!-- /nav-left -->
@@ -187,7 +207,7 @@
                   <span class="submenu-icon">📋</span>
                   <span>Anketler</span>
                 </a>
-                <a href="content/yazılar/index.html" class="submenu-card">
+                <a href="content/yazılar/index.html" data-link class="submenu-card">
                   <span class="submenu-icon">✍️</span>
                   <span>Yazılar</span>
                 </a>
@@ -238,7 +258,16 @@
       </div>
       <div class="container hero-inner">
         <div class="hero-text">
-          <h1 id="hero-title">Eğitimle Yetişen, Dayanışmayla Güçlenen</h1>
+          <div class="hero-brand-name" aria-label="Tevfik Sırrı Gür Lisesi Mezunları Derneği">
+            <span class="hero-brand-text" id="hero-brand-typewriter"></span><span class="hero-brand-cursor">|</span>
+          </div>
+          <h1 id="hero-title" class="hero-animated-title" aria-live="polite">
+            <span class="animated-phrase active">Eğitimle Yetişen, Dayanışmayla Güçlenen</span>
+            <span class="animated-phrase">Birlikte Daha Güçlüyüz</span>
+            <span class="animated-phrase">Geçmişimizden Güç, Geleceğimize Işık</span>
+            <span class="animated-phrase">Köklü Dostluk, Kalıcı Dayanışma</span>
+            <span class="animated-phrase">Mersin'den Dünyaya Uzanan Eller</span>
+          </h1>
           <p class="lead">Toplumsal sorumluluk, dayanışma ve kalıcı değerler için bir aradayız.</p>
           <div class="hero-actions">
             <a class="btn primary" href="/hakkimizda.html" data-link>Hakkımızda</a>
@@ -248,24 +277,35 @@
       </div>
     </section>
 
-    <!-- Announcement Carousel Section -->
-    <section class="announcement-carousel" role="region" aria-label="Duyurular">
+    <!-- Announcement Carousel Section (Live from Firebase) -->
+    <section class="announcement-carousel" role="region" aria-label="Canlı Duyurular">
       <div class="announcement-carousel-inner">
         <div style="display: flex; align-items: center; margin-bottom: 8px;">
-          <h2 class="announcement-carousel-title" style="margin-bottom: 0;">📢 DUYURULAR</h2>
+          <h2 class="announcement-carousel-title" style="margin-bottom: 0;">📢 CANLI BÜLTEN</h2>
+          <span id="ticker-live-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;margin-left:10px;box-shadow:0 0 6px #4ade80;animation:ticker-pulse 1.5s ease-in-out infinite;"></span>
         </div>
         <div class="announcement-carousel-content">
-          <div class="announcement-carousel-scroll">
-            <div class="announcement-carousel-item">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
-            <div class="announcement-carousel-item">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
-            <div class="announcement-carousel-item">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
-            <div class="announcement-carousel-item">AİDAT VE BAĞIŞ HESABI - Ziraat Bankası: TR88 0001 0007 9550 2865 9050 05</div>
-            <div class="announcement-carousel-item">BURS KULÜBÜ HESABI - Ziraat Bankası: TR64 0001 0007 9550 2865 9050 49</div>
-            <div class="announcement-carousel-item">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
-            <div class="announcement-carousel-item">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
-            <div class="announcement-carousel-item">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
+          <div class="announcement-carousel-scroll" id="live-ticker-scroll">
+            <!-- Static fallback — replaced by JS if Firebase ready -->
+            <div class="announcement-carousel-item ticker-static">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
+            <div class="announcement-carousel-item ticker-static">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
+            <div class="announcement-carousel-item ticker-static">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
+            <div class="announcement-carousel-item ticker-static">OLAĞAN GENEL KURUL TOPLANTISI - Dernek Merkezimizde gerçekleştirilmiştir.</div>
+            <div class="announcement-carousel-item ticker-static">YENİ ÜYE AİDATLARI - 2025 Yılı: 250,00 TL | 2026 Yılı: 350,00 TL</div>
+            <div class="announcement-carousel-item ticker-static">BURS KULÜBÜ - 10 öğrenciye burs verilmeye başlanmıştır.</div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section class="section reveal" id="takvim" aria-labelledby="calendar-section-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="calendar-section-title">📅 Etkinlik Takvimi</h2>
+          <p>Derneğimizin etkinliklerini takip edin. Giriş yaparak yeni etkinlik ekleyebilirsiniz.</p>
+        </div>
+        <div id="tsgl-calendar" role="region" aria-label="Etkinlik takvimi"></div>
       </div>
     </section>
 
@@ -310,7 +350,7 @@
           <p>Okulumuzun ve Derneğimizin değerli anıları, deneyimleri ve başarı yazıları</p>
         </div>
         <div class="history-showcase">
-          <a href="content/yazılar/index.html" class="history-main-card reveal" data-reveal-order="1" style="cursor: pointer; text-decoration: none; color: inherit; display: block;">
+          <a href="content/yazılar/index.html" data-link class="history-main-card reveal" data-reveal-order="1" style="cursor: pointer; text-decoration: none; color: inherit; display: block;">
             <div class="history-main-media">
               <img src="assets/img/tsglFoto2.png" alt="Okulumuzun tarihi binası" loading="lazy" />
               <span class="history-badge">Yazılar</span>
@@ -324,7 +364,7 @@
           </a>
 
           <div id="recent-posts-list" class="history-side-list reveal" data-reveal-order="2">
-            <a class="history-side-card" href="content/yazılar/index.html">
+            <a class="history-side-card" href="content/yazılar/index.html" data-link>
               <img src="assets/img/tsglFoto3.png" alt="Yonetim kurulu bulusmasi" loading="lazy" />
               <div class="history-side-body">
                 <h4>Atatürk ve Tarih</h4>
@@ -332,7 +372,7 @@
                 <p>Ataturk’un mirasi ve okul kulturumuze yansiyan tarihsel izler.</p>
               </div>
             </a>
-            <a class="history-side-card" href="content/yazılar/index.html">
+            <a class="history-side-card" href="content/yazılar/index.html" data-link>
               <img src="assets/img/tsglFoto.png" alt="Fizik laboratuvari yenileme" loading="lazy" />
               <div class="history-side-body">
                 <h4>Egitim</h4>
@@ -340,7 +380,7 @@
                 <p>Ogrenci ve mezunlarimizin egitim yolculuklarindan notlar.</p>
               </div>
             </a>
-            <a class="history-side-card" href="content/yazılar/index.html">
+            <a class="history-side-card" href="content/yazılar/index.html" data-link>
               <img src="assets/img/anılar.jpg" alt="Okul anilari" loading="lazy" />
               <div class="history-side-body">
                 <h4>Iklim ve Cevre</h4>
@@ -348,7 +388,7 @@
                 <p>Okulumuzun cevre bilinci ve surdurulebilirlik calismalari.</p>
               </div>
             </a>
-            <a class="history-side-card" href="content/yazılar/index.html">
+            <a class="history-side-card" href="content/yazılar/index.html" data-link>
               <img src="assets/img/tsglFoto2.png" alt="Basari hikayeleri" loading="lazy" />
               <div class="history-side-body">
                 <h4>Kultur - Sanat ve Gezi</h4>
@@ -356,7 +396,7 @@
                 <p>Sanat, kultur ve gezi deneyimlerini paylastigimiz yazi dizisi.</p>
               </div>
             </a>
-            <a class="history-side-card" href="content/yazılar/index.html">
+            <a class="history-side-card" href="content/yazılar/index.html" data-link>
               <img src="assets/img/tsglFoto3.png" alt="Okuldan guncel haber" loading="lazy" />
               <div class="history-side-body">
                 <h4>Toplum</h4>
@@ -604,6 +644,11 @@
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#1e40af" stroke-width="2"></line>
             </svg>
           </a>
+          <a href="https://wa.me/905322745852" target="_blank" class="social-btn" aria-label="WhatsApp" title="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -640,6 +685,45 @@
   <!-- Auth module -->
   <script src="assets/js/auth.js?v=4.0"></script>
   <!-- Main app -->
-  <script src="assets/js/main.js?v=11.0"></script>
+  <script src="assets/js/main.js?v=12.0"></script>
+  <!-- Calendar module -->
+  <script src="assets/js/calendar.js?v=5.0"></script>
+  <script>
+    (function () {
+      const siteHeader = document.querySelector('.site-header');
+      if (!siteHeader) return;
+
+      const DESKTOP_BREAKPOINT = 900;
+      const HIDE_SCROLL_THRESHOLD = 120;
+      let lastScrollY = window.scrollY || window.pageYOffset || 0;
+
+      function applyHeaderScrollBehavior() {
+        const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+        const isDesktop = window.innerWidth > DESKTOP_BREAKPOINT;
+
+        if (!isDesktop) {
+          siteHeader.style.removeProperty('display');
+          lastScrollY = currentScrollY;
+          return;
+        }
+
+        if (currentScrollY > lastScrollY && currentScrollY > HIDE_SCROLL_THRESHOLD) {
+          siteHeader.style.setProperty('display', 'none', 'important');
+        } else if (currentScrollY < lastScrollY) {
+          siteHeader.style.setProperty('display', 'block', 'important');
+        }
+
+        if (currentScrollY <= 0) {
+          siteHeader.style.setProperty('display', 'block', 'important');
+        }
+
+        lastScrollY = currentScrollY;
+      }
+
+      window.addEventListener('scroll', applyHeaderScrollBehavior, { passive: true });
+      window.addEventListener('resize', applyHeaderScrollBehavior);
+      applyHeaderScrollBehavior();
+    })();
+  </script>
 </body>
 </html>

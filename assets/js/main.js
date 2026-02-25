@@ -62,34 +62,55 @@
 
   // === HEADER SCROLL BEHAVIOR ===
   const siteHeader = document.querySelector('.site-header');
+  const announcementBar = document.querySelector('.announcement-bar');
   const scrollProgress = document.getElementById('scrollProgress');
   const progressCircle = document.getElementById('progressCircle');
-  
+
   // Sayfa başladığında is-top class'ını ekle
   if (siteHeader) {
     siteHeader.classList.add('is-top');
   }
-  
-  let lastScroll = 0;
-  let scrollDirection = 'down';
+
   const SCROLL_THRESHOLD = 80;
-  const HIDE_SCROLL_THRESHOLD = 100;
+  const HIDE_SCROLL_THRESHOLD = 120;
+  const DESKTOP_BREAKPOINT = 900;
+
+  let lastScroll = 0;
+
+  function hideWhiteHeader() {
+    if (!siteHeader) return;
+    siteHeader.classList.add('desktop-header-hidden');
+    siteHeader.style.setProperty('display', 'none', 'important');
+    siteHeader.style.setProperty('visibility', 'hidden', 'important');
+    siteHeader.style.setProperty('height', '0', 'important');
+    siteHeader.style.setProperty('min-height', '0', 'important');
+    siteHeader.style.setProperty('padding-top', '0', 'important');
+    siteHeader.style.setProperty('padding-bottom', '0', 'important');
+    siteHeader.style.setProperty('border', '0', 'important');
+    siteHeader.style.setProperty('box-shadow', 'none', 'important');
+    siteHeader.style.setProperty('overflow', 'hidden', 'important');
+  }
+
+  function showWhiteHeader() {
+    if (!siteHeader) return;
+    siteHeader.classList.remove('desktop-header-hidden');
+    siteHeader.style.removeProperty('display');
+    siteHeader.style.removeProperty('visibility');
+    siteHeader.style.removeProperty('height');
+    siteHeader.style.removeProperty('min-height');
+    siteHeader.style.removeProperty('padding-top');
+    siteHeader.style.removeProperty('padding-bottom');
+    siteHeader.style.removeProperty('border');
+    siteHeader.style.removeProperty('box-shadow');
+    siteHeader.style.removeProperty('overflow');
+  }
 
   function updateHeaderState() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Header hidden/show logic
-    if (currentScroll > lastScroll) {
-      // Scrolling down
-      scrollDirection = 'down';
-      if (currentScroll > HIDE_SCROLL_THRESHOLD) {
-        siteHeader?.classList.add('hide-header');
-      }
-    } else {
-      // Scrolling up
-      scrollDirection = 'up';
-      siteHeader?.classList.remove('hide-header');
-    }
+    const isDesktop = window.innerWidth > DESKTOP_BREAKPOINT;
+
+    // Header always visible — never hide on scroll
+    showWhiteHeader();
     
     // Header state based on scroll position
     if (currentScroll === 0) {
@@ -154,12 +175,21 @@
 
   // === MOBILE MENU SYSTEM (Modern Hamburger) ===
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenuToggleTop = document.getElementById('mobile-menu-toggle-top');
   const navLeft = document.querySelector('.nav-left');
   const navRight = document.querySelector('.nav-right');
   let mobileOverlay = document.getElementById('mobile-nav-overlay');
 
+  console.log('Mobile menu elements:', {
+    mobileMenuToggle,
+    mobileMenuToggleTop,
+    navLeft,
+    navRight,
+    mobileOverlay
+  });
+
   // Create overlay if not exists (güvenlik)
-  if (!mobileOverlay && mobileMenuToggle) {
+  if (!mobileOverlay && (mobileMenuToggle || mobileMenuToggleTop)) {
     mobileOverlay = document.createElement('div');
     mobileOverlay.className = 'mobile-nav-overlay';
     mobileOverlay.id = 'mobile-nav-overlay';
@@ -173,21 +203,34 @@
 
   // Aç / Kapat fonksiyonları
   const openMobileMenu = () => {
+    console.log('openMobileMenu called');
+    console.log('navLeft element:', navLeft);
+    console.log('navLeft classes before:', navLeft?.className);
     mobileMenuOpen = true;
     mobileMenuToggle?.classList.add('active');
+    mobileMenuToggleTop?.classList.add('active');
     navLeft?.classList.add('mobile-active');
-    mobileOverlay?.classList.add('active');
+    // Overlay'i biraz geciktir - hamburger'a tıklama event'i tamamlansın
+    setTimeout(() => {
+      mobileOverlay?.classList.add('active');
+    }, 150);
     mobileMenuToggle?.setAttribute('aria-expanded', 'true');
+    mobileMenuToggleTop?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    console.log('navLeft classes after:', navLeft?.className);
+    console.log('Menu opened successfully');
   };
 
   const closeMobileMenu = () => {
+    console.log('closeMobileMenu called');
     mobileMenuOpen = false;
     mobileMenuToggle?.classList.remove('active');
+    mobileMenuToggleTop?.classList.remove('active');
     navLeft?.classList.remove('mobile-active');
     navRight?.classList.remove('mobile-active');
     mobileOverlay?.classList.remove('active');
     mobileMenuToggle?.setAttribute('aria-expanded', 'false');
+    mobileMenuToggleTop?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     // Tüm dropdown'ları kapat
     document.querySelectorAll('.nav-dropdown.open').forEach(d => {
@@ -197,10 +240,16 @@
     });
   };
 
-  const toggleMobileMenu = () =>
-    mobileMenuOpen ? closeMobileMenu() : openMobileMenu();
+  const toggleMobileMenu = () => {
+    console.log('toggleMobileMenu called, mobileMenuOpen:', mobileMenuOpen);
+    if (mobileMenuOpen) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  };
 
-  // Hamburger buton tıklama
+  // Hamburger buton tıklama (both buttons)
   if (mobileMenuToggle) {
     mobileMenuToggle.addEventListener('click', e => {
       e.preventDefault();
@@ -208,10 +257,26 @@
       toggleMobileMenu();
     });
   }
+  
+  if (mobileMenuToggleTop) {
+    mobileMenuToggleTop.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Mobile menu toggle top clicked!');
+      toggleMobileMenu();
+    });
+  }
 
   // Overlay tıklama → kapat
   if (mobileOverlay) {
-    mobileOverlay.addEventListener('click', () => closeMobileMenu());
+    mobileOverlay.addEventListener('click', (e) => {
+      // Hamburger'a yapılan tıklamayı ignore et
+      if (e.target.closest('#mobile-menu-toggle-top') || e.target.closest('#mobile-menu-toggle')) {
+        return;
+      }
+      console.log('Overlay clicked, closing menu');
+      closeMobileMenu();
+    });
   }
 
   // ESC tuşu → kapat
@@ -258,8 +323,12 @@
     if (!isMobileView()) return;
     const link = e.target.closest('.submenu-card, .nav-left a:not(.nav-dropdown > a)');
     if (!link) return;
+    if (link.hasAttribute('data-link')) return;
     const href = link.getAttribute('href') || '';
-    if (href && href !== '#') closeMobileMenu();
+    if (!href || href === '#') return;
+    e.preventDefault();
+    closeMobileMenu();
+    window.location.href = link.href;
   });
 
   // Tüm dropdown'ları kapat (fonksiyon)
@@ -420,9 +489,7 @@
     '/anma': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
     '/anma.html': { title: 'Anma Köşesi | TSGL Derneği', content: 'content/anma/index.html' },
     '/urunlerimiz': { title: 'Ürünlerimiz | TSGL Derneği', content: 'content/urunlerimiz/index.html' },
-    '/urunlerimiz.html': { title: 'Ürünlerimiz | TSGL Derneği', content: 'content/urunlerimiz/index.html' },
-    '/toplanti-tutanaklari': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' },
-    '/toplanti-tutanaklari.html': { title: 'Toplantı Tutanakları | TSGL Derneği', content: 'content/toplantisutaniklari/index.html' }
+    '/urunlerimiz.html': { title: 'Ürünlerimiz | TSGL Derneği', content: 'content/urunlerimiz/index.html' }
   };
 
   const homeContent = document.getElementById('home-content');
@@ -434,7 +501,11 @@
     const decoded = decodeURIComponent(String(path));
     const cleaned = decoded.split('?')[0].replace(/\.html$/, '').replace(/\/+$/, '');
     const normalized = cleaned.toLowerCase().replace(/ı/g, 'i');
-    return normalized === '/yazilar';
+    const normalizedWithSlash = normalized.startsWith('/') ? normalized : `/${normalized}`;
+    if (normalizedWithSlash === '/yazilar') return true;
+    if (normalizedWithSlash.endsWith('/yazilar')) return true;
+    if (normalizedWithSlash.endsWith('/yazilar/index')) return true;
+    return normalizedWithSlash.includes('/content/yazilar');
   };
 
   const isAdminPath = (path) => {
@@ -565,6 +636,9 @@
       const href = link.getAttribute('href');
       const section = link.getAttribute('data-section');
       navigateTo(href, section);
+      if (isMobileView() && mobileMenuOpen) {
+        closeMobileMenu();
+      }
       closeDropdowns();
     }
     
@@ -781,6 +855,163 @@
       sliderWrap.addEventListener('pointerleave', start);
     }
   }
+
+  // Hero: Typewriter animation for brand name
+  const brandTypewriterEl = document.getElementById('hero-brand-typewriter');
+  if (brandTypewriterEl) {
+    const fullText = 'Tevfik Sırrı Gür Lisesi Mezunları Derneği';
+    let charIdx = 0;
+    let typewriterDone = false;
+    const typeNext = () => {
+      if (charIdx <= fullText.length) {
+        brandTypewriterEl.textContent = fullText.slice(0, charIdx);
+        charIdx++;
+        if (charIdx <= fullText.length) {
+          setTimeout(typeNext, charIdx < 8 ? 80 : 45);
+        } else {
+          typewriterDone = true;
+          // Hide cursor after a pause
+          setTimeout(() => {
+            const cursor = document.querySelector('.hero-brand-cursor');
+            if (cursor) cursor.style.opacity = '0';
+          }, 2200);
+        }
+      }
+    };
+    setTimeout(typeNext, 400);
+  }
+
+  // Hero: Cycling animated phrases
+  const phrases = Array.from(document.querySelectorAll('.animated-phrase'));
+  if (phrases.length > 1) {
+    let phraseIdx = 0;
+    let phraseTimer = null;
+
+    const activatePhrase = (idx) => {
+      const current = phrases[phraseIdx];
+      const next = phrases[idx];
+      current.classList.add('leaving');
+      current.classList.remove('active');
+      setTimeout(() => { current.classList.remove('leaving'); }, 520);
+      next.classList.add('active');
+      phraseIdx = idx;
+    };
+
+    phraseTimer = setInterval(() => {
+      const nextIdx = (phraseIdx + 1) % phrases.length;
+      activatePhrase(nextIdx);
+    }, 3800);
+  }
+
+  // Live ticker — pull from Firestore (posts + events)
+  (function initLiveTicker() {
+    const scroll = document.getElementById('live-ticker-scroll');
+    if (!scroll) return;
+
+    function buildTickerItems(items) {
+      if (!items.length) return;
+      // Remove static fallbacks once we have live data
+      scroll.querySelectorAll('.ticker-static').forEach(el => el.remove());
+
+      // Build items set (duplicate for seamless loop)
+      const makeItem = ({ label, text, href }) => {
+        const div = document.createElement('div');
+        div.className = 'announcement-carousel-item ticker-live';
+        if (href) {
+          div.innerHTML = `<span style="color:var(--color-secondary);font-weight:700;margin-right:6px;">[${label}]</span><a href="${href}" style="color:#fff;text-decoration:none;">${text}</a>`;
+        } else {
+          div.innerHTML = `<span style="color:var(--color-secondary);font-weight:700;margin-right:6px;">[${label}]</span>${text}`;
+        }
+        return div;
+      };
+
+      const frag1 = document.createDocumentFragment();
+      const frag2 = document.createDocumentFragment();
+      items.forEach(item => {
+        frag1.appendChild(makeItem(item));
+        frag2.appendChild(makeItem(item));
+      });
+      scroll.innerHTML = '';
+      scroll.appendChild(frag1);
+      scroll.appendChild(frag2);
+
+      // Recalculate scroll animation height
+      const totalH = scroll.scrollHeight / 2;
+      scroll.style.setProperty('--ticker-h', totalH + 'px');
+    }
+
+    function waitForAuth(retries) {
+      if (retries <= 0) return;
+      if (!window.TSGLAuth || !window.TSGLAuth.isReady()) {
+        setTimeout(() => waitForAuth(retries - 1), 600);
+        return;
+      }
+      const db = window.TSGLAuth.db;
+
+      const allItems = [];
+
+      // Fetch latest posts
+      db.collection('posts')
+        .orderBy('createdAt', 'desc')
+        .limit(5)
+        .get()
+        .then(snap => {
+          snap.forEach(doc => {
+            const d = doc.data();
+            allItems.push({ label: 'YAZI', text: d.title || 'Yeni yazı', href: 'content/yazılar/index.html' });
+          });
+        })
+        .catch(() => {})
+        .finally(() => {
+          // Fetch upcoming events
+          const now = new Date();
+          db.collection('events')
+            .where('date', '>=', firebase.firestore.Timestamp.fromDate(now))
+            .orderBy('date', 'asc')
+            .limit(5)
+            .get()
+            .then(snap2 => {
+              snap2.forEach(doc => {
+                const d = doc.data();
+                const dateStr = d.date ? d.date.toDate().toLocaleDateString('tr-TR') : '';
+                allItems.push({ label: 'ETKİNLİK', text: `${d.title}${dateStr ? ' — ' + dateStr : ''}`, href: null });
+              });
+            })
+            .catch(() => {})
+            .finally(() => {
+              if (allItems.length) buildTickerItems(allItems);
+            });
+        });
+
+      // Real-time events update via onSnapshot
+      db.collection('events')
+        .orderBy('date', 'asc')
+        .limit(10)
+        .onSnapshot(snap => {
+          const liveItems = [];
+          snap.forEach(doc => {
+            const d = doc.data();
+            const dateStr = d.date ? d.date.toDate().toLocaleDateString('tr-TR') : '';
+            liveItems.push({ label: 'ETKİNLİK', text: `${d.title}${dateStr ? ' — ' + dateStr : ''}`, href: null });
+          });
+          if (liveItems.length > 0) {
+            // merge with latest posts
+            db.collection('posts').orderBy('createdAt', 'desc').limit(4).get()
+              .then(pSnap => {
+                const merged = [];
+                pSnap.forEach(doc => {
+                  const d = doc.data();
+                  merged.push({ label: 'YAZI', text: d.title || 'Yeni yazı', href: 'content/yazılar/index.html' });
+                });
+                merged.push(...liveItems);
+                buildTickerItems(merged);
+              }).catch(() => { buildTickerItems(liveItems); });
+          }
+        }, () => {});
+    }
+
+    waitForAuth(12);
+  })();
 
   // Brand accent from logo: sample dominant color and set CSS variables
   const brandImg = document.querySelector('.brand-logo');
@@ -1416,11 +1647,16 @@
   }
 
   // Load recent posts after Firebase is ready
-  setTimeout(() => {
+  let postsRetryCount = 0;
+  function tryLoadRecentPosts() {
     if (window.TSGLAuth && window.TSGLAuth.isReady()) {
       loadRecentPosts();
+    } else if (postsRetryCount < 10) {
+      postsRetryCount++;
+      setTimeout(tryLoadRecentPosts, 500);
     }
-  }, 1000);
+  }
+  setTimeout(tryLoadRecentPosts, 500);
 
 })();
 

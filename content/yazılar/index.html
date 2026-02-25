@@ -20,7 +20,7 @@
     /* Header - Yazılar Sayfası */
     .site-header {
       position: relative;
-      z-index: 100;
+      z-index: 5000 !important;
     }
     
     /* Mobile Menu Navigation - Yazılar Sayfası (Anasayfa ile aynı) */
@@ -57,7 +57,7 @@
         left: -100%;
         width: 320px;
         height: 100vh;
-        background: linear-gradient(180deg, #fff 0%, #fafbff 100%);
+        background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
         z-index: 2000;
         flex-direction: column;
         align-items: flex-start;
@@ -66,7 +66,16 @@
         overflow-x: hidden;
         transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 4px 0 24px rgba(0,0,0,0.18);
-        border-right: 1px solid rgba(21,58,161,0.1);
+        border-right: 1px solid rgba(255,255,255,0.12);
+      }
+
+      .nav-left {
+        z-index: 3000 !important;
+        pointer-events: auto !important;
+      }
+
+      .mobile-nav-overlay {
+        z-index: 2500 !important;
       }
       
       .nav-left.mobile-active,
@@ -110,15 +119,22 @@
         font-size: 16px;
         border-radius: 0;
         display: block;
-        color: #1a2332;
+        color: #ffffff;
         transition: all 0.25s;
         position: relative;
         z-index: 2010;
       }
+
+      .nav-left li a,
+      .nav-dropdown > a,
+      .nav-submenu a,
+      .nav-submenu .submenu-card {
+        color: #ffffff !important;
+      }
       
       .site-nav a:hover {
-        background: linear-gradient(90deg, rgba(21,58,161,0.08), rgba(21,58,161,0.04));
-        color: #153aa1;
+        background: rgba(255,255,255,0.12);
+        color: #ffffff;
         padding-left: 30px;
       }
       
@@ -131,8 +147,8 @@
         justify-content: space-between;
         font-weight: 600;
         font-size: 16px;
-        color: #153aa1;
-        background: linear-gradient(90deg, rgba(21,58,161,0.05), rgba(21,58,161,0.02));
+        color: #ffffff;
+        background: rgba(255,255,255,0.08);
         border-left: 3px solid transparent;
         cursor: pointer !important;
         pointer-events: auto !important;
@@ -142,15 +158,15 @@
       }
       
       .nav-dropdown > a:hover {
-        background: linear-gradient(90deg, rgba(21,58,161,0.12), rgba(21,58,161,0.06)) !important;
-        border-left-color: #153aa1;
+        background: rgba(255,255,255,0.16) !important;
+        border-left-color: #d4af37;
         padding-left: 30px;
       }
       
       .nav-dropdown > a::after {
         content: '▼';
         font-size: 11px;
-        color: #153aa1;
+        color: #ffffff;
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
@@ -159,7 +175,7 @@
       }
       
       .nav-dropdown.open > a {
-        background: linear-gradient(90deg, rgba(21,58,161,0.15), rgba(21,58,161,0.08)) !important;
+        background: rgba(255,255,255,0.18) !important;
         border-left-color: #d4af37;
       }
       
@@ -174,11 +190,11 @@
         visibility: visible !important;
         display: grid;
         grid-template-columns: 1fr !important;
-        background: linear-gradient(180deg, #f8f9ff, #f5f7ff);
+        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
         max-height: 0;
         overflow: hidden;
         box-shadow: none;
-        border-left: 4px solid #153aa1;
+        border-left: 4px solid #d4af37;
         transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                     opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -192,9 +208,9 @@
       .submenu-card {
         padding: 16px 32px;
         border-radius: 0;
-        border-bottom: 1px solid rgba(21,58,161,0.06);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         font-size: 15px;
-        color: #1a2332;
+        color: #ffffff;
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -203,7 +219,7 @@
       }
       
       .submenu-card:hover {
-        background: linear-gradient(90deg, rgba(21,58,161,0.1), rgba(21,58,161,0.05));
+        background: rgba(255,255,255,0.12);
         padding-left: 40px;
       }
       
@@ -221,26 +237,26 @@
       
       .mobile-only a {
         font-weight: 600;
-        background: linear-gradient(90deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04));
-        color: #153aa1;
+        background: rgba(255,255,255,0.12);
+        color: #ffffff;
         border-left: 3px solid transparent;
       }
       
       .mobile-only a:hover {
-        background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.08));
+        background: rgba(255,255,255,0.18);
         border-left-color: #d4af37;
         padding-left: 30px;
       }
       
       .nav-mobile-donation {
-        background: linear-gradient(90deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04)) !important;
-        color: #153aa1 !important;
+        background: rgba(255,255,255,0.12) !important;
+        color: #ffffff !important;
         font-weight: 600 !important;
         border-left: 3px solid transparent !important;
       }
       
       .nav-mobile-donation:hover {
-        background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.08)) !important;
+        background: rgba(255,255,255,0.18) !important;
         border-left-color: #d4af37 !important;
       }
     }
@@ -293,13 +309,6 @@
       stroke-linejoin: round;
     }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-  <script src="../../assets/js/firebase-config.js"></script>
-  <script src="../../assets/js/auth.js"></script>
-  <script src="../../assets/js/main.js"></script>
 </head>
 <body>
   <!-- Karartma overlay — hamburger menü için -->
@@ -335,14 +344,28 @@
   <div class="announcement-bar">
     <div class="container announcement-inner">
       <div class="announcement-spacer"></div>
-      <p class="announcement-text">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
+      <p class="announcement-text desktop-only">MERSİN ve TEVFİK SIRRI GÜR LİSESİNDEN YETİŞENLERİ DERNEĞİ</p>
       <p class="announcement-text-short">TSGL DERNEĞİ</p>
-      <div class="announcement-actions">
-        <a href="../../index.html#giris" class="announcement-link">
-          <img src="../../assets/img/login_4043192.png" alt="" class="login-image" />
+      
+      <!-- Mobile: Center - Logo -->
+      <a class="mobile-header-logo mobile-header-item" href="../../index.html" aria-label="Ana sayfa">
+        <img src="../../assets/img/tsglLogo.png" alt="TSGL Logosu" />
+      </a>
+      
+      <!-- Desktop: Actions -->
+      <div class="announcement-actions desktop-only">
+        <a href="../../index.html#giris" data-link class="announcement-link">
+          <img src="../../assets/img/login_4043192.png" alt="" class="login-image" aria-hidden="true" />
           <span class="login-text">Giriş Yap</span>
         </a>
       </div>
+      
+      <!-- Mobile: Right - Hamburger Menu -->
+      <button class="mobile-menu-toggle mobile-header-item" id="mobile-menu-toggle-top" aria-label="Menüyü aç" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </div>
 
@@ -356,6 +379,7 @@
       <div class="nav-left">
         <nav class="site-nav left-nav" role="navigation" aria-label="Sol menü">
           <ul>
+            <li class="mobile-only"><a href="../../index.html" class="nav-mobile-action">Anasayfa</a></li>
             <!-- Derneğimiz Dropdown -->
             <li class="nav-dropdown">
               <a href="#" aria-expanded="false" aria-haspopup="true">Derneğimiz</a>
@@ -379,10 +403,6 @@
                 <a href="../../index.html#urunlerimiz" class="submenu-card">
                   <span class="submenu-icon">🛍️</span>
                   <span>Ürünlerimiz</span>
-                </a>
-                <a href="../../index.html#toplanti-tutanaklari" class="submenu-card">
-                  <span class="submenu-icon">📑</span>
-                  <span>Toplantı Tutanakları</span>
                 </a>
               </div>
             </li>
@@ -634,11 +654,40 @@
           progressCircle.style.strokeDashoffset = offset;
         }, { passive: true });
       }
+
+      const scrollToTopBtn = document.getElementById('scrollToTop');
+      if (scrollToTopBtn && !scrollToTopBtn.dataset.bound) {
+        scrollToTopBtn.dataset.bound = 'true';
+        const updateScrollBtn = () => {
+          const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+          scrollToTopBtn.classList.toggle('visible', scrollPos > 300);
+        };
+        window.addEventListener('scroll', updateScrollBtn, { passive: true });
+        window.addEventListener('touchmove', updateScrollBtn, { passive: true });
+        updateScrollBtn();
+        scrollToTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
       
       // FALLBACK: Hamburger menü toggle (main.js aktif değilse)
-      const toggleBtn = document.getElementById('mobile-menu-toggle');
+
+      // FALLBACK: Hamburger menü toggle (main.js aktif değilse)
+      const toggleBtn = document.getElementById('mobile-menu-toggle-top');
       const navLeft = document.querySelector('.nav-left');
       const overlay = document.getElementById('mobile-nav-overlay');
+      
+      // Dropdown toggle functionality
+      document.querySelectorAll('.nav-dropdown > a').forEach(dropdownLink => {
+        dropdownLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const parentLi = dropdownLink.closest('.nav-dropdown');
+          const isOpen = parentLi.classList.toggle('open');
+          dropdownLink.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
       
       if (toggleBtn && navLeft) {
         toggleBtn.addEventListener('click', (e) => {
@@ -663,19 +712,47 @@
           // Body scroll lock
           document.body.style.overflow = isOpen ? 'hidden' : '';
         });
+
+        const closeMenu = () => {
+          navLeft.classList.remove('mobile-active', 'open');
+          toggleBtn.classList.remove('active');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          if (overlay) {
+            overlay.classList.remove('active');
+          }
+          document.body.style.overflow = '';
+        };
         
         // Overlay kapatma
         if (overlay) {
           overlay.addEventListener('click', () => {
-            navLeft.classList.remove('mobile-active', 'open');
-            toggleBtn.classList.remove('active');
-            overlay.classList.remove('active');
-            toggleBtn.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+            closeMenu();
           });
         }
+
+        document.addEventListener('click', (e) => {
+          const link = e.target.closest('.submenu-card, .nav-left a:not(.nav-dropdown > a)');
+          if (!link) return;
+          const href = link.getAttribute('href') || '';
+          if (!href || href === '#') return;
+          e.preventDefault();
+          closeMenu();
+          window.location.href = link.href;
+        });
       }
     })();
   </script>
+
+  <!-- Firebase SDK (Compat for script tag usage) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <!-- Project Firebase config -->
+  <script src="../../assets/js/firebase-config.js"></script>
+  <!-- Auth module -->
+  <script src="../../assets/js/auth.js"></script>
+  <!-- Main app -->
+  <script src="../../assets/js/main.js"></script>
 </body>
 </html>

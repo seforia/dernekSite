@@ -437,7 +437,7 @@
   // Yazıları getir
   async function getPosts(pageSize = 10, lastDoc = null) {
     try {
-      let query = db.collection('posts').limit(pageSize + 1); // Get one extra for pagination check
+      let query = db.collection('posts').orderBy('createdAt', 'desc').limit(pageSize + 1); // Get one extra for pagination check
       
       if (lastDoc) {
         query = query.startAfter(lastDoc);
