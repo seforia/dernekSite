@@ -314,12 +314,13 @@
     <script>
     (function () {
       'use strict';
-      /* Dinamik base path: GitHub Pages subdirectory'yi de destekler */
-      var _base = (function () {
+      /* Dinamik PDF URL: GitHub Pages subdir + local server + ham Türkçe karakter */
+      var PDF_URL = (function () {
+        var origin = window.location.origin; // http://127.0.0.1:5501
         var m = window.location.pathname.match(/^(\/[^\/]+\/)/);
-        return m ? m[1] : '/';
+        var base = m ? m[1] : '/';
+        return origin + base + 'assets/img/okulumuzHakk\u0131nda/MEGARON-15870-ARTICLE-SELVI_UNLU.pdf';
       })();
-      var PDF_URL = _base + 'assets/img/okulumuzHakk%C4%B1nda/MEGARON-15870-ARTICLE-SELVI_UNLU.pdf';
       var PDFJS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
       var WORKER_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
@@ -364,8 +365,8 @@
           buildDots();
           renderSpread(0);
         }).catch(function (e) {
-          console.error('PDF yüklenemedi:', e);
-          $book.innerHTML = '<p style="padding:2rem;color:#c00;text-align:center">PDF yüklenemedi.</p>';
+          console.error('PDF yüklenemedi. URL:', PDF_URL, 'Hata:', e);
+          $book.innerHTML = '<p style="padding:2rem;color:#c00;text-align:center">PDF yüklenemedi.<br><small style="color:#888">' + PDF_URL + '</small></p>';
         });
       }
 
