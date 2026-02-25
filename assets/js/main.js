@@ -582,6 +582,16 @@
         if (dynamicContent) {
           dynamicContent.innerHTML = html;
           dynamicContent.style.display = 'block';
+          // innerHTML ile eklenen <script> tagları tarayıcı tarafından çalıştırılmaz.
+          // Her birini yeni bir script elementi olarak yeniden DOM'a ekle.
+          dynamicContent.querySelectorAll('script').forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr =>
+              newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.textContent = oldScript.textContent;
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
         }
         
         // Reveal animasyonlarını yeniden başlat
