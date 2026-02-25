@@ -189,22 +189,10 @@
     // Day detail popup container
     html += `<div class="cal-popup" id="cal-popup" hidden></div>`;
 
-    // Lightbox container
-    html += `
-      <div class="cal-lightbox" id="cal-lightbox" hidden aria-modal="true" role="dialog" aria-label="Görsel büyütme">
-        <div class="cal-lightbox-backdrop" id="cal-lightbox-backdrop"></div>
-        <div class="cal-lightbox-box">
-          <button class="cal-lightbox-close" id="cal-lightbox-close" aria-label="Kapat">&#10005;</button>
-          <div class="cal-lightbox-loader" id="cal-lightbox-loader"></div>
-          <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
-          <div class="cal-lightbox-caption" id="cal-lightbox-caption" hidden>
-            <span class="cal-lightbox-caption-title" id="cal-lightbox-caption-title"></span>
-            <span class="cal-lightbox-caption-date" id="cal-lightbox-caption-date"></span>
-          </div>
-        </div>
-      </div>`;
+    // Lightbox yaşam döngüsü renderCalendar dışında body'e bağlı
 
     mount.innerHTML = html;
+    ensureLightbox();
     bindEvents(mount);
     bindRsvpEvents(mount);
   }
@@ -276,15 +264,34 @@
       });
     });
 
-    // Close lightbox
-    const lb          = mount.querySelector('#cal-lightbox');
-    const lbClose     = mount.querySelector('#cal-lightbox-close');
-    const lbBackdrop  = mount.querySelector('#cal-lightbox-backdrop');
-    if (lbClose)    lbClose.addEventListener('click', closeLightbox);
-    if (lbBackdrop) lbBackdrop.addEventListener('click', closeLightbox);
+    // Close lightbox (attached to body — rebind each render)
+    const lbClose    = document.getElementById('cal-lightbox-close');
+    const lbBackdrop = document.getElementById('cal-lightbox-backdrop');
+    if (lbClose)    { lbClose.onclick    = closeLightbox; }
+    if (lbBackdrop) { lbBackdrop.onclick = closeLightbox; }
 
     // Close popup on outside click
     document.addEventListener('click', onDocClick, { once: true });
+  }
+
+  // ───── Lightbox DOM (sadece bir kez body'e eklenir) ──────────
+  function ensureLightbox() {
+    if (document.getElementById('cal-lightbox')) return;
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div class="cal-lightbox" id="cal-lightbox" hidden aria-modal="true" role="dialog" aria-label="Görsel büyütme">
+        <div class="cal-lightbox-backdrop" id="cal-lightbox-backdrop"></div>
+        <div class="cal-lightbox-box">
+          <button class="cal-lightbox-close" id="cal-lightbox-close" aria-label="Kapat">&#10005;</button>
+          <div class="cal-lightbox-loader" id="cal-lightbox-loader"></div>
+          <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
+          <div class="cal-lightbox-caption" id="cal-lightbox-caption" hidden>
+            <span class="cal-lightbox-caption-title" id="cal-lightbox-caption-title"></span>
+            <span class="cal-lightbox-caption-date" id="cal-lightbox-caption-date"></span>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(el.firstElementChild);
   }
 
   function openLightbox(src, title, date) {
