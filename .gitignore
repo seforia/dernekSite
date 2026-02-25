@@ -1,0 +1,14 @@
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Orijinal yedek görseller (büyük dosyalar, gerektiğinde yerel saklanır)
+assets/img/_originals_backup/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json

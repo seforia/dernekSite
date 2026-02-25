@@ -86,7 +86,7 @@
   background-image: url('../img/ataturk.jpg');
   background-size: cover;
   background-position: center 70%;
-  background-attachment: fixed;
+  /* background-attachment: fixed kaldırıldı - scroll performansı için */
   border-bottom: 1px solid rgba(212,175,55,0.15); 
   box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
   animation: fadeInDown 600ms ease-out; 

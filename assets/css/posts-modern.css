@@ -27,7 +27,7 @@
 .posts-hero {
   background: linear-gradient(135deg, rgba(21, 58, 161, 0.95) 0%, rgba(74, 144, 226, 0.9) 50%, rgba(13, 33, 102, 0.95) 100%), 
               url('../../assets/img/ataturk.jpg') center 70% / cover no-repeat;
-  background-attachment: fixed;
+  /* background-attachment: fixed kaldırıldı - mobil scroll performansı için */
   color: white;
   padding: 6rem 0;
   text-align: center;

@@ -1623,7 +1623,7 @@
           'Tarih bilinmiyor';
         
         // Use post image if available, otherwise use default
-        const imgSrc = post.imageUrl || 'assets/img/tsglFoto2.png';
+        const imgSrc = post.imageUrl || 'assets/img/tsglFoto2.jpg';
         const isBase64 = imgSrc.startsWith('data:image');
         
         card.innerHTML = `

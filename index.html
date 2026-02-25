@@ -19,8 +19,14 @@
   <meta property="og:description" content="Tevfik Sırrı Gür Lisesi Derneği - Eğitimle Yetişen, Dayanışmayla Güçlenen" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="assets/img/tsglLogo.png" type="image/png" />
+  <!-- Kritik görseller için preload -->
+  <link rel="preload" as="image" href="assets/img/tsglFoto.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/img/tsglLogo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Firebase preconnect -->
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://firestore.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="assets/css/styles.css?v=17.0">
   <link rel="stylesheet" href="assets/css/styles-updates.css?v=16.0">
@@ -234,16 +240,16 @@
     <section class="hero reveal" id="top" aria-labelledby="hero-title">
       <div class="hero-slider" aria-label="Öne çıkan görseller">
         <div class="hero-slide active" data-slide="0">
-          <img src="assets/img/tsglFoto.png" alt="Dernekten kare" />
+          <img src="assets/img/tsglFoto.jpg" alt="Dernekten kare" fetchpriority="high" loading="eager" decoding="sync" />
         </div>
         <div class="hero-slide" data-slide="1">
-          <img src="assets/img/tsglFoto2.png" alt="Dernek etkinliği" />
+          <img src="assets/img/tsglFoto2.jpg" alt="Dernek etkinliği" loading="lazy" decoding="async" />
         </div>
         <div class="hero-slide" data-slide="2">
-          <img src="assets/img/tsglFoto3.png" alt="Dernek çalışması" />
+          <img src="assets/img/tsglFoto3.jpg" alt="Dernek çalışması" loading="lazy" decoding="async" />
         </div>
         <div class="hero-slide" data-slide="3">
-          <img src="assets/img/anılar.jpg" alt="Dernek anıları" />
+          <img src="assets/img/anılar.jpg" alt="Dernek anıları" loading="lazy" decoding="async" />
         </div>
         <div class="hero-controls" aria-hidden="true">
           <button class="hero-btn prev" type="button" aria-label="Önceki görsel">‹</button>
@@ -313,7 +319,7 @@
       <div class="container">
         <div class="content-with-image">
           <div class="image-side reveal" data-reveal-order="1">
-            <img src="assets/img/tsglFoto2.png" alt="Kabataş Erkek Lisesi" />
+            <img src="assets/img/tsglFoto2.jpg" alt="Kabataş Erkek Lisesi" loading="lazy" decoding="async" />
           </div>
           <div class="content-side reveal" data-reveal-order="2">
             <h2 id="kabatas-title">Tevfki Sırrı Gür Lisesi</h2>
@@ -352,7 +358,7 @@
         <div class="history-showcase">
           <a href="content/yazılar/index.html" data-link class="history-main-card reveal" data-reveal-order="1" style="cursor: pointer; text-decoration: none; color: inherit; display: block;">
             <div class="history-main-media">
-              <img src="assets/img/tsglFoto2.png" alt="Okulumuzun tarihi binası" loading="lazy" />
+              <img src="assets/img/tsglFoto2.jpg" alt="Okulumuzun tarihi binası" loading="lazy" />
               <span class="history-badge">Yazılar</span>
             </div>
             <div class="history-main-body">
@@ -365,7 +371,7 @@
 
           <div id="recent-posts-list" class="history-side-list reveal" data-reveal-order="2">
             <a class="history-side-card" href="content/yazılar/index.html" data-link>
-              <img src="assets/img/tsglFoto3.png" alt="Yonetim kurulu bulusmasi" loading="lazy" />
+              <img src="assets/img/tsglFoto3.jpg" alt="Yonetim kurulu bulusmasi" loading="lazy" />
               <div class="history-side-body">
                 <h4>Atatürk ve Tarih</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
@@ -373,7 +379,7 @@
               </div>
             </a>
             <a class="history-side-card" href="content/yazılar/index.html" data-link>
-              <img src="assets/img/tsglFoto.png" alt="Fizik laboratuvari yenileme" loading="lazy" />
+              <img src="assets/img/tsglFoto.jpg" alt="Fizik laboratuvari yenileme" loading="lazy" />
               <div class="history-side-body">
                 <h4>Egitim</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
@@ -389,7 +395,7 @@
               </div>
             </a>
             <a class="history-side-card" href="content/yazılar/index.html" data-link>
-              <img src="assets/img/tsglFoto2.png" alt="Basari hikayeleri" loading="lazy" />
+              <img src="assets/img/tsglFoto2.jpg" alt="Basari hikayeleri" loading="lazy" />
               <div class="history-side-body">
                 <h4>Kultur - Sanat ve Gezi</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
@@ -397,7 +403,7 @@
               </div>
             </a>
             <a class="history-side-card" href="content/yazılar/index.html" data-link>
-              <img src="assets/img/tsglFoto3.png" alt="Okuldan guncel haber" loading="lazy" />
+              <img src="assets/img/tsglFoto3.jpg" alt="Okuldan guncel haber" loading="lazy" />
               <div class="history-side-body">
                 <h4>Toplum</h4>
                 <time datetime="2025-07-17">Temmuz 17, 2025</time>
