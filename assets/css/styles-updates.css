@@ -3235,7 +3235,7 @@ img[loading="lazy"] {
 }
 .cal-poster-thumb:hover { opacity: 0.88; }
 
-/* ── Lightbox ────────────────────────────────────────────────── */
+/* ── Lightbox (görsel + RSVP paneli) ────────────────────────── */
 .cal-lightbox {
   position: fixed;
   inset: 0;
@@ -3243,59 +3243,54 @@ img[loading="lazy"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  /* opacity driven by .is-open */
+  padding: 16px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
-.cal-lightbox.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-.cal-lightbox[hidden] { display: none !important; }
+.cal-lightbox.is-open   { opacity: 1; pointer-events: auto; }
+.cal-lightbox[hidden]   { display: none !important; }
 
-/* Frosted backdrop */
 .cal-lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(10, 12, 20, 0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(8, 10, 20, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-/* Container */
+/* Ana kutu — iki sütun */
 .cal-lightbox-box {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-width: min(92vw, 860px);
-  max-height: 90vh;
-  border-radius: 16px;
+  max-width: min(96vw, 1060px);
+  max-height: 92vh;
+  width: 100%;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.07);
-  transform: scale(0.92) translateY(12px);
-  transition: transform 0.28s cubic-bezier(0.34,1.26,0.64,1), opacity 0.25s ease;
+  background: #16181f;
+  box-shadow: 0 28px 90px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.07);
+  transform: scale(0.92) translateY(14px);
   opacity: 0;
-  z-index: 1;
+  transition: transform 0.28s cubic-bezier(0.34,1.26,0.64,1), opacity 0.25s ease;
 }
 .cal-lightbox.is-open .cal-lightbox-box {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
 
-/* Close button — top-right corner of box */
+/* Kapat butonu */
 .cal-lightbox-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
-  background: rgba(0,0,0,0.55);
-  border: 1.5px solid rgba(255,255,255,0.18);
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+  background: rgba(0,0,0,0.6);
+  border: 1.5px solid rgba(255,255,255,0.16);
   color: #fff;
-  font-size: 18px;
-  line-height: 1;
+  font-size: 17px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -3304,75 +3299,248 @@ img[loading="lazy"] {
   align-items: center;
   justify-content: center;
   transition: background 0.15s, transform 0.15s;
-  backdrop-filter: blur(4px);
 }
-.cal-lightbox-close:hover {
-  background: rgba(220,40,40,0.75);
-  transform: scale(1.1);
+.cal-lightbox-close:hover { background: rgba(210,30,30,0.72); transform: scale(1.1); }
+
+/* İç düzen: görsel sol + panel sağ */
+.cal-lightbox-inner {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
 }
 
-/* Loading spinner */
+/* Görsel alanı */
+.cal-lightbox-media {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0d0e13;
+  overflow: hidden;
+}
+
 .cal-lightbox-loader {
   width: 44px;
   height: 44px;
-  border: 3px solid rgba(255,255,255,0.15);
+  border: 3px solid rgba(255,255,255,0.12);
   border-top-color: #fff;
   border-radius: 50%;
   animation: calLbSpin 0.7s linear infinite;
-  margin: 60px auto;
+  position: absolute;
 }
 .cal-lightbox-loader[hidden] { display: none; }
 @keyframes calLbSpin { to { transform: rotate(360deg); } }
 
-/* Image */
 .cal-lightbox-img {
   display: block;
-  max-width: 100%;
-  max-height: calc(90vh - 72px);
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   opacity: 0;
   transition: opacity 0.3s ease;
-  background: #111;
+  max-height: calc(92vh - 56px);
 }
 .cal-lightbox-img.is-loaded { opacity: 1; }
 
-/* Caption bar */
+/* Altyazı */
 .cal-lightbox-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 18px;
-  background: linear-gradient(0deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.42) 100%);
-  flex-shrink: 0;
+  gap: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+  pointer-events: none;
 }
 .cal-lightbox-caption[hidden] { display: none; }
-.cal-lightbox-caption-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cal-lightbox-caption-date {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.65);
-  white-space: nowrap;
+.cal-lightbox-caption-title { font-size: 0.88rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal-lightbox-caption-date  { font-size: 0.78rem; color: rgba(255,255,255,0.6); white-space: nowrap; flex-shrink: 0; }
+
+/* RSVP Paneli */
+.cal-lightbox-panel {
+  width: 300px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #1e2030;
+  border-left: 1px solid rgba(255,255,255,0.07);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+.cal-lightbox-panel[hidden] { display: none; }
+
+.lb-panel-header {
+  padding: 20px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.lb-panel-title      { font-size: 0.72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7c8aff; margin-bottom: 6px; }
+.lb-panel-event-name { font-size: 1rem; font-weight: 700; color: #f0f2ff; line-height: 1.3; margin-bottom: 4px; }
+.lb-panel-event-date { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+
+.lb-panel-counts {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.lb-panel-bar-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,0.75);
+}
+.lb-panel-yes-label strong { color: #4ade80; }
+.lb-panel-no-label  strong { color: #f87171; }
+.lb-panel-bar {
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(248,113,113,0.35);
+  overflow: hidden;
+}
+.lb-panel-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: #4ade80;
+  transition: width 0.4s ease;
+  min-width: 4px;
 }
 
-/* Poster thumbnail (card) */
-.cal-poster-thumb {
-  cursor: zoom-in;
-  transition: transform 0.2s, box-shadow 0.2s;
+.lb-panel-chips-row {
+  padding: 10px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.cal-poster-thumb:hover {
-  transform: scale(1.025);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+.lb-chip-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,0.35);
+  display: block;
+  margin-bottom: 6px;
+}
+.lb-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.lb-chip {
+  font-size: 0.75rem;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+.lb-chip--yes { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+.lb-chip--no  { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+
+/* Form bölümü */
+.lb-rsvp-section {
+  padding: 16px 18px 20px;
+  margin-top: auto;
+}
+.lb-rsvp-prompt {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 10px;
+}
+.lb-rsvp-btns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.lb-rsvp-btn {
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.lb-rsvp-yes {
+  background: rgba(74,222,128,0.1);
+  color: #4ade80;
+  border-color: rgba(74,222,128,0.25);
+}
+.lb-rsvp-yes:hover, .lb-rsvp-yes.active {
+  background: rgba(74,222,128,0.22);
+  border-color: #4ade80;
+  transform: translateY(-1px);
+}
+.lb-rsvp-no {
+  background: rgba(248,113,113,0.1);
+  color: #f87171;
+  border-color: rgba(248,113,113,0.25);
+}
+.lb-rsvp-no:hover, .lb-rsvp-no.active {
+  background: rgba(248,113,113,0.22);
+  border-color: #f87171;
+  transform: translateY(-1px);
+}
+.lb-rsvp-form { display: flex; flex-direction: column; gap: 8px; }
+.lb-rsvp-name {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #f0f2ff;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.lb-rsvp-name:focus     { border-color: #7c8aff; }
+.lb-rsvp-name::placeholder { color: rgba(255,255,255,0.3); }
+.lb-rsvp-form-actions   { display: flex; gap: 8px; }
+.lb-rsvp-submit {
+  flex: 1;
+  padding: 9px;
+  background: #7c8aff;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lb-rsvp-submit:hover    { background: #5a6aee; }
+.lb-rsvp-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+.lb-rsvp-cancel {
+  padding: 9px 14px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.55);
+  border: none;
+  border-radius: 9px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lb-rsvp-cancel:hover { background: rgba(255,255,255,0.12); }
+.lb-rsvp-msg { font-size: 0.78rem; text-align: center; color: #f87171; margin: 0; }
+.lb-rsvp-msg--ok { color: #4ade80; }
+
+/* Mobil: dikey düzen */
+@media (max-width: 640px) {
+  .cal-lightbox { padding: 0; align-items: flex-end; }
+  .cal-lightbox-box {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 18px 18px 0 0;
+  }
+  .cal-lightbox-inner { flex-direction: column; }
+  .cal-lightbox-media {
+    min-height: 220px;
+    max-height: 40vh;
+  }
+  .cal-lightbox-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    max-height: 55vh;
+  }
 }
 
 /* ── RSVP ──────────────────────────────────────────────────── */

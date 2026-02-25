@@ -109,7 +109,7 @@
         const yesRsvp  = evRsvp.filter(r => r.willAttend);
         const noRsvp   = evRsvp.filter(r => !r.willAttend);
         html += `<li class="cal-event-item" data-id="${esc(ev.id)}">
-          ${ev.imageUrl ? `<div class="cal-event-poster"><img src="${esc(ev.imageUrl)}" alt="${esc(ev.title)}" loading="lazy" class="cal-poster-thumb" data-src="${esc(ev.imageUrl)}" data-title="${esc(ev.title)}" data-date="${dayNum} ${TR_MONTHS[ev.date.getMonth()]}" /></div>` : ''}
+          ${ev.imageUrl ? `<div class="cal-event-poster"><img src="${esc(ev.imageUrl)}" alt="${esc(ev.title)}" loading="lazy" class="cal-poster-thumb" data-src="${esc(ev.imageUrl)}" data-title="${esc(ev.title)}" data-date="${dayNum} ${TR_MONTHS[ev.date.getMonth()]}" data-event-id="${esc(ev.id)}" /></div>` : ''}
           <div class="cal-event-body">
             <span class="cal-event-date-badge">${dayNum} ${TR_MONTHS[ev.date.getMonth()]}</span>
             <div class="cal-event-info">
@@ -260,7 +260,7 @@
     mount.querySelectorAll('.cal-poster-thumb').forEach(img => {
       img.addEventListener('click', (e) => {
         e.stopPropagation();
-        openLightbox(img.dataset.src, img.dataset.title || img.alt, img.dataset.date || '');
+        openLightbox(img.dataset.src, img.dataset.title || img.alt, img.dataset.date || '', img.dataset.eventId || '');
       });
     });
 
@@ -283,43 +283,51 @@
         <div class="cal-lightbox-backdrop" id="cal-lightbox-backdrop"></div>
         <div class="cal-lightbox-box">
           <button class="cal-lightbox-close" id="cal-lightbox-close" aria-label="Kapat">&#10005;</button>
-          <div class="cal-lightbox-loader" id="cal-lightbox-loader"></div>
-          <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
-          <div class="cal-lightbox-caption" id="cal-lightbox-caption" hidden>
-            <span class="cal-lightbox-caption-title" id="cal-lightbox-caption-title"></span>
-            <span class="cal-lightbox-caption-date" id="cal-lightbox-caption-date"></span>
+          <div class="cal-lightbox-inner">
+            <!-- Sol: Görsel -->
+            <div class="cal-lightbox-media">
+              <div class="cal-lightbox-loader" id="cal-lightbox-loader"></div>
+              <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
+              <div class="cal-lightbox-caption" id="cal-lightbox-caption" hidden>
+                <span class="cal-lightbox-caption-title" id="cal-lightbox-caption-title"></span>
+                <span class="cal-lightbox-caption-date" id="cal-lightbox-caption-date"></span>
+              </div>
+            </div>
+            <!-- Sağ: Katılım Anketi -->
+            <div class="cal-lightbox-panel" id="cal-lightbox-panel"></div>
           </div>
         </div>
       </div>`;
     document.body.appendChild(el.firstElementChild);
   }
 
-  function openLightbox(src, title, date) {
-    const lb      = document.getElementById('cal-lightbox');
-    const lbImg   = document.getElementById('cal-lightbox-img');
+  function openLightbox(src, title, date, eventId) {
+    const lb       = document.getElementById('cal-lightbox');
+    const lbImg    = document.getElementById('cal-lightbox-img');
     const lbLoader = document.getElementById('cal-lightbox-loader');
     const caption  = document.getElementById('cal-lightbox-caption');
     const capTitle = document.getElementById('cal-lightbox-caption-title');
     const capDate  = document.getElementById('cal-lightbox-caption-date');
+    const panel    = document.getElementById('cal-lightbox-panel');
     if (!lb || !lbImg) return;
 
-    // Reset state
+    // Reset görsel
     lbImg.classList.remove('is-loaded');
     if (lbLoader) lbLoader.hidden = false;
     if (caption)  caption.hidden = true;
-
     lbImg.src = '';
     lbImg.alt = title || 'Afiş';
+
+    // Aç
     lb.hidden = false;
-    // Trigger open animation
     requestAnimationFrame(() => lb.classList.add('is-open'));
     document.body.style.overflow = 'hidden';
 
-    // Caption
+    // Başlık
     if (capTitle) capTitle.textContent = title || '';
     if (capDate)  capDate.textContent  = date  || '';
 
-    // Load image
+    // Görsel yükle
     const tempImg = new Image();
     tempImg.onload = () => {
       lbImg.src = src;
@@ -327,14 +335,125 @@
       if (lbLoader) lbLoader.hidden = true;
       if (caption && (title || date)) caption.hidden = false;
     };
-    tempImg.onerror = () => {
-      if (lbLoader) lbLoader.hidden = true;
-    };
+    tempImg.onerror = () => { if (lbLoader) lbLoader.hidden = true; };
     tempImg.src = src;
 
-    // ESC to close
+    // RSVP paneli doldur
+    if (panel) renderLbRsvp(panel, eventId, title, date);
+
+    // ESC
     document._lbEscHandler = (ev) => { if (ev.key === 'Escape') closeLightbox(); };
     document.addEventListener('keydown', document._lbEscHandler);
+  }
+
+  // ── Lightbox RSVP paneli ──────────────────────────────────────
+  function renderLbRsvp(panel, eventId, title, date) {
+    if (!eventId) {
+      panel.innerHTML = '';
+      panel.hidden = true;
+      return;
+    }
+    panel.hidden = false;
+    const evRsvp  = rsvpCache[eventId] || [];
+    const yesRsvp = evRsvp.filter(r => r.willAttend);
+    const noRsvp  = evRsvp.filter(r => !r.willAttend);
+    const total   = yesRsvp.length + noRsvp.length;
+    const yesPct  = total ? Math.round(yesRsvp.length / total * 100) : 0;
+
+    panel.innerHTML = `
+      <div class="lb-panel-header">
+        <div class="lb-panel-title">📋 Katılım Anketi</div>
+        <div class="lb-panel-event-name">${esc(title || '')}</div>
+        ${date ? `<div class="lb-panel-event-date">📅 ${esc(date)}</div>` : ''}
+      </div>
+
+      <div class="lb-panel-counts">
+        <div class="lb-panel-bar-row">
+          <span class="lb-panel-yes-label">✅ Katılacak <strong>${yesRsvp.length}</strong></span>
+          <span class="lb-panel-no-label"><strong>${noRsvp.length}</strong> Katılmayacak ❌</span>
+        </div>
+        <div class="lb-panel-bar">
+          <div class="lb-panel-bar-fill" style="width:${yesPct}%"></div>
+        </div>
+      </div>
+
+      ${yesRsvp.length ? `<div class="lb-panel-chips-row">
+        <span class="lb-chip-label">Katılacaklar:</span>
+        <div class="lb-chips">${yesRsvp.map(r => `<span class="lb-chip lb-chip--yes">${esc(r.name)}</span>`).join('')}</div>
+      </div>` : ''}
+
+      ${noRsvp.length ? `<div class="lb-panel-chips-row">
+        <span class="lb-chip-label">Katılmayacaklar:</span>
+        <div class="lb-chips">${noRsvp.map(r => `<span class="lb-chip lb-chip--no">${esc(r.name)}</span>`).join('')}</div>
+      </div>` : ''}
+
+      <div class="lb-rsvp-section">
+        <div class="lb-rsvp-prompt">Siz katılacak mısınız?</div>
+        <div class="lb-rsvp-btns">
+          <button class="lb-rsvp-btn lb-rsvp-yes" data-will="yes">✅ Katılacağım</button>
+          <button class="lb-rsvp-btn lb-rsvp-no"  data-will="no" >❌ Katılmayacağım</button>
+        </div>
+        <form class="lb-rsvp-form" id="lb-rsvp-form" hidden>
+          <input type="text" class="lb-rsvp-name" placeholder="Adınız Soyadınız" maxlength="60" required />
+          <div class="lb-rsvp-form-actions">
+            <button type="submit" class="lb-rsvp-submit">Gönder</button>
+            <button type="button" class="lb-rsvp-cancel">İptal</button>
+          </div>
+          <p class="lb-rsvp-msg" hidden></p>
+        </form>
+      </div>`;
+
+    bindLbRsvp(panel, eventId);
+  }
+
+  function bindLbRsvp(panel, eventId) {
+    const form     = panel.querySelector('#lb-rsvp-form');
+    const msgEl    = panel.querySelector('.lb-rsvp-msg');
+    const nameInp  = panel.querySelector('.lb-rsvp-name');
+    let   willAttend = 'yes';
+
+    panel.querySelectorAll('.lb-rsvp-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        willAttend = btn.dataset.will;
+        panel.querySelectorAll('.lb-rsvp-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (form) { form.hidden = false; nameInp?.focus(); }
+      });
+    });
+
+    panel.querySelector('.lb-rsvp-cancel')?.addEventListener('click', () => {
+      if (form) { form.hidden = true; form.reset(); }
+      panel.querySelectorAll('.lb-rsvp-btn').forEach(b => b.classList.remove('active'));
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = nameInp?.value.trim();
+      if (!name) {
+        if (msgEl) { msgEl.textContent = 'Lütfen adınızı girin.'; msgEl.hidden = false; }
+        return;
+      }
+      if (!dbRef) {
+        if (msgEl) { msgEl.textContent = 'Bağlantı hatası.'; msgEl.hidden = false; }
+        return;
+      }
+      const submitBtn = form.querySelector('.lb-rsvp-submit');
+      if (submitBtn) submitBtn.disabled = true;
+      try {
+        await dbRef.collection('rsvp').add({
+          eventId,
+          name,
+          willAttend: willAttend === 'yes',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        if (msgEl) { msgEl.textContent = '✅ Yanıtınız kaydedildi!'; msgEl.className = 'lb-rsvp-msg lb-rsvp-msg--ok'; msgEl.hidden = false; }
+        form.reset();
+        setTimeout(() => { form.hidden = true; if (msgEl) msgEl.hidden = true; }, 2000);
+      } catch (err) {
+        if (msgEl) { msgEl.textContent = '❌ Gönderilemedi: ' + (err.message || err); msgEl.hidden = false; }
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
   }
 
   function closeLightbox() {
