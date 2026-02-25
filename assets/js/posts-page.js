@@ -107,13 +107,17 @@
 
   // Initialize the page
   async function initPostsPage() {
-    // Seed sample posts if needed
-    await seedSamplePosts();
-
-    // Listen to auth state
+    // Listen to auth state — sonuç ne olursa olsun yazıları yükle
     window.TSGLAuth.auth.onAuthStateChanged((user) => {
       currentUser = user;
       updateUIForUser(user);
+      // Her auth değişiminde baştan yükle
+      lastPostDoc = null;
+      isLoading = false;
+      const postsList = document.getElementById('posts-list');
+      const featuredContainer = document.getElementById('featured-post-container');
+      if (postsList) postsList.innerHTML = '';
+      if (featuredContainer) featuredContainer.innerHTML = '';
       loadPosts();
     });
 
@@ -334,7 +338,7 @@
     const images = post.imageUrls || (post.imageUrl ? [post.imageUrl] : null);
     const hasImages = images && images.length > 0;
     const imageCount = hasImages ? images.length : 0;
-    const isLikedByUser = currentUser && post.likedBy && post.likedBy.includes(currentUser.uid);
+    const isLikedByUser = currentUser && post.likedByCurrentUser;
     const likesCount = post.likesCount || 0;
 
     if (isFeatured) {
@@ -470,29 +474,34 @@
   async function handleCardLikePost(post, cardElement, clapBtn) {
     if (!currentUser) return;
     
+    // Optimistic UI
+    const isCurrentlyClapped = clapBtn.classList.contains('clapped');
+    const countSpan = clapBtn.querySelector('.post-clap-count');
+    const currentCount = parseInt(countSpan?.textContent) || 0;
+    clapBtn.disabled = true;
+
+    if (isCurrentlyClapped) {
+      clapBtn.classList.remove('clapped');
+      if (countSpan) countSpan.textContent = Math.max(0, currentCount - 1);
+    } else {
+      clapBtn.classList.add('clapped');
+      if (countSpan) countSpan.textContent = currentCount + 1;
+    }
+
     try {
-      const isCurrentlyClapped = clapBtn.classList.contains('clapped');
-      
-      if (isCurrentlyClapped) {
-        // Unlike
-        await window.TSGLAuth.unlikePost(post.id, currentUser.uid);
-        clapBtn.classList.remove('clapped');
-      } else {
-        // Like
-        await window.TSGLAuth.likePost(post.id, currentUser.uid);
-        clapBtn.classList.add('clapped');
-      }
-      
-      // Update count
-      const countSpan = clapBtn.querySelector('.post-clap-count');
-      if (countSpan) {
-        const currentCount = parseInt(countSpan.textContent) || 0;
-        const newCount = isCurrentlyClapped ? currentCount - 1 : currentCount + 1;
-        countSpan.textContent = newCount;
-      }
+      await window.TSGLAuth.toggleLikePost(post.id);
     } catch (error) {
+      // Geri al (rollback)
+      if (isCurrentlyClapped) {
+        clapBtn.classList.add('clapped');
+        if (countSpan) countSpan.textContent = currentCount;
+      } else {
+        clapBtn.classList.remove('clapped');
+        if (countSpan) countSpan.textContent = currentCount;
+      }
       console.error('Beğeni işlemi başarısız:', error);
-      alert('Beğeni işlemi başarısız. Lütfen tekrar deneyin.');
+    } finally {
+      clapBtn.disabled = false;
     }
   }
 

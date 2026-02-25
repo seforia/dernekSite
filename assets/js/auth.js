@@ -437,53 +437,37 @@
   // Yazıları getir
   async function getPosts(pageSize = 10, lastDoc = null) {
     try {
-      let query = db.collection('posts').orderBy('createdAt', 'desc').limit(pageSize + 1); // Get one extra for pagination check
-      
-      if (lastDoc) {
-        query = query.startAfter(lastDoc);
-      }
+      let query = db.collection('posts').orderBy('createdAt', 'desc').limit(pageSize + 1);
+      if (lastDoc) query = query.startAfter(lastDoc);
 
       const snapshot = await query.get();
-      const posts = [];
       const currentUser = auth.currentUser;
-      
-      // Process all documents and get likes info
-      for (const doc of snapshot.docs.slice(0, pageSize)) {
+      const docs = snapshot.docs.slice(0, pageSize);
+
+      // Tüm belgelerin likes bilgisini paralel çek (N+1 yerine Promise.all)
+      const posts = await Promise.all(docs.map(async (doc) => {
         const data = doc.data();
-        
-        // Get likes count
-        const likesSnapshot = await db.collection('likes')
-          .where('postId', '==', doc.id)
-          .get();
-        
-        // Check if current user liked this post
-        let likedByCurrentUser = false;
-        if (currentUser) {
-          const likeDoc = await db.collection('likes')
-            .where('postId', '==', doc.id)
-            .where('userId', '==', currentUser.uid)
-            .get();
-          likedByCurrentUser = !likeDoc.empty;
-        }
-        
-        posts.push({ 
-          id: doc.id, 
+        const [likesSnap, userLikeSnap] = await Promise.all([
+          db.collection('likes').where('postId', '==', doc.id).get(),
+          currentUser
+            ? db.collection('likes').where('postId', '==', doc.id).where('userId', '==', currentUser.uid).get()
+            : Promise.resolve({ empty: true })
+        ]);
+        return {
+          id: doc.id,
           ...data,
-          likesCount: likesSnapshot.size,
-          likedByCurrentUser
-        });
-      }
-      
-      // Sort by createdAt descending
+          likesCount: likesSnap.size,
+          likedByCurrentUser: !userLikeSnap.empty
+        };
+      }));
+
       posts.sort((a, b) => {
-        let timeA = a.createdAt?.toDate?.() || new Date(0);
-        let timeB = b.createdAt?.toDate?.() || new Date(0);
-        return timeB - timeA;
+        const tA = a.createdAt?.toDate?.() || new Date(0);
+        const tB = b.createdAt?.toDate?.() || new Date(0);
+        return tB - tA;
       });
 
-      const nextLastDoc = snapshot.docs[pageSize] || null; // Check if there are more docs
-      console.log('getPosts başarılı:', posts.length, 'yazı bulundu');
-      return { posts, nextLastDoc };
+      return { posts, nextLastDoc: snapshot.docs[pageSize] || null };
     } catch (error) {
       console.error('getPosts hatası:', error);
       throw error;
@@ -494,52 +478,35 @@
   async function getPostsByCategory(category, pageSize = 10, lastDoc = null) {
     try {
       let query = db.collection('posts').where('category', '==', category).limit(pageSize + 1);
-      
-      if (lastDoc) {
-        query = query.startAfter(lastDoc);
-      }
+      if (lastDoc) query = query.startAfter(lastDoc);
 
       const snapshot = await query.get();
-      const posts = [];
       const currentUser = auth.currentUser;
-      
-      // Process documents and get likes info
-      for (const doc of snapshot.docs.slice(0, pageSize)) {
+      const docs = snapshot.docs.slice(0, pageSize);
+
+      const posts = await Promise.all(docs.map(async (doc) => {
         const data = doc.data();
-        
-        // Get likes count
-        const likesSnapshot = await db.collection('likes')
-          .where('postId', '==', doc.id)
-          .get();
-        
-        // Check if current user liked this post
-        let likedByCurrentUser = false;
-        if (currentUser) {
-          const likeDoc = await db.collection('likes')
-            .where('postId', '==', doc.id)
-            .where('userId', '==', currentUser.uid)
-            .get();
-          likedByCurrentUser = !likeDoc.empty;
-        }
-        
-        posts.push({ 
-          id: doc.id, 
+        const [likesSnap, userLikeSnap] = await Promise.all([
+          db.collection('likes').where('postId', '==', doc.id).get(),
+          currentUser
+            ? db.collection('likes').where('postId', '==', doc.id).where('userId', '==', currentUser.uid).get()
+            : Promise.resolve({ empty: true })
+        ]);
+        return {
+          id: doc.id,
           ...data,
-          likesCount: likesSnapshot.size,
-          likedByCurrentUser
-        });
-      }
-      
-      // Sort by createdAt descending
+          likesCount: likesSnap.size,
+          likedByCurrentUser: !userLikeSnap.empty
+        };
+      }));
+
       posts.sort((a, b) => {
-        let timeA = a.createdAt?.toDate?.() || new Date(0);
-        let timeB = b.createdAt?.toDate?.() || new Date(0);
-        return timeB - timeA;
+        const tA = a.createdAt?.toDate?.() || new Date(0);
+        const tB = b.createdAt?.toDate?.() || new Date(0);
+        return tB - tA;
       });
 
-      const nextLastDoc = snapshot.docs[pageSize] || null;
-      console.log('getPostsByCategory başarılı:', posts.length, 'yazı bulundu (kategori:', category + ')');
-      return { posts, nextLastDoc };
+      return { posts, nextLastDoc: snapshot.docs[pageSize] || null };
     } catch (error) {
       console.error('getPostsByCategory hatası:', error);
       throw error;
