@@ -189,7 +189,7 @@
       }
       .ebook-page.left  { box-shadow: inset -6px 0 12px rgba(0,0,0,.07); }
       .ebook-page.right { box-shadow: inset  6px 0 12px rgba(0,0,0,.07); }
-      .ebook-page canvas { max-width: 100%; height: auto; display: block; }
+      .ebook-page canvas { display: block; }
 
       /* ─── Page loader ─── */
       .ebook-loader {
@@ -432,12 +432,16 @@
       function renderPage(pageNum, canvas, loader, cb) {
         loader.style.display = 'flex';
         pdfDoc.getPage(pageNum).then(function (page) {
+          var dpr        = window.devicePixelRatio || 1;
           var containerW = canvas.parentElement.offsetWidth || 380;
-          var vp0  = page.getViewport({ scale: 1 });
-          var sc   = containerW / vp0.width;
-          var vp   = page.getViewport({ scale: sc });
+          var vp0 = page.getViewport({ scale: 1 });
+          var sc  = containerW / vp0.width;
+          var vp  = page.getViewport({ scale: sc * dpr }); // fiziksel piksel
+          /* canvas boyutu = fiziksel; CSS boyutu = mantıksal → keskin render */
           canvas.width  = vp.width;
           canvas.height = vp.height;
+          canvas.style.width  = (vp.width  / dpr) + 'px';
+          canvas.style.height = (vp.height / dpr) + 'px';
           return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
         }).then(function () {
           loader.style.display = 'none';
