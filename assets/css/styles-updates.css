@@ -3235,46 +3235,145 @@ img[loading="lazy"] {
 }
 .cal-poster-thumb:hover { opacity: 0.88; }
 
-/* Lightbox */
+/* ── Lightbox ────────────────────────────────────────────────── */
 .cal-lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.88);
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  /* opacity driven by .is-open */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
-.cal-lightbox[hidden] { display: none; }
-.cal-lightbox-img {
-  max-width: 100%;
-  max-height: calc(100vh - 80px);
-  border-radius: 10px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-  object-fit: contain;
-  display: block;
+.cal-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
 }
+.cal-lightbox[hidden] { display: none !important; }
+
+/* Frosted backdrop */
+.cal-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 20, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Container */
+.cal-lightbox-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(92vw, 860px);
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.07);
+  transform: scale(0.92) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.34,1.26,0.64,1), opacity 0.25s ease;
+  opacity: 0;
+  z-index: 1;
+}
+.cal-lightbox.is-open .cal-lightbox-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Close button — top-right corner of box */
 .cal-lightbox-close {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  background: rgba(255,255,255,0.12);
-  border: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(255,255,255,0.18);
   color: #fff;
-  font-size: 28px;
+  font-size: 18px;
   line-height: 1;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 150ms;
-  z-index: 1;
+  transition: background 0.15s, transform 0.15s;
+  backdrop-filter: blur(4px);
 }
-.cal-lightbox-close:hover { background: rgba(255,255,255,0.25); }
+.cal-lightbox-close:hover {
+  background: rgba(220,40,40,0.75);
+  transform: scale(1.1);
+}
+
+/* Loading spinner */
+.cal-lightbox-loader {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: calLbSpin 0.7s linear infinite;
+  margin: 60px auto;
+}
+.cal-lightbox-loader[hidden] { display: none; }
+@keyframes calLbSpin { to { transform: rotate(360deg); } }
+
+/* Image */
+.cal-lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(90vh - 72px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: #111;
+}
+.cal-lightbox-img.is-loaded { opacity: 1; }
+
+/* Caption bar */
+.cal-lightbox-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.42) 100%);
+  flex-shrink: 0;
+}
+.cal-lightbox-caption[hidden] { display: none; }
+.cal-lightbox-caption-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-lightbox-caption-date {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Poster thumbnail (card) */
+.cal-poster-thumb {
+  cursor: zoom-in;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cal-poster-thumb:hover {
+  transform: scale(1.025);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+}
 
 /* ── RSVP ──────────────────────────────────────────────────── */
 .cal-rsvp {

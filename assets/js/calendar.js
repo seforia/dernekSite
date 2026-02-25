@@ -109,7 +109,7 @@
         const yesRsvp  = evRsvp.filter(r => r.willAttend);
         const noRsvp   = evRsvp.filter(r => !r.willAttend);
         html += `<li class="cal-event-item" data-id="${esc(ev.id)}">
-          ${ev.imageUrl ? `<div class="cal-event-poster"><img src="${esc(ev.imageUrl)}" alt="${esc(ev.title)}" loading="lazy" class="cal-poster-thumb" data-src="${esc(ev.imageUrl)}" /></div>` : ''}
+          ${ev.imageUrl ? `<div class="cal-event-poster"><img src="${esc(ev.imageUrl)}" alt="${esc(ev.title)}" loading="lazy" class="cal-poster-thumb" data-src="${esc(ev.imageUrl)}" data-title="${esc(ev.title)}" data-date="${dayNum} ${TR_MONTHS[ev.date.getMonth()]}" /></div>` : ''}
           <div class="cal-event-body">
             <span class="cal-event-date-badge">${dayNum} ${TR_MONTHS[ev.date.getMonth()]}</span>
             <div class="cal-event-info">
@@ -191,9 +191,17 @@
 
     // Lightbox container
     html += `
-      <div class="cal-lightbox" id="cal-lightbox" hidden aria-modal="true" role="dialog">
-        <button class="cal-lightbox-close" id="cal-lightbox-close" aria-label="Kapat">&times;</button>
-        <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
+      <div class="cal-lightbox" id="cal-lightbox" hidden aria-modal="true" role="dialog" aria-label="Görsel büyütme">
+        <div class="cal-lightbox-backdrop" id="cal-lightbox-backdrop"></div>
+        <div class="cal-lightbox-box">
+          <button class="cal-lightbox-close" id="cal-lightbox-close" aria-label="Kapat">&#10005;</button>
+          <div class="cal-lightbox-loader" id="cal-lightbox-loader"></div>
+          <img class="cal-lightbox-img" id="cal-lightbox-img" src="" alt="Afiş" />
+          <div class="cal-lightbox-caption" id="cal-lightbox-caption" hidden>
+            <span class="cal-lightbox-caption-title" id="cal-lightbox-caption-title"></span>
+            <span class="cal-lightbox-caption-date" id="cal-lightbox-caption-date"></span>
+          </div>
+        </div>
       </div>`;
 
     mount.innerHTML = html;
@@ -264,30 +272,79 @@
     mount.querySelectorAll('.cal-poster-thumb').forEach(img => {
       img.addEventListener('click', (e) => {
         e.stopPropagation();
-        const lb    = document.getElementById('cal-lightbox');
-        const lbImg = document.getElementById('cal-lightbox-img');
-        if (!lb || !lbImg) return;
-        lbImg.src  = img.dataset.src;
-        lbImg.alt  = img.alt;
-        lb.hidden  = false;
-        document.body.style.overflow = 'hidden';
+        openLightbox(img.dataset.src, img.dataset.title || img.alt, img.dataset.date || '');
       });
     });
 
     // Close lightbox
-    const lb     = mount.querySelector('#cal-lightbox');
-    const lbClose = mount.querySelector('#cal-lightbox-close');
-    if (lbClose) lbClose.addEventListener('click', closeLightbox);
-    if (lb)      lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+    const lb          = mount.querySelector('#cal-lightbox');
+    const lbClose     = mount.querySelector('#cal-lightbox-close');
+    const lbBackdrop  = mount.querySelector('#cal-lightbox-backdrop');
+    if (lbClose)    lbClose.addEventListener('click', closeLightbox);
+    if (lbBackdrop) lbBackdrop.addEventListener('click', closeLightbox);
 
     // Close popup on outside click
     document.addEventListener('click', onDocClick, { once: true });
   }
 
+  function openLightbox(src, title, date) {
+    const lb      = document.getElementById('cal-lightbox');
+    const lbImg   = document.getElementById('cal-lightbox-img');
+    const lbLoader = document.getElementById('cal-lightbox-loader');
+    const caption  = document.getElementById('cal-lightbox-caption');
+    const capTitle = document.getElementById('cal-lightbox-caption-title');
+    const capDate  = document.getElementById('cal-lightbox-caption-date');
+    if (!lb || !lbImg) return;
+
+    // Reset state
+    lbImg.classList.remove('is-loaded');
+    if (lbLoader) lbLoader.hidden = false;
+    if (caption)  caption.hidden = true;
+
+    lbImg.src = '';
+    lbImg.alt = title || 'Afiş';
+    lb.hidden = false;
+    // Trigger open animation
+    requestAnimationFrame(() => lb.classList.add('is-open'));
+    document.body.style.overflow = 'hidden';
+
+    // Caption
+    if (capTitle) capTitle.textContent = title || '';
+    if (capDate)  capDate.textContent  = date  || '';
+
+    // Load image
+    const tempImg = new Image();
+    tempImg.onload = () => {
+      lbImg.src = src;
+      lbImg.classList.add('is-loaded');
+      if (lbLoader) lbLoader.hidden = true;
+      if (caption && (title || date)) caption.hidden = false;
+    };
+    tempImg.onerror = () => {
+      if (lbLoader) lbLoader.hidden = true;
+    };
+    tempImg.src = src;
+
+    // ESC to close
+    document._lbEscHandler = (ev) => { if (ev.key === 'Escape') closeLightbox(); };
+    document.addEventListener('keydown', document._lbEscHandler);
+  }
+
   function closeLightbox() {
     const lb = document.getElementById('cal-lightbox');
-    if (lb) lb.hidden = true;
+    if (!lb) return;
+    lb.classList.remove('is-open');
+    // Wait for fade-out animation
+    setTimeout(() => {
+      lb.hidden = true;
+      const lbImg = document.getElementById('cal-lightbox-img');
+      if (lbImg) { lbImg.src = ''; lbImg.classList.remove('is-loaded'); }
+    }, 250);
     document.body.style.overflow = '';
+    if (document._lbEscHandler) {
+      document.removeEventListener('keydown', document._lbEscHandler);
+      document._lbEscHandler = null;
+    }
   }
 
 
