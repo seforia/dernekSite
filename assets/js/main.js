@@ -566,6 +566,8 @@
       // Ana sayfayı göster
       if (homeContent) homeContent.style.display = 'block';
       if (dynamicContent) dynamicContent.style.display = 'none';
+      // Reveal animasyonlarını yeniden başlat (başka sayfadan dönüş için)
+      initRevealAnimations();
       // Scroll to top immediately
       window.scrollTo({ top: 0, behavior: 'instant' });
       document.documentElement.scrollTop = 0;

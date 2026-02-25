@@ -626,11 +626,10 @@
     if (!document.getElementById(MOUNT_ID)) return;
 
     if (!window.TSGLAuth || !window.TSGLAuth.isReady()) {
+      // İlk denemede hemen boş takvimi göster — kullanıcı beklemez
+      if (retries === 20) renderCalendar();
       if (retries > 0) {
         setTimeout(() => init(retries - 1), 500);
-      } else {
-        // Render without Firebase
-        renderCalendar();
       }
       return;
     }
